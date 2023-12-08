@@ -20,6 +20,10 @@ namespace Silkslug
         public static SoundID nail { get; private set; }
         public static SoundID Hornet_Great_Slash { get; private set; }
 
+        public static SoundID Hornet_Death { get; private set; }
+
+        public static SoundID Hornet_Git_Gud { get; private set; }
+
         public static SoundID Hornet_Attack { get; private set; }
 
         // Call Initialize() from your plugin's Awake method.
@@ -36,7 +40,9 @@ namespace Silkslug
             nail = new SoundID("nail", true);
             Hornet_Great_Slash = new SoundID("Hornet_Great_Slash", true);
             Hornet_Attack = new SoundID("Hornet_Attack", true);
-        }
+            Hornet_Death = new SoundID("Hornet_Death", true);
+            Hornet_Git_Gud = new SoundID("Hornet_Git_Gud", true);
 
+        }
     }
 }
