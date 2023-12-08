@@ -1,0 +1,10 @@
+﻿{
+	"id": "zeldak974.slikslug",
+	"name": "Slikslug (The Shaw)",
+	"version": "0.1.0",
+	"authors": "ZΞLDΛK",
+	"description": "A template for making SlugBase mods.",
+	"requirements": [ "slime-cubed.slugbase" ],
+	"requirements_names": [ "SlugBase" ],
+	"tags": [ "Custom Slugcat" ]
+}

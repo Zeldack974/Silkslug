@@ -1,0 +1,11 @@
+[ADD]hero_nail_art_charge_initiate/vol=0.4/dopplerFac=0.0 : heronailartchargeinitiate
+[ADD]hero_nail_art_charge_loop/vol=0.3/dopplerFac=0.0 : heronailartchargeloop
+[ADD]hero_nail_art_great_slash/vol=0.3/dopplerFac=0.0 : heronailartgreatslash
+[ADD]hero_parry/vol=0.4/dopplerFac=0.0 : heroparry
+[ADD]hornet_dash/vol=0.3/dopplerFac=0.0 : hornetdash
+[ADD]Hornet_Fight_Yell_06/vol=0.2/dopplerFac=0.0 : HornetFightYell06
+[ADD]Hornet_Fight_Yell_08/vol=0.2/dopplerFac=0.0 : HornetFightYell08
+[ADD]Hornet_Fight_Yell_09/vol=0.2/dopplerFac=0.0 : HornetFightYell09
+[ADD]nail/vol=0.2 : nail
+[ADD]Hornet_Great_Slash/vol=0.2/dopplerFac=0.0 : HornetGreatSlash
+[ADD]Hornet_Attack/vol=0.2/dopplerFac=0.0 : HornetAttack1, HornetAttack2
