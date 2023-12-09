@@ -112,7 +112,7 @@ namespace Silkslug
                                         if (ModManager.MSC && this.room.physicalObjects[j][k] is Player)
                                         {
                                             Player player = (this.room.physicalObjects[j][k] as Player);
-                                            (this.room.physicalObjects[j][k] as Creature).SetKillTag(player.abstractCreature);
+                                            (this.room.physicalObjects[j][k] as Creature).SetKillTag(this.owner.abstractCreature);
                                             player.playerState.permanentDamageTracking += (double)(this.damage / player.Template.baseDamageResistance);
                                             player.firstChunk.vel += force;
                                             if (player.playerState.permanentDamageTracking >= 1.0)
@@ -428,7 +428,7 @@ namespace Silkslug
                                             if (ModManager.MSC && this.room.physicalObjects[j][k] is Player)
                                             {
                                                 Player player = (this.room.physicalObjects[j][k] as Player);
-                                                (this.room.physicalObjects[j][k] as Creature).SetKillTag(player.abstractCreature);
+                                                (this.room.physicalObjects[j][k] as Creature).SetKillTag(this.owner.abstractCreature);
                                                 player.playerState.permanentDamageTracking += (double)(this.damage / player.Template.baseDamageResistance);
                                                 player.firstChunk.vel += force;
                                                 if (player.playerState.permanentDamageTracking >= 1.0)
