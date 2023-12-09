@@ -49,19 +49,23 @@ namespace Slikslug
         }
         private void Player_SlugcatGrab(On.Player.orig_SlugcatGrab orig, Player self, PhysicalObject obj, int graspUsed)
         {
+            ConsoleWrite("");
             if (SpearAbilites.TryGet(self, out bool customAbilities) && customAbilities && obj is Spear)
             {
+                bool shouldPutToBack = obj != self.spearOnBack.spear;
                 if (!self.CanPutSpearToBack)
                 {
                     self.spearOnBack.DropSpear();
                 }
-                self.spearOnBack.SpearToBack(obj as Spear);
+                if (shouldPutToBack)
+                {
+                    self.spearOnBack.SpearToBack(obj as Spear);
+                }
             }
             else
             {
                 orig(self, obj, graspUsed);
             }
-
         }
 
         private void Player_Die(On.Player.orig_Die orig, Player self)
@@ -326,7 +330,7 @@ namespace Slikslug
                 }
             }
 
-            if (self.pickUpCandidate != null && self.input[0].pckp && self.pickUpCandidate is Spear && ((self.grasps[0] != null && self.Grabability(self.grasps[0].grabbed) >= Player.ObjectGrabability.BigOneHand) || (self.grasps[1] != null && self.Grabability(self.grasps[1].grabbed) >= Player.ObjectGrabability.BigOneHand) || (self.grasps[0] != null && self.grasps[1] != null)))
+            if (self.pickUpCandidate != null && self.input[0].pckp && !self.input[1].pckp && self.pickUpCandidate is Spear && ((self.grasps[0] != null && self.Grabability(self.grasps[0].grabbed) >= Player.ObjectGrabability.BigOneHand) || (self.grasps[1] != null && self.Grabability(self.grasps[1].grabbed) >= Player.ObjectGrabability.BigOneHand) || (self.grasps[0] != null && self.grasps[1] != null)))
             {
                 if (!self.CanPutSpearToBack)
                 {
