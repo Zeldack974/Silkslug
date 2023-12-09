@@ -160,6 +160,11 @@ namespace Slikslug
                     }
 
                 }
+
+                if (shawData.dashDropLock > 0)
+                {
+                    shawData.dashDropLock--;
+                }
             }
         }
 
@@ -176,119 +181,120 @@ namespace Slikslug
         {
             if (SpearAbilites.TryGet(self, out bool customAbilities) && customAbilities && self.TryGetShaw( out ShawData shawData ) && self.spearOnBack.HasASpear)
             {
+                bool haveItem = false;
                 foreach (Creature.Grasp grasp in self.grasps)
                 {
                     if (grasp != null)
                     {
-                        orig(self, eu);
-                        return;
+                        haveItem = true;
                     }
                 }
 
                 float damageFac = 1f;
                 Spear spear = self.spearOnBack.spear;
 
-
-
                 if (spear.abstractSpear.hue != 0f)
                 {
                     damageFac = 3f;
                 }
 
-                IntVector2 intVector = new IntVector2(self.ThrowDirection, 0);
-                bool flag = self.input[0].y < 0;
-                if (ModManager.MMF && MMF.cfgUpwardsSpearThrow.Value)
+                if (!haveItem)
                 {
-                    flag = (self.input[0].y != 0);
-                }
-                if (self.animation == Player.AnimationIndex.Flip && flag && self.input[0].x == 0)
-                {
-                    intVector = new IntVector2(0, (ModManager.MMF && MMF.cfgUpwardsSpearThrow.Value) ? self.input[0].y : -1);
-                }
-                if (ModManager.MMF && self.bodyMode == Player.BodyModeIndex.ZeroG && MMF.cfgUpwardsSpearThrow.Value)
-                {
-                    int y = self.input[0].y;
-                    if (y != 0)
+                    IntVector2 intVector = new IntVector2(self.ThrowDirection, 0);
+                    bool flag = self.input[0].y < 0;
+                    if (ModManager.MMF && MMF.cfgUpwardsSpearThrow.Value)
                     {
-                        intVector = new IntVector2(0, y);
+                        flag = (self.input[0].y != 0);
                     }
-                    else
+                    if (self.animation == Player.AnimationIndex.Flip && flag && self.input[0].x == 0)
                     {
-                        intVector = new IntVector2(self.ThrowDirection, 0);
+                        intVector = new IntVector2(0, (ModManager.MMF && MMF.cfgUpwardsSpearThrow.Value) ? self.input[0].y : -1);
                     }
-                }
-
-                if (shawData.attackCooldown > 0)
-                {
-                    shawData.attackCooldown--;
-                }
-                else if (self.input[0].thrw && !self.input[1].thrw)
-                {
-                    shawData.chargeSlashCounter = 0;
-                    self.room.PlaySound(Sounds.nail, self.firstChunk);
-                    if (Random.value < 0.5f)
+                    if (ModManager.MMF && self.bodyMode == Player.BodyModeIndex.ZeroG && MMF.cfgUpwardsSpearThrow.Value)
                     {
-                        self.room.PlaySound(Sounds.Hornet_Attack, self.firstChunk);
-                    }
-                    self.room.AddObject(new Slash(self.room, self, spear, intVector.ToVector2(), 100f, 1f, 0.25f * damageFac));
-                    spear.setInvisible(10);
-
-                    self.firstChunk.vel += intVector.ToVector2() * 4f;
-                    shawData.attackCooldown = 10;
-                }
-
-                if (self.input[0].thrw && self.input[1].thrw)
-                {
-                    shawData.chargeSlashCounter++;
-                    if (shawData.chargeSlashCounter > chargeSlashTime)
-                    {
-                        if (shawData.chargeLoopSound == null)
+                        int y = self.input[0].y;
+                        if (y != 0)
                         {
-                            shawData.chargeLoopSound = self.room.PlaySound(Sounds.hero_nail_art_charge_loop, self.firstChunk, true, 1f, 1f);
+                            intVector = new IntVector2(0, y);
                         }
-                        self.room.AddObject(new ExplosionSpikes(self.room, self.firstChunk.pos, 16, 25f, 1f, 7f, 40f, Color.white));
-                    }
-                    else if (shawData.chargeSlashCounter > 12)
-                    {
-                        if (shawData.chargeInitSound == null)
+                        else
                         {
-                            shawData.chargeInitSound = self.room.PlaySound(Sounds.hero_nail_art_charge_initiate, self.firstChunk);
+                            intVector = new IntVector2(self.ThrowDirection, 0);
                         }
                     }
-                }
-                else if (!self.input[0].thrw && self.input[1].thrw)
-                {
-                    if (shawData.chargeSlashCounter > chargeSlashTime)
+
+                    if (shawData.attackCooldown > 0)
                     {
-                        //self.ThrowObject(grasp, eu);
-                        //self.room.AddObject(new ShockWave(self.firstChunk.pos + new Vector2(self.ThrowDirection, 0) * 10f + new Vector2(0f, 4f), 40f, 0.185f, 30, false));
-                        self.room.PlaySound(Sounds.hero_nail_art_great_slash, self.firstChunk);
-                        self.room.PlaySound(Sounds.Hornet_Great_Slash, self.firstChunk);
-                        self.room.AddObject(new Slash(self.room, self, spear, intVector.ToVector2(), 150f, 1f, 0.75f * damageFac));
+                        shawData.attackCooldown--;
+                    }
+                    else if (self.input[0].thrw && !self.input[1].thrw)
+                    {
+                        shawData.chargeSlashCounter = 0;
+                        self.room.PlaySound(Sounds.nail, self.firstChunk);
+                        if (Random.value < 0.5f)
+                        {
+                            self.room.PlaySound(Sounds.Hornet_Attack, self.firstChunk);
+                        }
+                        self.room.AddObject(new Slash(self.room, self, spear, intVector.ToVector2(), 100f, 1f, 0.25f * damageFac));
                         spear.setInvisible(10);
-                        shawData.chargeSlashCounter = 0;
+
+                        self.firstChunk.vel += intVector.ToVector2() * 4f;
+                        shawData.attackCooldown = 10;
+                    }
+
+                    if (self.input[0].thrw && self.input[1].thrw)
+                    {
+                        shawData.chargeSlashCounter++;
+                        if (shawData.chargeSlashCounter > chargeSlashTime)
+                        {
+                            if (shawData.chargeLoopSound == null)
+                            {
+                                shawData.chargeLoopSound = self.room.PlaySound(Sounds.hero_nail_art_charge_loop, self.firstChunk, true, 1f, 1f);
+                            }
+                            self.room.AddObject(new ExplosionSpikes(self.room, self.firstChunk.pos, 16, 25f, 1f, 7f, 40f, Color.white));
+                        }
+                        else if (shawData.chargeSlashCounter > 12)
+                        {
+                            if (shawData.chargeInitSound == null)
+                            {
+                                shawData.chargeInitSound = self.room.PlaySound(Sounds.hero_nail_art_charge_initiate, self.firstChunk);
+                            }
+                        }
+                    }
+                    else if (!self.input[0].thrw && self.input[1].thrw)
+                    {
+                        if (shawData.chargeSlashCounter > chargeSlashTime)
+                        {
+                            //self.ThrowObject(grasp, eu);
+                            //self.room.AddObject(new ShockWave(self.firstChunk.pos + new Vector2(self.ThrowDirection, 0) * 10f + new Vector2(0f, 4f), 40f, 0.185f, 30, false));
+                            self.room.PlaySound(Sounds.hero_nail_art_great_slash, self.firstChunk);
+                            self.room.PlaySound(Sounds.Hornet_Great_Slash, self.firstChunk);
+                            self.room.AddObject(new Slash(self.room, self, spear, intVector.ToVector2(), 150f, 1f, 0.75f * damageFac));
+                            spear.setInvisible(10);
+                            shawData.chargeSlashCounter = 0;
+                        }
+                        else
+                        {
+                            shawData.chargeSlashCounter = 0;
+                        }
                     }
                     else
                     {
                         shawData.chargeSlashCounter = 0;
                     }
-                }
-                else
-                {
-                    shawData.chargeSlashCounter = 0;
-                }
 
-                if (shawData.chargeSlashCounter == 0)
-                {
-                    if (shawData.chargeLoopSound != null)
+                    if (shawData.chargeSlashCounter == 0)
                     {
-                        shawData.chargeLoopSound.Destroy();
-                        shawData.chargeLoopSound = null;
-                    }
-                    if (shawData.chargeInitSound != null)
-                    {
-                        shawData.chargeInitSound.Destroy();
-                        shawData.chargeInitSound = null;
+                        if (shawData.chargeLoopSound != null)
+                        {
+                            shawData.chargeLoopSound.Destroy();
+                            shawData.chargeLoopSound = null;
+                        }
+                        if (shawData.chargeInitSound != null)
+                        {
+                            shawData.chargeInitSound.Destroy();
+                            shawData.chargeInitSound = null;
+                        }
                     }
                 }
 
@@ -318,11 +324,6 @@ namespace Slikslug
                     self.room.PlaySound(Sounds.hornet_dash, self.firstChunk);
                     self.room.AddObject(new DashSlash(self.room, self, spear, shawData.throwDir, 100f, 1f, 0.25f * damageFac));
                     spear.setInvisible(dashTotalFrame + DashSlash.lifeTime + 6);
-                }
-
-                if (shawData.dashDropLock > 0)
-                {
-                    shawData.dashDropLock--;
                 }
             }
             orig(self, eu);
