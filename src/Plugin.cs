@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using BepInEx;
+﻿using BepInEx;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using SlugBase.Features;
@@ -11,11 +9,10 @@ using static Silkslug.MyDevConsole;
 using static Silkslug.Shaw;
 using Silkslug;
 using System.Collections.Generic;
-using UnityEngine.Experimental.Rendering;
 
 namespace Slikslug
 {
-    [BepInPlugin(MOD_ID, "Slugcat Template", "0.1.0")]
+    [BepInPlugin(MOD_ID, "Silkslug", "1.0.0")]
     class Plugin : BaseUnityPlugin
     {
         private const string MOD_ID = "zeldak974.slikslug";
@@ -33,7 +30,6 @@ namespace Slikslug
 
             // Put your custom hooks here!
             On.Player.Jump += Player_Jump;
-            On.Player.ctor += Player_ctor;
             On.Player.ThrowObject += Player_ThrowObject;
             On.Player.ThrowToGetFree += Player_ThrowToGetFree;
             On.Player.ThrownSpear += Player_ThrownSpear;
@@ -62,7 +58,6 @@ namespace Slikslug
             {
                 orig(self, obj, graspUsed);
             }
-
         }
 
         private void Player_Die(On.Player.orig_Die orig, Player self)
@@ -73,11 +68,11 @@ namespace Slikslug
             {
                 if (Random.value <= 0.2)
                 {
-                    self.room.PlaySound(Sounds.Hornet_Git_Gud, self.firstChunk);
+                    self.room.PlaySound(Sounds.HORNET_GIT_GUD, self.firstChunk);
                 }
                 else
                 {
-                    self.room.PlaySound(Sounds.Hornet_Death, self.firstChunk);
+                    self.room.PlaySound(Sounds.HORNET_DEATH, self.firstChunk);
                 }
             }
         }
@@ -101,19 +96,10 @@ namespace Slikslug
         private void Spear_DrawSprites(On.Spear.orig_DrawSprites orig, Spear self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
             orig(self, sLeaser, rCam, timeStacker, camPos);
-            if (invisibleSpear.ContainsKey(self) && invisibleSpear[self] > 0)
+            bool isHidden = invisibleSpear.ContainsKey(self) && invisibleSpear[self] > 0;
+            foreach (FSprite sprite in sLeaser.sprites)
             {
-                foreach (FSprite sprite in sLeaser.sprites)
-                {
-                    sprite.isVisible = false;
-                }
-            }
-            else
-            {
-                foreach (FSprite sprite in sLeaser.sprites)
-                {
-                    sprite.isVisible = true;
-                }
+                sprite.isVisible = !isHidden;
             }
         }
 
@@ -165,15 +151,6 @@ namespace Slikslug
                 {
                     shawData.dashDropLock--;
                 }
-            }
-        }
-
-        private void Player_ctor(On.Player.orig_ctor orig, Player self, AbstractCreature abstractCreature, World world)
-        {
-            orig(self, abstractCreature, world);
-            if (self.SlugCatClass == ShawName)
-            {
-
             }
         }
 
@@ -230,13 +207,13 @@ namespace Slikslug
                     else if (self.input[0].thrw && !self.input[1].thrw)
                     {
                         shawData.chargeSlashCounter = 0;
-                        self.room.PlaySound(Sounds.nail, self.firstChunk);
+                        self.room.PlaySound(Sounds.NAIL, self.firstChunk);
                         if (Random.value < 0.5f)
                         {
-                            self.room.PlaySound(Sounds.Hornet_Attack, self.firstChunk);
+                            self.room.PlaySound(Sounds.HORNET_ATTACK, self.firstChunk);
                         }
                         self.room.AddObject(new Slash(self.room, self, spear, intVector.ToVector2(), 100f, 1f, 0.25f * damageFac));
-                        spear.setInvisible(10);
+                        spear.SetInvisible(10);
 
                         self.firstChunk.vel += intVector.ToVector2() * 4f;
                         shawData.attackCooldown = 10;
@@ -249,7 +226,7 @@ namespace Slikslug
                         {
                             if (shawData.chargeLoopSound == null)
                             {
-                                shawData.chargeLoopSound = self.room.PlaySound(Sounds.hero_nail_art_charge_loop, self.firstChunk, true, 1f, 1f);
+                                shawData.chargeLoopSound = self.room.PlaySound(Sounds.HERO_NAIL_ART_CHARGE_LOOP, self.firstChunk, true, 1f, 1f);
                             }
                             self.room.AddObject(new ExplosionSpikes(self.room, self.firstChunk.pos, 16, 25f, 1f, 7f, 40f, Color.white));
                         }
@@ -257,7 +234,7 @@ namespace Slikslug
                         {
                             if (shawData.chargeInitSound == null)
                             {
-                                shawData.chargeInitSound = self.room.PlaySound(Sounds.hero_nail_art_charge_initiate, self.firstChunk);
+                                shawData.chargeInitSound = self.room.PlaySound(Sounds.HERO_NAIL_ART_CHARGE_INITIATE, self.firstChunk);
                             }
                         }
                     }
@@ -267,10 +244,10 @@ namespace Slikslug
                         {
                             //self.ThrowObject(grasp, eu);
                             //self.room.AddObject(new ShockWave(self.firstChunk.pos + new Vector2(self.ThrowDirection, 0) * 10f + new Vector2(0f, 4f), 40f, 0.185f, 30, false));
-                            self.room.PlaySound(Sounds.hero_nail_art_great_slash, self.firstChunk);
-                            self.room.PlaySound(Sounds.Hornet_Great_Slash, self.firstChunk);
+                            self.room.PlaySound(Sounds.HERO_NAIL_ART_GREAT_SLASH, self.firstChunk);
+                            self.room.PlaySound(Sounds.HORNET_GREAT_SLASH, self.firstChunk);
                             self.room.AddObject(new Slash(self.room, self, spear, intVector.ToVector2(), 150f, 1f, 0.75f * damageFac));
-                            spear.setInvisible(10);
+                            spear.SetInvisible(10);
                             shawData.chargeSlashCounter = 0;
                         }
                         else
@@ -315,15 +292,17 @@ namespace Slikslug
                     shawData.chargeSlashCounter = 0;
                     shawData.dashCooldown = 40;
 
-                    List<SoundID> sounds = new List<SoundID>();
-                    sounds.Add(Sounds.Hornet_Fight_Yell_06);
-                    sounds.Add(Sounds.Hornet_Fight_Yell_08);
-                    sounds.Add(Sounds.Hornet_Fight_Yell_09);
+                    List<SoundID> sounds = new()
+                    {
+                        Sounds.HORNET_FIGHT_YELL_06,
+                        Sounds.HORNET_FIGHT_YELL_08,
+                        Sounds.HORNET_FIGHT_YELL_09
+                    };
 
                     self.room.PlaySound(sounds[Random.Range(0, sounds.Count)], self.firstChunk);
-                    self.room.PlaySound(Sounds.hornet_dash, self.firstChunk);
+                    self.room.PlaySound(Sounds.HORNET_DASH, self.firstChunk);
                     self.room.AddObject(new DashSlash(self.room, self, spear, shawData.throwDir, 100f, 1f, 0.25f * damageFac));
-                    spear.setInvisible(dashTotalFrame + DashSlash.lifeTime + 6);
+                    spear.SetInvisible(dashTotalFrame + DashSlash.lifeTime + 6);
                 }
             }
             orig(self, eu);
@@ -368,7 +347,7 @@ namespace Slikslug
                     self.rollDirection = (int)Mathf.Sign(spear.firstChunk.vel.x);
                     self.rollCounter = 0;
                     BodyChunk firstChunk3 = self.firstChunk;
-                    firstChunk3.vel.x = firstChunk3.vel.x + Mathf.Sign(spear.firstChunk.vel.x) * 9f;
+                    firstChunk3.vel.x += Mathf.Sign(spear.firstChunk.vel.x) * 9f;
                 }
             }
         }
@@ -377,21 +356,18 @@ namespace Slikslug
         {
             if (SpearAbilites.TryGet(self, out bool customAbilities) && customAbilities && self.dangerGrasp != null && !self.dead && self.spearOnBack.HasASpear)
             {
-                if (self.dangerGrasp != null)
-                {
-                    self.spearOnBack.DropSpear();
-                    for (int j = 0; j < self.dangerGrasp.grabber.grasps.Length; j++)
-                    {
-                        self.dangerGrasp.grabber.ReleaseGrasp(j);
-                    }
-                    self.dangerGrasp.grabber.Stun(40);
+                if (self.dangerGrasp == null) return;
 
-                    self.room.AddObject(new Slash(self.room, self, null, new Vector2(1, 0), 100f, 1f, 0.25f));
-                    self.room.PlaySound(Sounds.nail, self.firstChunk);
-                    self.room.PlaySound(Sounds.hero_parry, self.firstChunk);
-                    return;
+                self.spearOnBack.DropSpear();
+                for (int j = 0; j < self.dangerGrasp.grabber.grasps.Length; j++)
+                {
+                    self.dangerGrasp.grabber.ReleaseGrasp(j);
                 }
-                return;
+                self.dangerGrasp.grabber.Stun(40);
+
+                self.room.AddObject(new Slash(self.room, self, null, new Vector2(1, 0), 100f, 1f, 0.25f));
+                self.room.PlaySound(Sounds.NAIL, self.firstChunk);
+                self.room.PlaySound(Sounds.HERRO_PARRY, self.firstChunk);
             }
             orig(self, eu);
         }

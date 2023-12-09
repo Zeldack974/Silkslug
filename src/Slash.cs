@@ -1,12 +1,9 @@
 ﻿using UnityEngine;
 using RWCustom;
-using System;
 using Random = UnityEngine.Random;
 using static Silkslug.Shaw;
 using System.Collections.Generic;
-using System.Linq;
 using Noise;
-using IL.MoreSlugcats;
 
 namespace Silkslug
 {
@@ -25,7 +22,7 @@ namespace Silkslug
 
         public Vector2 dir;
 
-        public Vector2 pos;
+        public new Vector2 pos;
         
         public Player owner;
 
@@ -84,7 +81,7 @@ namespace Silkslug
                         if (this.IsHit(slash.owner.firstChunk.pos + localMinB) || this.IsHit(slash.owner.firstChunk.pos + localMaxB) || this.IsHit(slash.owner.firstChunk.pos - localMinB) || this.IsHit(slash.owner.firstChunk.pos - localMaxB) || slash.IsHit(this.owner.firstChunk.pos + localMinA) || this.IsHit(this.owner.firstChunk.pos + localMaxA) || this.IsHit(this.owner.firstChunk.pos - localMinA) || this.IsHit(this.owner.firstChunk.pos - localMaxA))
                         {
                             this.hitSomething = true;
-                            this.room.PlaySound(Sounds.hero_parry, this.owner.firstChunk.pos);
+                            this.room.PlaySound(Sounds.HERRO_PARRY, this.owner.firstChunk.pos);
                         }
                     }
 
@@ -94,7 +91,7 @@ namespace Silkslug
                         if (this.IsHit(dashSlash.hitPos, dashSlash.hitRad))
                         {
                             this.hitSomething = true;
-                            this.room.PlaySound(Sounds.hero_parry, this.owner.firstChunk.pos);
+                            this.room.PlaySound(Sounds.HERRO_PARRY, this.owner.firstChunk.pos);
                         }
                     }
                 }
@@ -174,7 +171,7 @@ namespace Silkslug
                                             weapon.room.AddObject(new Spark(weapon.firstChunk.pos, Custom.RNV() * 2, Color.white, null, 10, 20));
                                         }
 
-                                        this.room.PlaySound(Sounds.hero_parry, weapon.firstChunk.pos);
+                                        this.room.PlaySound(Sounds.HERRO_PARRY, weapon.firstChunk.pos);
                                         weapon.ChangeMode(Weapon.Mode.Free);
                                         weapon.firstChunk.vel = Custom.DegToVec(Custom.AimFromOneVectorToAnother(this.pos, weapon.firstChunk.pos)) * 20f;
                                         weapon.SetRandomSpin();
@@ -338,7 +335,7 @@ namespace Silkslug
 
         public Vector2 dir;
 
-        public Vector2 pos;
+        public new Vector2 pos;
 
         public Player owner;
 
@@ -387,7 +384,7 @@ namespace Silkslug
                         Slash slash = (Slash)drawable;
                         if (slash.IsHit(this.hitPos, this.hitRad))
                         {
-                            this.room.PlaySound(Sounds.hero_parry, slash.pos);
+                            this.room.PlaySound(Sounds.HERRO_PARRY, slash.pos);
                             hitSomething = true;
                         }
                     }
@@ -396,7 +393,7 @@ namespace Silkslug
                         DashSlash dashSlash = (DashSlash)drawable;
                         if ((dashSlash.hitPos - this.hitPos).magnitude < (dashSlash.hitRad + this.hitRad))
                         {
-                            this.room.PlaySound(Sounds.hero_parry, dashSlash.pos);
+                            this.room.PlaySound(Sounds.HERRO_PARRY, dashSlash.pos);
                             hitSomething = true;
                         }
                     }
@@ -528,7 +525,7 @@ namespace Silkslug
             base.Destroy();
             if (this.spear != null)
             {
-                this.spear.setVisible();
+                this.spear.SetVisible();
             }
         }
 

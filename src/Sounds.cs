@@ -1,48 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Silkslug.MyDevConsole;
-
-namespace Silkslug
+﻿namespace Silkslug
 {
     public static class Sounds
     {
-        public static SoundID hero_nail_art_charge_initiate { get; private set; }
-        public static SoundID hero_nail_art_charge_loop { get; private set; }
-        public static SoundID hero_nail_art_great_slash { get; private set; }
-        public static SoundID hero_parry { get; private set; }
-        public static SoundID hornet_dash { get; private set; }
-        public static SoundID Hornet_Fight_Yell_06 { get; private set; }
-        public static SoundID Hornet_Fight_Yell_08 { get; private set; }
-        public static SoundID Hornet_Fight_Yell_09 { get; private set; }
-        public static SoundID nail { get; private set; }
-        public static SoundID Hornet_Great_Slash { get; private set; }
+        public static SoundID HERO_NAIL_ART_CHARGE_INITIATE { get; private set; }
+        public static SoundID HERO_NAIL_ART_CHARGE_LOOP { get; private set; }
+        public static SoundID HERO_NAIL_ART_GREAT_SLASH { get; private set; }
+        public static SoundID HERRO_PARRY { get; private set; }
+        public static SoundID HORNET_DASH { get; private set; }
+        public static SoundID HORNET_FIGHT_YELL_06 { get; private set; }
+        public static SoundID HORNET_FIGHT_YELL_08 { get; private set; }
+        public static SoundID HORNET_FIGHT_YELL_09 { get; private set; }
+        public static SoundID NAIL { get; private set; }
+        public static SoundID HORNET_GREAT_SLASH { get; private set; }
 
-        public static SoundID Hornet_Death { get; private set; }
+        public static SoundID HORNET_DEATH { get; private set; }
 
-        public static SoundID Hornet_Git_Gud { get; private set; }
+        public static SoundID HORNET_GIT_GUD { get; private set; }
 
-        public static SoundID Hornet_Attack { get; private set; }
+        public static SoundID HORNET_ATTACK { get; private set; }
 
         // Call Initialize() from your plugin's Awake method.
         internal static void Initialize()
         {
-            hero_nail_art_charge_initiate = new SoundID("hero_nail_art_charge_initiate", true);
-            hero_nail_art_charge_loop = new SoundID("hero_nail_art_charge_loop", true);
-            hero_nail_art_great_slash = new SoundID("hero_nail_art_great_slash", true);
-            hero_parry = new SoundID("hero_parry", true);
-            hornet_dash = new SoundID("hornet_dash", true);
-            Hornet_Fight_Yell_06 = new SoundID("Hornet_Fight_Yell_06", true);
-            Hornet_Fight_Yell_08 = new SoundID("Hornet_Fight_Yell_08", true);
-            Hornet_Fight_Yell_09 = new SoundID("Hornet_Fight_Yell_09", true);
-            nail = new SoundID("nail", true);
-            Hornet_Great_Slash = new SoundID("Hornet_Great_Slash", true);
-            Hornet_Attack = new SoundID("Hornet_Attack", true);
-            Hornet_Death = new SoundID("Hornet_Death", true);
-            Hornet_Git_Gud = new SoundID("Hornet_Git_Gud", true);
-
+            HERO_NAIL_ART_CHARGE_INITIATE = new SoundID("hero_nail_art_charge_initiate", true);
+            HERO_NAIL_ART_CHARGE_LOOP = new SoundID("hero_nail_art_charge_loop", true);
+            HERO_NAIL_ART_GREAT_SLASH = new SoundID("hero_nail_art_great_slash", true);
+            HERRO_PARRY = new SoundID("hero_parry", true);
+            HORNET_DASH = new SoundID("hornet_dash", true);
+            HORNET_FIGHT_YELL_06 = new SoundID("Hornet_Fight_Yell_06", true);
+            HORNET_FIGHT_YELL_08 = new SoundID("Hornet_Fight_Yell_08", true);
+            HORNET_FIGHT_YELL_09 = new SoundID("Hornet_Fight_Yell_09", true);
+            NAIL = new SoundID("nail", true);
+            HORNET_GREAT_SLASH = new SoundID("Hornet_Great_Slash", true);
+            HORNET_ATTACK = new SoundID("Hornet_Attack", true);
+            HORNET_DEATH = new SoundID("Hornet_Death", true);
+            HORNET_GIT_GUD = new SoundID("Hornet_Git_Gud", true);
         }
     }
 }
