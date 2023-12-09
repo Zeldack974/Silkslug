@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Slikslug;
 using UnityEngine;
 
@@ -44,12 +40,12 @@ namespace Silkslug
 
         public static readonly Dictionary<Spear, int> invisibleSpear = new Dictionary<Spear, int>();
 
-        public static void setInvisible(this Spear spear, int frames)
+        public static void SetInvisible(this Spear spear, int frames)
         {
             invisibleSpear[spear] = frames;
         }
 
-        public static void setVisible(this Spear spear)
+        public static void SetVisible(this Spear spear)
         {
             if (invisibleSpear.ContainsKey(spear))
             {
