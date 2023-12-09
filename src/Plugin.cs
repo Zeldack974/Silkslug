@@ -38,11 +38,22 @@ namespace Slikslug
             On.Player.Update += Player_Update;
             On.Player.Die += Player_Die;
             On.Player.SlugcatGrab += Player_SlugcatGrab;
+            On.Player.SpearOnBack.Update += SpearOnBack_Update;
 
             On.Spear.DrawSprites += Spear_DrawSprites;
             On.Spear.Update += Spear_Update;
 
         }
+
+        private void SpearOnBack_Update(On.Player.SpearOnBack.orig_Update orig, Player.SpearOnBack self, bool eu)
+        {
+            if (SpearAbilites.TryGet(self.owner, out bool customAbilities) && customAbilities)
+            {
+                return;
+            }
+            orig(self, eu);
+        }
+
         private void Player_SlugcatGrab(On.Player.orig_SlugcatGrab orig, Player self, PhysicalObject obj, int graspUsed)
         {
             if (SpearAbilites.TryGet(self, out bool customAbilities) && customAbilities && obj is Spear)
@@ -301,16 +312,16 @@ namespace Slikslug
                     self.room.AddObject(new DashSlash(self.room, self, spear, shawData.throwDir, 100f, 1f, 0.25f * damageFac));
                     spear.SetInvisible(dashTotalFrame + DashSlash.lifeTime + 6);
                 }
+                if (self.pickUpCandidate != null && self.input[0].pckp && !self.input[1].pckp && shawData.dashDropLock <= 0 && self.pickUpCandidate is Spear && ((self.grasps[0] != null && self.Grabability(self.grasps[0].grabbed) >= Player.ObjectGrabability.BigOneHand) || (self.grasps[1] != null && self.Grabability(self.grasps[1].grabbed) >= Player.ObjectGrabability.BigOneHand) || (self.grasps[0] != null && self.grasps[1] != null)))
+                {
+                    if (!self.CanPutSpearToBack)
+                    {
+                        self.spearOnBack.DropSpear();
+                    }
+                    self.spearOnBack.SpearToBack(self.pickUpCandidate as Spear);
+                }
             }
 
-            if (self.pickUpCandidate != null && self.input[0].pckp && !self.input[1].pckp && self.pickUpCandidate is Spear && ((self.grasps[0] != null && self.Grabability(self.grasps[0].grabbed) >= Player.ObjectGrabability.BigOneHand) || (self.grasps[1] != null && self.Grabability(self.grasps[1].grabbed) >= Player.ObjectGrabability.BigOneHand) || (self.grasps[0] != null && self.grasps[1] != null)))
-            {
-                if (!self.CanPutSpearToBack)
-                {
-                    self.spearOnBack.DropSpear();
-                }
-                self.spearOnBack.SpearToBack(self.pickUpCandidate as Spear);
-            }
 
             orig(self, eu);
         }

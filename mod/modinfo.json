@@ -3,7 +3,7 @@
 	"name": "Slikslug (The Shaw)",
 	"version": "0.1.0",
 	"authors": "ZΞLDΛK",
-	"description": "A template for making SlugBase mods.",
+	"description": "Homage to a game, a game that sold dreams, hopes, but will never come to be.",
 	"requirements": [ "slime-cubed.slugbase" ],
 	"requirements_names": [ "SlugBase" ],
 	"tags": [ "Custom Slugcat" ]
