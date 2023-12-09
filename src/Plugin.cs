@@ -254,10 +254,9 @@ namespace Slikslug
                         {
                             self.room.PlaySound(Sounds.HERO_NAIL_ART_GREAT_SLASH, self.firstChunk);
                             self.room.PlaySound(Sounds.HORNET_GREAT_SLASH, self.firstChunk);
-                            self.room.AddObject(new Slash(self.room, self, spear, intVector.ToVector2(), 150f, 1f, 0.75f * damageFac));
+                            self.room.AddObject(new Slash(self.room, self, spear, intVector.ToVector2(), 175f, 1f, 0.75f * damageFac));
                             spear.SetInvisible(10);
-                            shawData.chargeSlashCounter = 0;
-                        }
+                            shawData.chargeSlashCounter = 0;                        }
                         else
                         {
                             shawData.chargeSlashCounter = 0;
