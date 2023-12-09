@@ -45,7 +45,6 @@ namespace Slikslug
         }
         private void Player_SlugcatGrab(On.Player.orig_SlugcatGrab orig, Player self, PhysicalObject obj, int graspUsed)
         {
-            ConsoleWrite("");
             if (SpearAbilites.TryGet(self, out bool customAbilities) && customAbilities && obj is Spear)
             {
                 bool shouldPutToBack = obj != self.spearOnBack.spear;
@@ -109,10 +108,6 @@ namespace Slikslug
 
         private void Player_ReleaseObject(On.Player.orig_ReleaseObject orig, Player self, int grasp, bool eu)
         {
-            //if (self.TryGetShaw(out ShawData sd))
-            //{
-            //    Debug.Log($"release check: {sd.dashFrame}, {sd.attackCooldown}, {self.wantToJump}");
-            //}
             if (!self.TryGetShaw(out ShawData shawData) || (shawData.dashFrame <= 0 && shawData.dashCooldown <= 0 && shawData.dashDropLock <= 0))
             {
                 orig(self, grasp, eu);
@@ -246,8 +241,6 @@ namespace Slikslug
                     {
                         if (shawData.chargeSlashCounter > chargeSlashTime)
                         {
-                            //self.ThrowObject(grasp, eu);
-                            //self.room.AddObject(new ShockWave(self.firstChunk.pos + new Vector2(self.ThrowDirection, 0) * 10f + new Vector2(0f, 4f), 40f, 0.185f, 30, false));
                             self.room.PlaySound(Sounds.HERO_NAIL_ART_GREAT_SLASH, self.firstChunk);
                             self.room.PlaySound(Sounds.HORNET_GREAT_SLASH, self.firstChunk);
                             self.room.AddObject(new Slash(self.room, self, spear, intVector.ToVector2(), 150f, 1f, 0.75f * damageFac));

@@ -61,11 +61,6 @@ namespace Silkslug
                 this.Destroy();
             }
 
-            //if (this.spear == null)
-            //{
-            //    return;
-            //}
-
             bool hasHitSometing = this.hitSomething;
 
             if (!this.hitSomething)
@@ -208,8 +203,7 @@ namespace Silkslug
             sLeaser.sprites[0] = new FSprite("atlas/slash", true);
             sLeaser.sprites[0].anchorY = 0;
             sLeaser.sprites[0].width = this.size * 0.5895f;
-            sLeaser.sprites[0].height = this.size;
-            //sLeaser.sprites[0].rotation = Custom.VecToDeg(this.dir.normalized);
+            sLeaser.sprites[0].height = this.size;;
             if (this.dir.y != 0)
             {
                 sLeaser.sprites[0].rotation = 0f;
@@ -220,7 +214,6 @@ namespace Silkslug
                 sLeaser.sprites[0].rotation = 90f;
                 sLeaser.sprites[0].height *= this.dir.x;
             }
-            //sLeaser.sprites[0].rotation = Custom.VecToDeg(this.dir);
             this.AddToContainer(sLeaser, rCam, null);
         }
 
@@ -310,7 +303,7 @@ namespace Silkslug
             min -= new Vector2(radius, radius);
             max += new Vector2(radius, radius);
 
-            Debug.Log($"in Min: {pos.x > min.x}, {pos.y > min.y}, in Max: ({pos.x < max.x}, {pos.y < max.y})");
+            //Debug.Log($"in Min: {pos.x > min.x}, {pos.y > min.y}, in Max: ({pos.x < max.x}, {pos.y < max.y})");
 
             if ((pos.x > min.x && pos.y > min.y) && (pos.x < max.x && pos.y < max.y))
             {
