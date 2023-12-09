@@ -47,7 +47,6 @@ namespace Slikslug
             On.Spear.Update += Spear_Update;
 
         }
-
         private void Player_SlugcatGrab(On.Player.orig_SlugcatGrab orig, Player self, PhysicalObject obj, int graspUsed)
         {
             if (SpearAbilites.TryGet(self, out bool customAbilities) && customAbilities && obj is Spear)
@@ -326,6 +325,16 @@ namespace Slikslug
                     spear.setInvisible(dashTotalFrame + DashSlash.lifeTime + 6);
                 }
             }
+
+            if (self.pickUpCandidate != null && self.input[0].pckp && self.pickUpCandidate is Spear && ((self.grasps[0] != null && self.Grabability(self.grasps[0].grabbed) >= Player.ObjectGrabability.BigOneHand) || (self.grasps[1] != null && self.Grabability(self.grasps[1].grabbed) >= Player.ObjectGrabability.BigOneHand) || (self.grasps[0] != null && self.grasps[1] != null)))
+            {
+                if (!self.CanPutSpearToBack)
+                {
+                    self.spearOnBack.DropSpear();
+                }
+                self.spearOnBack.SpearToBack(self.pickUpCandidate as Spear);
+            }
+
             orig(self, eu);
         }
 
@@ -368,7 +377,7 @@ namespace Slikslug
                     self.rollDirection = (int)Mathf.Sign(spear.firstChunk.vel.x);
                     self.rollCounter = 0;
                     BodyChunk firstChunk3 = self.firstChunk;
-                    firstChunk3.vel.x = firstChunk3.vel.x + Mathf.Sign(spear.firstChunk.vel.x) * 9f;
+                    firstChunk3.vel.x += Mathf.Sign(spear.firstChunk.vel.x) * 9f;
                 }
             }
         }
@@ -389,7 +398,6 @@ namespace Slikslug
                     self.room.AddObject(new Slash(self.room, self, null, new Vector2(1, 0), 100f, 1f, 0.25f));
                     self.room.PlaySound(Sounds.nail, self.firstChunk);
                     self.room.PlaySound(Sounds.hero_parry, self.firstChunk);
-                    return;
                 }
                 return;
             }
