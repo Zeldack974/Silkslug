@@ -28,6 +28,8 @@ namespace Silkslug
 
         public Spear? spear;
 
+        public Color color;
+
         public static int lifeTime = 4;
 
         public float size;
@@ -114,7 +116,7 @@ namespace Silkslug
                                             Player player = (this.room.physicalObjects[j][k] as Player);
                                             player.stunDamageType = Creature.DamageType.Blunt;
                                             player.Stun(20);
-                                            (this.room.physicalObjects[j][k] as Creature).SetKillTag(this.owner.abstractCreature);
+                                            (player as Creature).SetKillTag(this.owner.abstractCreature);
                                             player.playerState.permanentDamageTracking += (double)(this.damage / player.Template.baseDamageResistance);
                                             player.firstChunk.vel += force;
                                             if (player.playerState.permanentDamageTracking >= 1.0)
@@ -126,6 +128,15 @@ namespace Silkslug
                                         {
                                             (this.room.physicalObjects[j][k] as Creature).Violence(this.owner.mainBodyChunk, force, this.room.physicalObjects[j][k].firstChunk, null, Creature.DamageType.Blunt, this.damage, 20f);
                                         }
+                                        if (!(this.room.physicalObjects[j][k] as Creature).dead)
+                                        {
+                                            for (int v = 0; v < 20; v++)
+                                            {
+                                                Vector2 a = Custom.RNV();
+                                                this.room.AddObject(new Spark(this.room.physicalObjects[j][k].bodyChunks[l].pos + a * Random.value * 40f, a * Mathf.Lerp(4f, 10f, Random.value), this.color, null, 4, 18));
+                                            }
+                                        }
+
                                         this.creaturesHit.Add(this.room.physicalObjects[j][k] as Creature);
                                         this.hitSomething = true;
 
@@ -225,22 +236,23 @@ namespace Silkslug
             this.pos = (Vector2.Lerp(this.owner.firstChunk.pos, this.owner.firstChunk.lastPos, 0.35f) - (this.dir * (this.size / 3)));
             sLeaser.sprites[0].SetPosition(this.pos - camPos);
 
-            sLeaser.sprites[0].color = Color.white;
+            this.color = Color.white;
             if (this.spear != null)
             {
                 if (this.spear.abstractSpear.explosive)
                 {
-                    sLeaser.sprites[0].color = Color.red;
+                    this.color = Color.red;
                 }
                 else if (this.spear.abstractSpear.electric && spear.abstractSpear.electricCharge > 0)
                 {
-                    sLeaser.sprites[0].color = new Color(0.5f, 0.80f, 1f);
+                    this.color = new Color(0.5f, 0.80f, 1f);
                 }
                 else if (this.spear.abstractSpear.hue != 0)
                 {
-                    sLeaser.sprites[0].color = Custom.HSL2RGB(Custom.Decimal(this.spear.abstractSpear.hue + EggBugGraphics.HUE_OFF), 1f, 0.5f);
+                    this.color = Custom.HSL2RGB(Custom.Decimal(this.spear.abstractSpear.hue + EggBugGraphics.HUE_OFF), 1f, 0.5f);
                 }
             }
+            sLeaser.sprites[0].color = this.color;
 
             if (base.slatedForDeletetion || this.room != rCam.room)
             {
@@ -335,6 +347,8 @@ namespace Silkslug
         public Player owner;
 
         public Spear spear;
+
+        public Color color;
 
         public static int lifeTime = 2;
 
@@ -443,6 +457,14 @@ namespace Silkslug
                                             {
                                                 (this.room.physicalObjects[j][k] as Creature).Violence(this.owner.mainBodyChunk, force, this.room.physicalObjects[j][k].firstChunk, null, Creature.DamageType.Blunt, this.damage, 20f);
                                             }
+                                            if (!(this.room.physicalObjects[j][k] as Creature).dead)
+                                            {
+                                                for (int v = 0; v < 20; v++)
+                                                {
+                                                    Vector2 a = Custom.RNV();
+                                                    this.room.AddObject(new Spark(this.room.physicalObjects[j][k].bodyChunks[l].pos + a * Random.value * 40f, a * Mathf.Lerp(4f, 10f, Random.value), this.color, null, 4, 18));
+                                                }
+                                            }
                                             this.creaturesHit.Add(this.room.physicalObjects[j][k] as Creature);
                                             this.hitSomething = true;
 
@@ -543,22 +565,23 @@ namespace Silkslug
             this.pos = (Vector2.Lerp(this.owner.firstChunk.pos, this.owner.firstChunk.lastPos, 0.35f) - (this.dir * (this.size / 3)));
             sLeaser.sprites[0].SetPosition(this.pos - camPos);
 
-            sLeaser.sprites[0].color = Color.white;
+            this.color = Color.white;
             if (this.spear != null)
             {
                 if (this.spear.abstractSpear.explosive)
                 {
-                    sLeaser.sprites[0].color = Color.red;
+                    this.color = Color.red;
                 }
                 else if (this.spear.abstractSpear.electric && spear.abstractSpear.electricCharge > 0)
                 {
-                    sLeaser.sprites[0].color = new Color(0.5f, 0.80f, 1f);
+                    this.color = new Color(0.5f, 0.80f, 1f);
                 }
                 else if (this.spear.abstractSpear.hue != 0)
                 {
-                    sLeaser.sprites[0].color = Custom.HSL2RGB(Custom.Decimal(this.spear.abstractSpear.hue + EggBugGraphics.HUE_OFF), 1f, 0.5f);
+                    this.color = Custom.HSL2RGB(Custom.Decimal(this.spear.abstractSpear.hue + EggBugGraphics.HUE_OFF), 1f, 0.5f);
                 }
             }
+            sLeaser.sprites[0].color = this.color;
 
             if (base.slatedForDeletetion || this.room != rCam.room)
             {

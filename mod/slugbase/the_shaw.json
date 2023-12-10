@@ -9,6 +9,9 @@
 		"throw_skill": 2,
 		"walk_speed": 1.3,
 		"back_spear": true,
+		"diet": {
+			"base": "Red"
+		},
 
 		"world_state": [ "Red" ],
 		"start_room": "LF_H01",

@@ -82,11 +82,11 @@ namespace Slikslug
             {
                 if (Random.value <= 0.2)
                 {
-                    self.room.PlaySound(Sounds.HORNET_GIT_GUD, self.firstChunk);
+                    self.room.PlaySound(Sounds.HORNET_GIT_GUD, self.firstChunk.pos);
                 }
                 else
                 {
-                    self.room.PlaySound(Sounds.HORNET_DEATH, self.firstChunk);
+                    self.room.PlaySound(Sounds.HORNET_DEATH, self.firstChunk.pos);
                 }
             }
         }
