@@ -1,7 +1,7 @@
 ﻿{
 	"id": "zeldak974.slikslug",
 	"name": "Slikslug (The Shaw)",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"authors": "ZΞLDΛK",
 	"description": "Homage to a game, a game that sold dreams, hopes, but will never come to be.",
 	"requirements": [ "slime-cubed.slugbase" ],
