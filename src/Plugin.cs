@@ -7,18 +7,17 @@ using RWCustom;
 using static SlugBase.Features.FeatureTypes;
 using static Silkslug.MyDevConsole;
 using static Silkslug.Shaw;
-using Silkslug;
 using System.Collections.Generic;
 
-namespace Slikslug
+namespace Silkslug
 {
     [BepInPlugin(MOD_ID, "Silkslug", "1.0.1")]
     class Plugin : BaseUnityPlugin
     {
-        private const string MOD_ID = "zeldak974.slikslug";
+        private const string MOD_ID = "zeldak974.silkslug";
 
-        public static readonly PlayerFeature<float> SuperJump = PlayerFloat("slikslug/super_jump");
-        public static readonly PlayerFeature<bool> SpearAbilites = PlayerBool("slikslug/spear_abilities");
+        public static readonly PlayerFeature<float> SuperJump = PlayerFloat("silkslug/super_jump");
+        public static readonly PlayerFeature<bool> SpearAbilites = PlayerBool("silkslug/spear_abilities");
 
         public static readonly SlugcatStats.Name ShawName = new SlugcatStats.Name("Shaw", false);
 

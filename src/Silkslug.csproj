@@ -21,7 +21,7 @@
 		
         <Delete Files="@(RemovePlugins)" />
         <Copy SourceFiles="@(CopyPlugins)" DestinationFolder="../mod/plugins/" />
-        <Copy SourceFiles="@(CopyPlugins)" DestinationFolder="C:/Program Files (x86)/Steam/steamapps/common/Rain World/RainWorld_Data/StreamingAssets/mods/slikslug/plugins/" />
+        <Copy SourceFiles="@(CopyPlugins)" DestinationFolder="C:/Program Files (x86)/Steam/steamapps/common/Rain World/RainWorld_Data/StreamingAssets/mods/silkslug/plugins/" />
     </Target>
     
 </Project>

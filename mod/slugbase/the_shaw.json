@@ -4,8 +4,8 @@
 	"description": "A dream remains a dream if it never comes true.\nUnfortunately, your dream will never come true.\nSorry from Team Cherrybomb.",
 	"features": {
 		"color": "0E0202",
-		"slikslug/super_jump": 0.2,
-		"slikslug/spear_abilities": true,
+		"silkslug/super_jump": 0.2,
+		"silkslug/spear_abilities": true,
 		"throw_skill": 2,
 		"walk_speed": 1.3,
 		"back_spear": true,
