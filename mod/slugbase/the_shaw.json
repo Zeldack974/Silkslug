@@ -3,7 +3,7 @@
 	"name": "The Shaw",
 	"description": "A dream remains a dream if it never comes true.\nUnfortunately, your dream will never come true.\nSorry from Team Cherrybomb.",
 	"features": {
-		"color": "000000",
+		"color": "0E0202",
 		"slikslug/super_jump": 0.2,
 		"slikslug/spear_abilities": true,
 		"throw_skill": 2,

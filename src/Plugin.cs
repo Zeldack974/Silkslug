@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace Slikslug
 {
-    [BepInPlugin(MOD_ID, "Silkslug", "1.0.0")]
+    [BepInPlugin(MOD_ID, "Silkslug", "1.0.1")]
     class Plugin : BaseUnityPlugin
     {
         private const string MOD_ID = "zeldak974.slikslug";
