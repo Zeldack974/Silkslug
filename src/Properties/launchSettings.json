@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Silkslug": {
+      "commandName": "Project"
+    },
+    "Rain World": {
+      "commandName": "Executable",
+      "executablePath": "G:\\SteamLibrary\\steamapps\\common\\Rain World\\RainWorld.exe"
+    }
+  }
+}

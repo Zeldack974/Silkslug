@@ -1,11 +1,11 @@
-﻿using BepInEx;
+﻿global using static Silkslug.MyDevConsole;
+using BepInEx;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using SlugBase.Features;
 using MoreSlugcats;
 using RWCustom;
 using static SlugBase.Features.FeatureTypes;
-using static Silkslug.MyDevConsole;
 using static Silkslug.Shaw;
 using System.Collections.Generic;
 
@@ -77,7 +77,7 @@ namespace Silkslug
         {
             bool wasDead = self.dead;
             orig(self);
-            if (SpearAbilites.TryGet(self, out bool customAbilities) && customAbilities && !wasDead && self.dead)
+            if (SpearAbilites.TryGet(self, out bool customAbilities) && customAbilities && !wasDead && self.dead && ShawOptions.instance.shawVoice.Value)
             {
                 if (Random.value <= 0.2)
                 {
@@ -217,7 +217,7 @@ namespace Silkslug
                     {
                         shawData.chargeSlashCounter = 0;
                         self.room.PlaySound(Sounds.NAIL, self.firstChunk);
-                        if (Random.value < 0.5f)
+                        if (Random.value < 0.5f && ShawOptions.instance.shawVoice.Value)
                         {
                             self.room.PlaySound(Sounds.HORNET_ATTACK, self.firstChunk);
                         }
@@ -252,7 +252,10 @@ namespace Silkslug
                         if (shawData.chargeSlashCounter > chargeSlashTime)
                         {
                             self.room.PlaySound(Sounds.HERO_NAIL_ART_GREAT_SLASH, self.firstChunk);
-                            self.room.PlaySound(Sounds.HORNET_GREAT_SLASH, self.firstChunk);
+                            if (ShawOptions.instance.shawVoice.Value)
+                            {
+                                self.room.PlaySound(Sounds.HORNET_GREAT_SLASH, self.firstChunk);
+                            }
                             self.room.AddObject(new Slash(self.room, self, spear, intVector.ToVector2(), 175f, 1f, 0.75f * damageFac));
                             spear.SetInvisible(10);
                             shawData.chargeSlashCounter = 0;                        }
@@ -305,7 +308,11 @@ namespace Silkslug
                         Sounds.HORNET_FIGHT_YELL_09
                     };
 
-                    self.room.PlaySound(sounds[Random.Range(0, sounds.Count)], self.firstChunk);
+                    if (ShawOptions.instance.shawVoice.Value)
+                    {
+                        self.room.PlaySound(sounds[Random.Range(0, sounds.Count)], self.firstChunk);
+
+                    }
                     self.room.PlaySound(Sounds.HORNET_DASH, self.firstChunk);
                     self.room.AddObject(new DashSlash(self.room, self, spear, shawData.throwDir, 100f, 1f, 0.25f * damageFac));
                     spear.SetInvisible(dashTotalFrame + DashSlash.lifeTime + 6);
@@ -410,6 +417,8 @@ namespace Silkslug
             Futile.atlasManager.LoadImage("atlas/slash");
             Futile.atlasManager.LoadImage("atlas/longslash");
             Sounds.Initialize();
+            MachineConnector.SetRegisteredOI(MOD_ID, ShawOptions.instance);
         }
+
     }
 }
