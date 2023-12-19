@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace Silkslug
 {
-    [BepInPlugin(MOD_ID, "Silkslug", "1.0.2")]
+    [BepInPlugin(MOD_ID, "Silkslug", "1.0.3")]
     class Plugin : BaseUnityPlugin
     {
         private const string MOD_ID = "zeldak974.silkslug";
