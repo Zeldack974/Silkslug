@@ -1,0 +1,21 @@
+Template: NONE
+DangerType: None
+CeilingDrips: 0
+WaveSpeed: 0.4987068
+WaveLength: 0.9993534
+WaveAmplitude: 0.04844933
+SecondWaveLength: 1
+SecondWaveAmplitude: 0
+Clouds: 1
+Grime: 0
+RandomItemDensity: 0.2173913
+RandomItemSpearChance: 0.2217391
+WaterReflectionAlpha: 1
+Palette: 39
+EffectColorA: 14
+EffectColorB: 13
+Effects: LavaSurface-0.06521739-64-84, HeatWave-0.3804348-273-197, VoidMelt-0.1195652-20-20, LethalWater-1-300-49, WaterDepth-0-257-149, 
+PlacedObjects: LightFixture><388.1655><403.3623><HolyFire~-174.6795~109~49, LightFixture><891.4082><402.3223><HolyFire~40.3205~101~52, 
+AmbientSounds: OMNI><AM_SUB-MysticCave1.ogg><653.2601><323.3002><0.7173913><1.9, 
+FadePalette: 55, 0.5978261, 0.1521739, 0.1630435, 0.1630435, 0.2065217, 0.1956522
+WetTerrain: OFF
