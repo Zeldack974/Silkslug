@@ -7,7 +7,7 @@
   "Requirements": "slime-cubed.slugbase,moreslugcats",
   "RequirementNames": "SlugBase,More Slugcats Expansion",
   "Authors": "Z\u039ELD\u039BK",
-  "Visibility": "Unlisted",
+  "Visibility": "Public",
   "Tags": [
     "Custom Slugcat"
   ],
