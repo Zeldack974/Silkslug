@@ -19,7 +19,7 @@ namespace Silkslug
         public static readonly PlayerFeature<float> SuperJump = PlayerFloat("silkslug/super_jump");
         public static readonly PlayerFeature<bool> SpearAbilites = PlayerBool("silkslug/spear_abilities");
 
-        public static readonly SlugcatStats.Name ShawName = new SlugcatStats.Name("Shaw", false);
+        public static readonly SlugcatStats.Name ShawName = new SlugcatStats.Name("Shaw", true);
 
         // Add hooks
         public void OnEnable()
