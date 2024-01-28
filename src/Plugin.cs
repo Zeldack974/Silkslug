@@ -90,6 +90,7 @@ namespace Silkslug
 
         private AbstractRoom World_GetAbstractRoom_string(On.World.orig_GetAbstractRoom_string orig, World self, string room)
         {
+            ConsoleWrite("name: " + self.name);
             if (room == "HR_C01" && self.game.GetStorySession.saveState.saveStateNumber == ShawName)
             {
                 return orig(self, "CR_START");
