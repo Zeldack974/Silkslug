@@ -41,6 +41,7 @@ namespace Silkslug
             On.Player.Die += Player_Die;
             On.Player.SlugcatGrab += Player_SlugcatGrab;
             On.Player.SpearOnBack.Update += SpearOnBack_Update;
+            On.Player.Stun += Player_Stun;
 
             On.Spear.DrawSprites += Spear_DrawSprites;
             On.Spear.Update += Spear_Update;
@@ -54,6 +55,19 @@ namespace Silkslug
 
             On.MoreSlugcats.MSCRoomSpecificScript.VS_E05WrapAround.Update += VS_E05WrapAround_Update;
 
+        }
+
+        private void Player_Stun(On.Player.orig_Stun orig, Player self, int st)
+        {
+            orig(self, st);
+            if (SpearAbilites.TryGet(self, out bool customAbilities) && customAbilities)
+            {
+                if (!self.CanPutSpearToBack && self.Stunned)
+                {
+                    self.spearOnBack.DropSpear();
+                }
+
+            }
         }
 
         private void VS_E05WrapAround_Update(On.MoreSlugcats.MSCRoomSpecificScript.VS_E05WrapAround.orig_Update orig, MSCRoomSpecificScript.VS_E05WrapAround self, bool eu)
