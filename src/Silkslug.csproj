@@ -12,15 +12,20 @@
     </ItemGroup>
     
     <Target Name="GenerateMod" AfterTargets="PostBuildEvent">
-		<ItemGroup>
-			<RemovePlugins Include="../mod/plugins/*.dll" />
-		</ItemGroup>
-		<ItemGroup>
-			<CopyPlugins Include="$(TargetPath)" />
-		</ItemGroup>
-		
+        <ItemGroup>
+            <RemovePlugins Include="../mod/plugins/*.dll" />
+        </ItemGroup>
+        <ItemGroup>
+            <!-- Inclure les fichiers DLL -->
+            <CopyPlugins Include="$(TargetPath)" />
+            <!-- Inclure les fichiers PDB -->
+            <CopyPdbs Include="$(TargetDir)*.pdb" />
+        </ItemGroup>
+
         <Delete Files="@(RemovePlugins)" />
+        <!-- Copier à la fois les DLL et les PDB -->
         <Copy SourceFiles="@(CopyPlugins)" DestinationFolder="../mod/plugins/" />
+        <Copy SourceFiles="@(CopyPdbs)" DestinationFolder="../mod/plugins/" />
     </Target>
     
 </Project>

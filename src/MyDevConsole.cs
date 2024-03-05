@@ -1,10 +1,13 @@
-﻿using DevConsole.Commands;
+﻿using BepInEx.Logging;
+using DevConsole.Commands;
 using UnityEngine;
 
 namespace Silkslug
 {
-    internal class MyDevConsole
+    internal static class MyDevConsole
     {
+        public static ManualLogSource logSource = BepInEx.Logging.Logger.CreateLogSource("SilkSlug:ConsoleWrite");
+
         // Register Commands
         internal static void RegisterCommands()
         {
@@ -61,6 +64,7 @@ namespace Silkslug
         private static void GameConsoleWriteLine(string message, Color color)
         {
             DevConsole.GameConsole.WriteLine(message, color);
+            logSource.LogMessage(message);
         }
     }
 }

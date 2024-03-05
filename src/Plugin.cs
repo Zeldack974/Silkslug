@@ -1,4 +1,5 @@
 ﻿global using static Silkslug.MyDevConsole;
+global using static Silkslug.Plugin;
 using BepInEx;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,8 +10,6 @@ using static SlugBase.Features.FeatureTypes;
 using static Silkslug.Shaw;
 using System.Collections.Generic;
 using Silkslug.ColosseumRubicon;
-using static Silkslug.ColosseumRubicon.ColosseumRubicon;
-
 
 namespace Silkslug
 {
@@ -24,11 +23,14 @@ namespace Silkslug
 
         public static readonly SlugcatStats.Name ShawName = new SlugcatStats.Name("Shaw");
 
+
+
         // Add hooks
         public void OnEnable()
         {
             On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
             try { RegisterCommands(); } catch { }
+            ColosseumRubicon.Manager.OnEnable();
 
             // Put your custom hooks here!
             On.Player.Jump += Player_Jump;
@@ -48,13 +50,6 @@ namespace Silkslug
 
             On.RoomSpecificScript.AddRoomSpecificScript += RoomSpecificScript_AddRoomSpecificScript;
 
-            On.Room.Loaded += Room_Loaded;
-            On.World.GetAbstractRoom_string += World_GetAbstractRoom_string;
-
-            On.OverWorld.InitiateSpecialWarp += OverWorld_InitiateSpecialWarp;
-
-            On.MoreSlugcats.MSCRoomSpecificScript.VS_E05WrapAround.Update += VS_E05WrapAround_Update;
-
         }
 
         private void Player_Stun(On.Player.orig_Stun orig, Player self, int st)
@@ -68,80 +63,6 @@ namespace Silkslug
                 }
 
             }
-        }
-
-        private void VS_E05WrapAround_Update(On.MoreSlugcats.MSCRoomSpecificScript.VS_E05WrapAround.orig_Update orig, MSCRoomSpecificScript.VS_E05WrapAround self, bool eu)
-        {
-            for (int i = 0; i < self.room.game.Players.Count; i++)
-            {
-                //ConsoleWrite("player loop");
-                if (self.room.game.Players[i].realizedCreature != null && (self.room.game.Players[i].realizedCreature as Player).room == self.room)
-                {
-                    if (!self.loadStarted)
-                    {
-                        ConsoleWrite("check 1");
-                        if (self.StoredEffect == null)
-                        {
-                            self.StoredEffect = new RoomSettings.RoomEffect(RoomSettings.RoomEffect.Type.VoidSpawn, 0, false);
-                        }
-                        ConsoleWrite("StoredEffect: " + self.StoredEffect);
-                        ConsoleWrite("end: " + self.phaseTimer + ", " + self.loadStarted);
-                        ConsoleWrite("overWorld: " + self.room.game.overWorld);
-                        ConsoleWrite("load: " + self.loadStarted);
-                    }
-                }
-            }
-
-            bool loadStarted = self.loadStarted;
-            orig(self, eu);
-            if (!loadStarted && self.loadStarted)
-            {
-                ConsoleWrite("Load Started");
-                RainWorldGame.ForceSaveNewDenLocation(self.room.game, "CR_START", true);
-
-            }
-        }
-
-        private AbstractRoom World_GetAbstractRoom_string(On.World.orig_GetAbstractRoom_string orig, World self, string room)
-        {
-            ConsoleWrite("name: " + self.name);
-            if (room == "HR_C01" && self.game.GetStorySession.saveState.saveStateNumber == ShawName)
-            {
-                return orig(self, "CR_START");
-            }
-            return orig(self, room);
-        }
-
-        private void OverWorld_InitiateSpecialWarp(On.OverWorld.orig_InitiateSpecialWarp orig, OverWorld self, OverWorld.SpecialWarpType warp, ISpecialWarp callback)
-        {
-            ConsoleWrite("OverWorld_InitiateSpecialWarp " + RainWorld.ShowLogs);
-            if (warp == OverWorld.SpecialWarpType.WARP_VS_HR && self.game.GetStorySession.saveState.saveStateNumber == ShawName)
-            {
-                self.reportBackToGate = null;
-                self.currentSpecialWarp = warp;
-                self.specialWarpCallback = callback;
-                if (RainWorld.ShowLogs)
-                {
-                    Debug.Log("Switch Worlds Special! " + warp.ToString());
-                }
-                self.worldLoader = new WorldLoader(self.game, self.PlayerCharacterNumber, false, "CR", self.GetRegion("CR"), self.game.setupValues);
-                self.worldLoader.NextActivity();
-                ConsoleWrite("Switch Worlds Special! CR");
-                //ConsoleWrite("Change special warp WorldLoader from HR to CR");
-            }
-            else
-            {
-                orig(self, warp, callback);
-            }
-        }
-
-        private void Room_Loaded(On.Room.orig_Loaded orig, Room self)
-        {
-            if (self.abstractRoom.firstTimeRealized)
-            {
-                ColosseumRubiconManager.addScript(self);
-            }
-            orig(self);
         }
 
         private void RoomSpecificScript_AddRoomSpecificScript(On.RoomSpecificScript.orig_AddRoomSpecificScript orig, Room room)
