@@ -17,19 +17,6 @@ namespace Silkslug.ColosseumRubicon
 
         }
 
-        public static void addScript(Room room)
-        {
-            if (room.abstractRoom.name == "SB_E05SAINT")
-            {
-                ConsoleWrite("Add RoomSpecificScript: " + (room.game.GetStorySession.saveState.saveStateNumber == Plugin.ShawName));
-                if (room.game.GetStorySession.saveState.saveStateNumber == Plugin.ShawName)
-                {
-                    room.AddObject(new MSCRoomSpecificScript.VS_E05WrapAround(room));
-                    ConsoleWrite("RoomSpecificScript added");
-                }
-            }
-        }
-
 
         ////////////////// HOOKS //////////////////
         public static void Hooks()
@@ -41,7 +28,19 @@ namespace Silkslug.ColosseumRubicon
         {
             if (self.abstractRoom.firstTimeRealized)
             {
-                addScript(self);
+                if (self.abstractRoom.name == "SB_E05SAINT")
+                {
+                    ConsoleWrite("Add RoomSpecificScript: " + (self.game.GetStorySession.saveState.saveStateNumber == Plugin.ShawName));
+                    if (self.game.GetStorySession.saveState.saveStateNumber == Plugin.ShawName)
+                    {
+                        self.AddObject(new MSCRoomSpecificScript.VS_E05WrapAround(self));
+                        ConsoleWrite("RoomSpecificScript added");
+                    }
+                }
+                if (self.world.name == "CR")
+                {
+                    ConsoleWrite("Auto adding CR scripts");
+                }
             }
             orig(self);
         }
