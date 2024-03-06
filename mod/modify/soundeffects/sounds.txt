@@ -11,3 +11,6 @@
 [ADD]Hornet_Attack/vol=0.2/dopplerFac=0.0 : HornetAttack1, HornetAttack2
 [ADD]Hornet_Death/vol=0.2/dopplerFac=0.0 : HornetDeath
 [ADD]Hornet_Git_Gud/vol=0.2/dopplerFac=0.0 : HornetGitGud
+[ADD]Boxing_Bell/vol=0.2/dopplerFac=0.0 : BoxingBell
+
+

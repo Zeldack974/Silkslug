@@ -447,6 +447,7 @@ namespace Silkslug
             Futile.atlasManager.LoadImage("atlas/longslash");
             Sounds.Initialize();
             MachineConnector.SetRegisteredOI(MOD_ID, ShawOptions.instance);
+            Futile.atlasManager.LoadImage("illustrations/rubiconintrotext");
         }
 
     }

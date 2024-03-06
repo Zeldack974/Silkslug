@@ -1,5 +1,6 @@
 ﻿using BepInEx.Logging;
 using DevConsole.Commands;
+using Silkslug.ColosseumRubicon;
 using UnityEngine;
 
 namespace Silkslug
@@ -11,7 +12,7 @@ namespace Silkslug
         // Register Commands
         internal static void RegisterCommands()
         {
-            new CommandBuilder("silkslug_debug")
+            new CommandBuilder("debug_silkslug")
             .Run(args =>
             {
                 try
@@ -37,10 +38,11 @@ namespace Silkslug
             if (args[0] == "1")
             {
                 ConsoleWrite("DebugCommand[1] : " + "hello world", Color.green);
+                RubiconPopup.staticHUD.StartAnimation();
             }
             else if (args[0] == "2")
             {
-                ConsoleWrite("DebugCommand[1] : " + "hello world", Color.yellow);
+                ConsoleWrite("DebugCommand[2] : " + "hello world", Color.yellow);
             }
         }
 

@@ -8,6 +8,7 @@ namespace Silkslug.ColosseumRubicon
         public static void OnEnable()
         {
             Warp.OnEnable();
+            RegionPopup.OnEnable();
 
             Hooks();
         }
@@ -36,10 +37,11 @@ namespace Silkslug.ColosseumRubicon
                         self.AddObject(new MSCRoomSpecificScript.VS_E05WrapAround(self));
                         ConsoleWrite("RoomSpecificScript added");
                     }
+                    //self.AddObject(new RoomSpecificScript.SB_A14KarmaIncrease(self));
                 }
                 if (self.world.name == "CR")
                 {
-                    ConsoleWrite("Auto adding CR scripts");
+                    self.AddObject(new RoomManager(self));
                 }
             }
             orig(self);

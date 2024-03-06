@@ -171,6 +171,8 @@ internal class Warp
                 {
                     GC.Collect();
                 }
+                ConsoleWrite("start CR intro");
+                RubiconPopup.staticHUD.StartAnimation();
             } catch (Exception e)
             {
                 Debug.LogError(e);
