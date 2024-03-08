@@ -213,7 +213,7 @@ namespace Silkslug
         {
             base.InitiateSprites(sLeaser, rCam);
             sLeaser.sprites = new FSprite[1];
-            sLeaser.sprites[0] = new FSprite("atlas/slash", true);
+            sLeaser.sprites[0] = new FSprite("atlas/slash1", true);
             sLeaser.sprites[0].anchorY = 0;
             sLeaser.sprites[0].width = this.size * 0.5895f;
             sLeaser.sprites[0].height = this.size;;
@@ -233,6 +233,12 @@ namespace Silkslug
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
             base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
+
+            if (frame > lifeTime)
+            {
+                sLeaser.sprites[0].SetElementByName("atlas/slash2");
+            }
+
             this.pos = (Vector2.Lerp(this.owner.firstChunk.pos, this.owner.firstChunk.lastPos, 0.35f) - (this.dir * (this.size / 3)));
             sLeaser.sprites[0].SetPosition(this.pos - camPos);
 

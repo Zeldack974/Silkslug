@@ -443,7 +443,8 @@ namespace Silkslug
         // Load any resources, such as sprites or sounds
         private void LoadResources(RainWorld rainWorld)
         {
-            Futile.atlasManager.LoadImage("atlas/slash");
+            Futile.atlasManager.LoadImage("atlas/slash1");
+            Futile.atlasManager.LoadImage("atlas/slash2");
             Futile.atlasManager.LoadImage("atlas/longslash");
             Sounds.Initialize();
             MachineConnector.SetRegisteredOI(MOD_ID, ShawOptions.instance);
