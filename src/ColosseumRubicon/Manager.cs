@@ -39,7 +39,11 @@ namespace Silkslug.ColosseumRubicon
                     }
                     //self.AddObject(new RoomSpecificScript.SB_A14KarmaIncrease(self));
                 }
-                if (self.world.name == "CR")
+                if (self.abstractRoom.name == "CR_START")
+                {
+                    self.AddObject(new Warp.CR_STARTWarp(self));
+                }
+                else if (self.world.name == "CR")
                 {
                     self.AddObject(new RoomManager(self));
                 }

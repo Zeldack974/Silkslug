@@ -22,7 +22,8 @@ internal class Warp
     private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
     {
         //WorldCoordinate worldPos = self.abstractCreature.pos;
-        //ConsoleWrite($"WorldPos: {worldPos.x} {worldPos.y} ; {worldPos} ; {worldPos.Tile}");
+        //ConsoleWrite($"pos: {self.mainBodyChunk.pos}");
+        //ConsoleWrite($"WorldPos: {self.abstractCreature.pos.x} {self.abstractCreature.pos.y} ; {self.abstractCreature.pos} ; {self.abstractCreature.pos.Tile}")
         orig(self, eu);
     }
 
@@ -58,7 +59,7 @@ internal class Warp
                         world.GetAbstractRoom(self.game.Players[i].pos).RemoveEntity(self.game.Players[i]);
                         self.game.Players[i].world = world2;
                         WorldCoordinate worldCoordinate = new WorldCoordinate(abstractRoom2.index, 0, 0, -1);
-                        worldCoordinate.Tile = new IntVector2(30, 29);
+                        worldCoordinate.Tile = new IntVector2(15, 103);
                         self.game.Players[i].pos = worldCoordinate;
                         abstractRoom2.AddEntity(self.game.Players[i]);
                         self.game.Players[i].realizedCreature.PlaceInRoom(abstractRoom2.realizedRoom);
@@ -211,6 +212,7 @@ internal class Warp
         if (!loadStarted && self.loadStarted)
         {
             ConsoleWrite("Load Started");
+            self.room.world.game.globalRain.ResetRain();
             RainWorldGame.ForceSaveNewDenLocation(self.room.game, "CR_START", true);
 
         }
@@ -248,6 +250,82 @@ internal class Warp
         {
             orig(self, warp, callback);
         }
+    }
+
+    public class CR_STARTWarp : UpdatableAndDeletable
+    {
+        public CR_STARTWarp(Room room)
+        {
+            this.room = room;
+        }
+
+        public override void Update(bool eu)
+        {
+            base.Update(eu);
+            for (int index = 0; index < this.room.game.Players.Count; index++)
+            {
+                if (this.room.game.Players[index].realizedCreature != null && (this.room.game.Players[index].realizedCreature as Player).room == this.room)
+                {
+                    Player player = this.room.game.Players[index].realizedCreature as Player;
+
+                    if (player.mainBodyChunk.pos.y < 445)
+                    {
+                        if (player.mainBodyChunk.pos.y > 350)
+                        {
+                            fadeObj = new FadeOut(room, Color.white, 85f, false); // 130
+                            room.AddObject(fadeObj);
+                        }
+                        player.SuperHardSetPosition(new Vector2(player.mainBodyChunk.pos.x, 345));
+                        player.mainBodyChunk.vel = Vector2.zero;
+
+                        if (fadeObj != null && fadeObj.IsDoneFading())
+                        {
+                            if (newRoom == null)
+                            {
+                                newRoom = room.game.world.GetAbstractRoom(Arenas.challenges[0].roomName);
+                            }
+
+                            if (newRoom.realizedRoom == null)
+                            {
+                                newRoom.RealizeRoom(room.game.world, room.game);
+                            }
+
+                            if (newRoom.realizedRoom != null && newRoom.realizedRoom.ReadyForPlayer && player != null)
+                            {
+                                ConsoleWrite("teleport players");
+                                for (int i = 0; i < room.game.AlivePlayers.Count; i++)
+                                {
+                                    if (room.game.AlivePlayers[i].realizedCreature.grasps != null)
+                                    {
+                                        for (int g = 0; g < room.game.AlivePlayers[i].realizedCreature.grasps.Length; g++)
+                                        {
+                                            if (room.game.AlivePlayers[i].realizedCreature.grasps[g] != null && room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed != null && !room.game.AlivePlayers[i].realizedCreature.grasps[g].discontinued && room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed is Creature && (!(room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed is Player) || !(room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed as Player).isSlugpup))
+                                            {
+                                                room.game.AlivePlayers[i].realizedCreature.ReleaseGrasp(g);
+                                            }
+                                        }
+                                    }
+                                    room.game.AlivePlayers[i].realizedCreature.abstractCreature.Move(newRoom.realizedRoom.LocalCoordinateOfNode(0));
+                                    room.game.AlivePlayers[i].realizedCreature.PlaceInRoom(newRoom.realizedRoom);
+                                    room.game.AlivePlayers[i].realizedCreature.abstractCreature.ChangeRooms(player.room.GetWorldCoordinate(player.mainBodyChunk.pos));
+                                }
+
+                                fadeObj.Destroy();
+                                room.game.cameras[0].virtualMicrophone.AllQuiet();
+                                room.game.cameras[0].MoveCamera(player.room, 0);
+                                fadeObj = null;
+                                newRoom = null;
+                                room.abstractRoom.Abstractize();
+                                //newRoom.realizedRoom.PlaySound(MoreSlugcatsEnums.MSCSoundID.Sat_Interference3, 0f, 1f, 0.95f);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public FadeOut fadeObj;
+        public AbstractRoom newRoom;
     }
 }
 
