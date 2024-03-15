@@ -21,9 +21,8 @@ internal class Warp
 
     private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
     {
-        //WorldCoordinate worldPos = self.abstractCreature.pos;
-        //ConsoleWrite($"pos: {self.mainBodyChunk.pos}");
-        //ConsoleWrite($"WorldPos: {self.abstractCreature.pos.x} {self.abstractCreature.pos.y} ; {self.abstractCreature.pos} ; {self.abstractCreature.pos.Tile}")
+        ConsoleWrite($"pos: {self.mainBodyChunk.pos}");
+        ConsoleWrite($"WorldPos: {self.abstractCreature.pos.x} {self.abstractCreature.pos.y} ; {self.abstractCreature.pos} ; {self.abstractCreature.pos.Tile}");
         orig(self, eu);
     }
 
@@ -268,11 +267,16 @@ internal class Warp
                 {
                     Player player = this.room.game.Players[index].realizedCreature as Player;
 
+                    if (player.abstractCreature.pos.x == 15 && player.abstractCreature.pos.y < 30)
+                    {
+                        player.SuperHardSetPosition(new Vector2(315, 2060));
+                    }
+
                     if (player.mainBodyChunk.pos.y < 445)
                     {
                         if (player.mainBodyChunk.pos.y > 350)
                         {
-                            fadeObj = new FadeOut(room, Color.white, 85f, false); // 130
+                            fadeObj = new FadeOut(room, Color.white, 130f, false); // 130
                             room.AddObject(fadeObj);
                         }
                         player.SuperHardSetPosition(new Vector2(player.mainBodyChunk.pos.x, 345));
@@ -310,12 +314,13 @@ internal class Warp
                                     room.game.AlivePlayers[i].realizedCreature.abstractCreature.ChangeRooms(player.room.GetWorldCoordinate(player.mainBodyChunk.pos));
                                 }
 
+                                player.room.AddObject(new FadeOut(player.room, Color.white, 60f, true));
                                 fadeObj.Destroy();
                                 room.game.cameras[0].virtualMicrophone.AllQuiet();
                                 room.game.cameras[0].MoveCamera(player.room, 0);
                                 fadeObj = null;
                                 newRoom = null;
-                                room.abstractRoom.Abstractize();
+                                //room.abstractRoom.Abstractize();
                                 //newRoom.realizedRoom.PlaySound(MoreSlugcatsEnums.MSCSoundID.Sat_Interference3, 0f, 1f, 0.95f);
                             }
                         }

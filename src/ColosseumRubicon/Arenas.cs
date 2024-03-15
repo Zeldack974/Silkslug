@@ -14,16 +14,19 @@ namespace Silkslug.ColosseumRubicon
             {
                 ArenaChallenge[] challenges = new ArenaChallenge[3];
 
-                challenges[0] = new ArenaChallenge("CR_A01", [
+                challenges[0] = new ArenaChallenge("CR_A01", new CreaturePlacment[]
+                {
                     new CreaturePlacment("green")
-                ]);
-                challenges[1] = new ArenaChallenge("CR_A01", [
+                });
+                challenges[1] = new ArenaChallenge("CR_A01", new CreaturePlacment[]
+                {
                     new CreaturePlacment("green", 1, 2, false),
                     new CreaturePlacment("blue", 2, 1, false)
-                ]);
-                challenges[2] = new ArenaChallenge("CR_A02", [
+                });
+                challenges[2] = new ArenaChallenge("CR_A01", new CreaturePlacment[]
+                {
                     new CreaturePlacment("cyan", -1, 2),
-                ]);
+                });
 
                 return challenges;
             }
