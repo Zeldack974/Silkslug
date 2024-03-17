@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Silkslug.ColosseumRubicon
 {
-    public static class Arenas
+    public static class ArenaChallenges
     {
         public static ArenaChallenge[] challenges
         {
@@ -18,7 +18,7 @@ namespace Silkslug.ColosseumRubicon
                 {
                     new CreaturePlacment("green")
                 });
-                challenges[1] = new ArenaChallenge("CR_A01", new CreaturePlacment[]
+                challenges[1] = new ArenaChallenge("CR_A02", new CreaturePlacment[]
                 {
                     new CreaturePlacment("green", 1, 2, false),
                     new CreaturePlacment("blue", 2, 1, false)
@@ -31,6 +31,8 @@ namespace Silkslug.ColosseumRubicon
                 return challenges;
             }
         }
+
+        public static int currentArena = 0;
 
         public class ArenaChallenge
         {

@@ -126,7 +126,7 @@ namespace Silkslug
                                         }
                                         else
                                         {
-                                            (this.room.physicalObjects[j][k] as Creature).Violence(this.owner.mainBodyChunk, force, this.room.physicalObjects[j][k].firstChunk, null, Creature.DamageType.Blunt, this.damage, 20f);
+                                            (this.room.physicalObjects[j][k] as Creature).Violence(this.owner.mainBodyChunk, force, this.room.physicalObjects[j][k].firstChunk, null, Creature.DamageType.Blunt, this.damage, 10f);
                                         }
                                         if (!(this.room.physicalObjects[j][k] as Creature).dead)
                                         {
@@ -461,7 +461,7 @@ namespace Silkslug
                                             }
                                             else
                                             {
-                                                (this.room.physicalObjects[j][k] as Creature).Violence(this.owner.mainBodyChunk, force, this.room.physicalObjects[j][k].firstChunk, null, Creature.DamageType.Blunt, this.damage, 20f);
+                                                (this.room.physicalObjects[j][k] as Creature).Violence(this.owner.mainBodyChunk, force, this.room.physicalObjects[j][k].firstChunk, null, Creature.DamageType.Blunt, this.damage, 10f);
                                             }
                                             if (!(this.room.physicalObjects[j][k] as Creature).dead)
                                             {
