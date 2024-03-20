@@ -320,7 +320,8 @@ internal class Warp
                                 room.game.cameras[0].MoveCamera(player.room, 0);
                                 fadeObj = null;
                                 newRoom = null;
-                                RoomManager.GetRoomManager(player.room).spawnCreatures();
+                                Manager.ResetValues();
+                                Manager.SpawnCreatures(player.room);
                                 //room.abstractRoom.Abstractize();
                                 //newRoom.realizedRoom.PlaySound(MoreSlugcatsEnums.MSCSoundID.Sat_Interference3, 0f, 1f, 0.95f);
                             }
@@ -403,8 +404,9 @@ internal class Warp
                                 room.game.cameras[0].MoveCamera(player.room, 0);
                                 fadeObj = null;
                                 newRoom = null;
-                                RoomManager.GetRoomManager(player.room).spawnCreatures();
-                                RoomManager.GetRoomManager(room).ResetRoom();
+                                Manager.ResetValues();
+                                Manager.SpawnCreatures(player.room);
+                                Manager.ResetRoom(room);
                                 //room.abstractRoom.Abstractize();
                                 //newRoom.realizedRoom.PlaySound(MoreSlugcatsEnums.MSCSoundID.Sat_Interference3, 0f, 1f, 0.95f);
                             }

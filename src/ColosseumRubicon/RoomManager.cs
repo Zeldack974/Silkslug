@@ -46,7 +46,7 @@ namespace Silkslug.ColosseumRubicon
                         }
                     }
                 }
-                ConsoleWrite($"{count} creatures alive");
+                Debug.Log($"{count} creatures alive");
 
 
                 if (allCreatureDead)

@@ -13,16 +13,45 @@ namespace Silkslug.ColosseumRubicon
             Hooks();
         }
 
-        public static void Initialize()
+        public static void ResetValues()
         {
+            ArenaChallenges.currentArena = 0;
+        }
 
+        public static void ResetRooms()
+        {
+            foreach (RoomManager manager in RoomManager.roomManagers)
+            {
+                if (manager.room != null) manager.ResetRoom();
+            }
+        }
+
+        public static void ResetRoom(Room room)
+        {
+            RoomManager.GetRoomManager(room).ResetRoom();
+        }
+
+        public static void SpawnCreatures(Room room)
+        {
+            RoomManager.GetRoomManager(room).spawnCreatures();
         }
 
 
         ////////////////// HOOKS //////////////////
         public static void Hooks()
         {
+            On.Player.Die += Player_Die;
             On.Room.Loaded += Room_Loaded;
+        }
+
+        private static void Player_Die(On.Player.orig_Die orig, Player self)
+        {
+            bool wasDead = self.dead;
+            orig(self);
+            if (!wasDead && self.dead)
+            { 
+                ResetValues();
+            }
         }
 
         private static void Room_Loaded(On.Room.orig_Loaded orig, Room self)
