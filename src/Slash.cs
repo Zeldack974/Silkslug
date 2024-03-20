@@ -522,7 +522,7 @@ namespace Silkslug
                 }
                 else
                 {
-                    if ((shawData.chargeSlashCounter < 0) || this.owner.bodyMode != Player.BodyModeIndex.ZeroG)
+                    if ((shawData.chargeSlashCounter <= 0) || this.owner.bodyMode != Player.BodyModeIndex.ZeroG)
                     {
                         if (this.frame > lifeTime)
                         {
