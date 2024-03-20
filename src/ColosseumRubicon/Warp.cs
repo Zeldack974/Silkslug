@@ -175,7 +175,7 @@ internal class Warp
                 RubiconPopup.staticHUD.StartAnimation();
             } catch (Exception e)
             {
-                Debug.LogError(e);
+                Debug.LogError(e.ToString());
             }
         }
         else

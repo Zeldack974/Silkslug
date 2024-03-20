@@ -32,12 +32,22 @@ namespace Silkslug.ColosseumRubicon
 
             if (creatureSpawned)
             {
-                Debug.Log($"{room.abstractRoom.creatures.Where(c => c.realizedCreature == null || (c.realizedCreature is not Player && !c.realizedCreature.dead)).Count()} / {room.abstractRoom.creatures.Count()} creatures alive");
                 bool allCreatureDead = true;
-                foreach (AbstractCreature abstractCreature in room.abstractRoom.creatures) // ERREUR : contient que le joeur
+                int count = 0;
+
+                for (int j = 0; j < this.room.physicalObjects.Length; j++)
                 {
-                    allCreatureDead = allCreatureDead && (abstractCreature.realizedCreature == null || abstractCreature.realizedCreature is Player || abstractCreature.realizedCreature.dead);
+                    for (int k = 0; k < this.room.physicalObjects[j].Count; k++)
+                    {
+                        if (this.room.physicalObjects[j][k] is Creature && this.room.physicalObjects[j][k] is not Player && !this.room.physicalObjects[j][k].slatedForDeletetion)
+                        {
+                            allCreatureDead = allCreatureDead && (this.room.physicalObjects[j][k] as Creature).dead;
+                            count++;
+                        }
+                    }
                 }
+                ConsoleWrite($"{count} creatures alive");
+
 
                 if (allCreatureDead)
                 {

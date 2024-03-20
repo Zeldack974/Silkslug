@@ -27,6 +27,8 @@ namespace Silkslug.ColosseumRubicon
 
         private static void Room_Loaded(On.Room.orig_Loaded orig, Room self)
         {
+            //object obj = null;
+            //obj.GetHashCode();
             if (self.abstractRoom.firstTimeRealized)
             {
                 if (self.abstractRoom.name == "SB_E05SAINT")
