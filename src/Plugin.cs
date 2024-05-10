@@ -50,7 +50,14 @@ namespace Silkslug
 
             On.RoomSpecificScript.AddRoomSpecificScript += RoomSpecificScript_AddRoomSpecificScript;
 
+            On.SlugcatStats.IsSlugcatFromMSC += SlugcatStats_IsSlugcatFromMSC;
         }
+
+        private bool SlugcatStats_IsSlugcatFromMSC(On.SlugcatStats.orig_IsSlugcatFromMSC orig, SlugcatStats.Name i)
+        {
+            return i.value == "Shaw" || orig(i);
+        }
+
 
         private void Player_Stun(On.Player.orig_Stun orig, Player self, int st)
         {
