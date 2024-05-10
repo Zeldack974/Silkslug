@@ -16,7 +16,8 @@
 		"world_state": [ "Shaw", "Red" ],
 		"start_room": "LF_H01",
 
-		"select_menu_scene": "Slugcat_Shaw",
-		"select_menu_scene_ascended": "Ghost_Shaw"
+		"select_menu_scene": "Menu_Shaw",
+		"select_menu_scene_ascended": "Ghost_Shaw",
+		"sleep_scene": "Sleep_Shaw"
 	}
 }

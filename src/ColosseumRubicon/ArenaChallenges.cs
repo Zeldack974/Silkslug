@@ -12,20 +12,26 @@ namespace Silkslug.ColosseumRubicon
         {
             get
             {
-                ArenaChallenge[] challenges = new ArenaChallenge[3];
+                ArenaChallenge[] challenges = new ArenaChallenge[4];
 
                 challenges[0] = new ArenaChallenge("CR_A01", new CreaturePlacment[]
                 {
                     new CreaturePlacment("green")
                 });
+
                 challenges[1] = new ArenaChallenge("CR_A02", new CreaturePlacment[]
                 {
-                    new CreaturePlacment("green", 1, 2, false),
-                    new CreaturePlacment("blue", 2, 1, false)
-                });
+                    new CreaturePlacment("green", 1, 1, false),
+                }, "explosive");
+
                 challenges[2] = new ArenaChallenge("CR_A01", new CreaturePlacment[]
                 {
-                    new CreaturePlacment("cyan", -1, 2),
+                    new CreaturePlacment("blue", 2, 2, false),
+                    new CreaturePlacment("cyan", -1, 1),
+                }, "hell");
+
+                challenges[3] = new ArenaChallenge("CR_A01", new CreaturePlacment[]
+                {
                 });
 
                 return challenges;
@@ -34,17 +40,25 @@ namespace Silkslug.ColosseumRubicon
 
         public static int currentArena = 0;
 
+        public static ArenaChallenge CurrentArena
+        {
+            get => challenges[ArenaChallenges.currentArena];
+        }
+
         public class ArenaChallenge
         {
-            public ArenaChallenge(string room, CreaturePlacment[] creatures)
+            public ArenaChallenge(string room, CreaturePlacment[] creatures, string spear = "spear")
             {
                 roomName = room;
                 spawns = creatures;
+                this.spear = spear;
             }
 
             public string roomName;
 
             public CreaturePlacment[] spawns;
+
+            public string spear;
         }
 
         public class CreaturePlacment

@@ -299,16 +299,6 @@ internal class Warp
                                 ConsoleWrite("teleport players");
                                 for (int i = 0; i < room.game.AlivePlayers.Count; i++)
                                 {
-                                    if (room.game.AlivePlayers[i].realizedCreature.grasps != null)
-                                    {
-                                        for (int g = 0; g < room.game.AlivePlayers[i].realizedCreature.grasps.Length; g++)
-                                        {
-                                            if (room.game.AlivePlayers[i].realizedCreature.grasps[g] != null && room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed != null && !room.game.AlivePlayers[i].realizedCreature.grasps[g].discontinued && room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed is Creature && (!(room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed is Player) || !(room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed as Player).isSlugpup))
-                                            {
-                                                room.game.AlivePlayers[i].realizedCreature.ReleaseGrasp(g);
-                                            }
-                                        }
-                                    }
                                     room.game.AlivePlayers[i].realizedCreature.abstractCreature.Move(newRoom.realizedRoom.LocalCoordinateOfNode(0));
                                     room.game.AlivePlayers[i].realizedCreature.PlaceInRoom(newRoom.realizedRoom);
                                     room.game.AlivePlayers[i].realizedCreature.abstractCreature.ChangeRooms(player.room.GetWorldCoordinate(player.mainBodyChunk.pos));
@@ -340,6 +330,8 @@ internal class Warp
         public NextChallengeTeleport(Room room)
         {
             this.room = room;
+            ConsoleWrite("");
+            ConsoleWrite($"creating teleporter from {room.abstractRoom.name} to {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
         }
 
         public override void Update(bool eu)
@@ -351,65 +343,45 @@ internal class Warp
                 {
                     Player player = this.room.game.Players[index].realizedCreature as Player;
 
-                    if (player.abstractCreature.pos.x == 15 && player.abstractCreature.pos.y < 30)
+                    if (fadeObj == null)
                     {
-                        player.SuperHardSetPosition(new Vector2(315, 2060));
+                        fadeObj = new FadeOut(room, Color.white, 130f, false); // 130
+                        room.AddObject(fadeObj);
                     }
 
-                    if (player.mainBodyChunk.pos.y < 445)
+                    if (fadeObj != null && fadeObj.IsDoneFading())
                     {
-                        if (player.mainBodyChunk.pos.y > 350)
+                        if (newRoom == null)
                         {
-                            fadeObj = new FadeOut(room, Color.white, 130f, false); // 130
-                            room.AddObject(fadeObj);
+                            newRoom = room.game.world.GetAbstractRoom(ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName);
                         }
-                        player.SuperHardSetPosition(new Vector2(player.mainBodyChunk.pos.x, 345));
-                        player.mainBodyChunk.vel = Vector2.zero;
 
-                        if (fadeObj != null && fadeObj.IsDoneFading())
+                        if (newRoom.realizedRoom == null)
                         {
-                            if (newRoom == null)
+                            newRoom.RealizeRoom(room.game.world, room.game);
+                        }
+
+                        if (newRoom.realizedRoom != null && newRoom.realizedRoom.ReadyForPlayer && player != null)
+                        {
+                            ConsoleWrite("teleporting players to " + ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName);
+                            for (int i = 0; i < room.game.AlivePlayers.Count; i++)
                             {
-                                newRoom = room.game.world.GetAbstractRoom(ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName);
+                                room.game.AlivePlayers[i].realizedCreature.abstractCreature.Move(newRoom.realizedRoom.LocalCoordinateOfNode(0));
+                                room.game.AlivePlayers[i].realizedCreature.PlaceInRoom(newRoom.realizedRoom);
+                                room.game.AlivePlayers[i].realizedCreature.abstractCreature.ChangeRooms(player.room.GetWorldCoordinate(player.mainBodyChunk.pos));
                             }
 
-                            if (newRoom.realizedRoom == null)
-                            {
-                                newRoom.RealizeRoom(room.game.world, room.game);
-                            }
-
-                            if (newRoom.realizedRoom != null && newRoom.realizedRoom.ReadyForPlayer && player != null)
-                            {
-                                ConsoleWrite("teleport players");
-                                for (int i = 0; i < room.game.AlivePlayers.Count; i++)
-                                {
-                                    if (room.game.AlivePlayers[i].realizedCreature.grasps != null)
-                                    {
-                                        for (int g = 0; g < room.game.AlivePlayers[i].realizedCreature.grasps.Length; g++)
-                                        {
-                                            if (room.game.AlivePlayers[i].realizedCreature.grasps[g] != null && room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed != null && !room.game.AlivePlayers[i].realizedCreature.grasps[g].discontinued && room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed is Creature && (!(room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed is Player) || !(room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed as Player).isSlugpup))
-                                            {
-                                                room.game.AlivePlayers[i].realizedCreature.ReleaseGrasp(g);
-                                            }
-                                        }
-                                    }
-                                    room.game.AlivePlayers[i].realizedCreature.abstractCreature.Move(newRoom.realizedRoom.LocalCoordinateOfNode(0));
-                                    room.game.AlivePlayers[i].realizedCreature.PlaceInRoom(newRoom.realizedRoom);
-                                    room.game.AlivePlayers[i].realizedCreature.abstractCreature.ChangeRooms(player.room.GetWorldCoordinate(player.mainBodyChunk.pos));
-                                }
-
-                                player.room.AddObject(new FadeOut(player.room, Color.white, 60f, true)); // not sure if this is deleted
-                                fadeObj.Destroy();
-                                room.game.cameras[0].virtualMicrophone.AllQuiet();
-                                room.game.cameras[0].MoveCamera(player.room, 0);
-                                fadeObj = null;
-                                newRoom = null;
-                                Manager.ResetValues();
-                                Manager.SpawnCreatures(player.room);
-                                Manager.ResetRoom(room);
-                                //room.abstractRoom.Abstractize();
-                                //newRoom.realizedRoom.PlaySound(MoreSlugcatsEnums.MSCSoundID.Sat_Interference3, 0f, 1f, 0.95f);
-                            }
+                            player.room.AddObject(new FadeOut(player.room, Color.white, 60f, true)); // not sure if this is deleted
+                            fadeObj.Destroy();
+                            room.game.cameras[0].virtualMicrophone.AllQuiet();
+                            room.game.cameras[0].MoveCamera(player.room, 0);
+                            fadeObj = null;
+                            newRoom = null;
+                            Manager.SpawnCreatures(player.room);
+                            Manager.ResetRoom(room);
+                            Destroy();
+                            //room.abstractRoom.Abstractize();
+                            //newRoom.realizedRoom.PlaySound(MoreSlugcatsEnums.MSCSoundID.Sat_Interference3, 0f, 1f, 0.95f);
                         }
                     }
                 }

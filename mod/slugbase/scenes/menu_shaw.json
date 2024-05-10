@@ -1,6 +1,6 @@
 {
-	"id": "Slugcat_Shaw",
-	"scene_folder": "scenes/slugcat - shaw",
+	"id": "Menu_Shaw",
+	"scene_folder": "scenes/menu - shaw",
 	"images": [
 		{ "name": "background", "pos": [-15, -15], "depth": 3.7, "shader": "Basic" },
 		{ "name": "statue",    "pos": [245, -25], "depth": 2.8, "shader": "Basic" },

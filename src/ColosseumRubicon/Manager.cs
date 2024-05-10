@@ -76,6 +76,7 @@ namespace Silkslug.ColosseumRubicon
                 }
                 else if (self.world.name == "CR")
                 {
+                    Debug.Log("adding room manager");
                     self.AddObject(new RoomManager(self));
                 }
             }

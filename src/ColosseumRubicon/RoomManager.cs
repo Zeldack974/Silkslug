@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using RWCustom;
 
 
 namespace Silkslug.ColosseumRubicon
@@ -10,7 +11,7 @@ namespace Silkslug.ColosseumRubicon
     {
         public ArenaChallenges.ArenaChallenge challenge
         {
-            get { return ArenaChallenges.challenges.First(e => e.roomName.ToLower() == room.abstractRoom.name.ToLower()); }
+            get { return ArenaChallenges.challenges[ArenaChallenges.currentArena]; }
         }
 
         public static List<RoomManager> roomManagers = new List<RoomManager>();
@@ -29,7 +30,7 @@ namespace Silkslug.ColosseumRubicon
         {
             base.Update(eu);
 
-
+            //ConsoleWrite("[update Update]");
             if (creatureSpawned)
             {
                 bool allCreatureDead = true;
@@ -46,26 +47,50 @@ namespace Silkslug.ColosseumRubicon
                         }
                     }
                 }
-                Debug.Log($"{count} creatures alive");
+
+                for (int i = this.room.game.shortcuts.transportVessels.Count - 1; i >= 0; i--)
+                {
+                    if (this.room.game.shortcuts.transportVessels[i].creature != null && this.room.game.shortcuts.transportVessels[i].creature is not Player && !this.room.game.shortcuts.transportVessels[i].creature.slatedForDeletetion)
+                    {
+                        allCreatureDead = allCreatureDead && this.room.game.shortcuts.transportVessels[i].creature.dead;
+                        count++;
+                    }
+                }
+
+                //ConsoleWrite($"{count} creatures alive");
 
 
                 if (allCreatureDead)
                 {
-                    Debug.Log("next challenge");
-                    //NextChallenge();
+                    if (creatureDetected && !transition)
+                    {
+                        ConsoleWrite("next challenge");
+                        NextChallenge();
+                        transition = true;
+                    }
+                }
+                else
+                {
+                    creatureDetected = true;
+                    //for (int i = this.room.game.shortcuts.transportVessels.Count - 1; i >= 0; i--)
+                    //{
+                    //    this.room.game.shortcuts.transportVessels[i].wait = 2;
+                    //}
                 }
             }
         }
 
         public void NextChallenge()
         {
+            ConsoleWrite("previous challenge " + ArenaChallenges.currentArena);
             ArenaChallenges.currentArena++;
+            ConsoleWrite($"go to challenge {ArenaChallenges.currentArena} in arena {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
             room.AddObject(new Warp.NextChallengeTeleport(room));
         }
 
         public void spawnCreatures()
         {
-            ConsoleWrite("spawnCreatures");
+            ConsoleWrite($"Spawn creatures for challenge {ArenaChallenges.currentArena}");
             foreach (ArenaChallenges.CreaturePlacment spawn in challenge.spawns)
             {
                 ConsoleWrite();
@@ -93,7 +118,10 @@ namespace Silkslug.ColosseumRubicon
                 }
             }
 
+            CreatePlayerHate();
+
             creatureSpawned = true;
+            GiveSpear();
         }
 
         public void ResetRoom()
@@ -105,8 +133,72 @@ namespace Silkslug.ColosseumRubicon
             this.room = abstractRoom.realizedRoom;
 
             creatureSpawned = false;
+            creatureDetected = false;
+            transition = false;
+        }
+
+        public void GiveSpear()
+        {
+
+            for (int i = 0; i < room.game.AlivePlayers.Count; i++)
+            {
+                for (int g = 0; g < room.game.AlivePlayers[i].realizedCreature.grasps.Length; g++)
+                {
+                    if (room.game.AlivePlayers[i].realizedCreature.grasps[g] != null && room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed != null && !room.game.AlivePlayers[i].realizedCreature.grasps[g].discontinued) // (room.game.AlivePlayers[i].realizedCreature.grasps[g] != null && room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed != null && !room.game.AlivePlayers[i].realizedCreature.grasps[g].discontinued && room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed is Creature && (!(room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed is Player) || !(room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed as Player).isSlugpup))
+                    {
+                        if (room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed is Creature)
+                        {
+                            room.game.AlivePlayers[i].realizedCreature.ReleaseGrasp(g);
+                        }
+                        else
+                        {
+                            room.game.AlivePlayers[i].realizedCreature.grasps[g].grabbed.Destroy();
+                        }
+                    }
+                }
+                AbstractSpear spear;
+                switch (ArenaChallenges.CurrentArena.spear)
+                {
+                    case "explosive":
+                        spear = new AbstractSpear(this.room.world, null, this.room.abstractRoom.entities[i].pos, this.room.game.GetNewID(), true, false);
+                        break;
+                    case "hell":
+                        spear = new AbstractSpear(this.room.world, null, this.room.abstractRoom.entities[i].pos, this.room.game.GetNewID(), false, Mathf.Lerp(0.35f, 0.6f, Custom.ClampedRandomVariation(0.5f, 0.5f, 2f)));
+                        break;
+                    case "electric":
+                        spear = new AbstractSpear(this.room.world, null, this.room.abstractRoom.entities[i].pos, this.room.game.GetNewID(), false, true);
+                        break;
+                    default:
+                        spear = new AbstractSpear(this.room.world, null, this.room.abstractRoom.entities[i].pos, this.room.game.GetNewID(), false, false);
+                        break;
+                }
+
+                this.room.abstractRoom.entities.Add(spear);
+                spear.RealizeInRoom();
+                (room.game.AlivePlayers[i].realizedCreature as Player).SlugcatGrab(spear.realizedObject, 0);
+                    
+            }
+
+        }
+
+        public void CreatePlayerHate()
+        {
+            for (int i = 0; i < base.room.abstractRoom.creatures.Count; i++)
+            {
+                if (base.room.abstractRoom.creatures[i].state.socialMemory != null && base.room.abstractRoom.creatures[i].creatureTemplate.type == CreatureTemplate.Type.BigNeedleWorm)
+                {
+                    for (int j = 0; j < this.room.game.Players.Count; j++)
+                    {
+                        base.room.abstractRoom.creatures[i].state.socialMemory.GetOrInitiateRelationship(this.room.game.Players[j].ID).like = -1f;
+                        base.room.abstractRoom.creatures[i].state.socialMemory.GetOrInitiateRelationship(this.room.game.Players[j].ID).tempLike = -1f;
+                    }
+                }
+            }
         }
 
         public bool creatureSpawned;
+        public bool creatureDetected;
+        public bool transition;
+
     }
 }

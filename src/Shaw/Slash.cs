@@ -17,7 +17,7 @@ namespace Silkslug
             this.dir = dir;
             this.size = size;
             this.force = force;
-            this.damage = damage;
+            this.damage = damage * 100;
         }
 
         public Vector2 dir;
