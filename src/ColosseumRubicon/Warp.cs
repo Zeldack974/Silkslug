@@ -171,11 +171,12 @@ internal class Warp
                 {
                     GC.Collect();
                 }
+
                 ConsoleWrite("start CR intro");
                 RubiconPopup.staticHUD.StartAnimation();
             } catch (Exception e)
             {
-                Debug.LogError(e.ToString());
+                Plugin.log.LogError(e.ToString());
             }
         }
         else
@@ -325,13 +326,11 @@ internal class Warp
         public AbstractRoom newRoom;
     }
 
-    public class NextChallengeTeleport : UpdatableAndDeletable
+    public class CR_RESTWarp : UpdatableAndDeletable
     {
-        public NextChallengeTeleport(Room room)
+        public CR_RESTWarp(Room room)
         {
             this.room = room;
-            ConsoleWrite("");
-            ConsoleWrite($"creating teleporter from {room.abstractRoom.name} to {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
         }
 
         public override void Update(bool eu)
@@ -343,47 +342,179 @@ internal class Warp
                 {
                     Player player = this.room.game.Players[index].realizedCreature as Player;
 
-                    if (fadeObj == null)
+                    if (player.abstractCreature.pos.x == 15 && player.abstractCreature.pos.y > 22)
                     {
-                        fadeObj = new FadeOut(room, Color.white, 130f, false); // 130
-                        room.AddObject(fadeObj);
+                        player.SuperHardSetPosition(new Vector2((float)room.LocalCoordinateOfNode(0).x * 20f, (float)room.LocalCoordinateOfNode(0).y * 20f));
                     }
 
-                    if (fadeObj != null && fadeObj.IsDoneFading())
+                    if (player.mainBodyChunk.pos.x > 1180)
                     {
+                        if (fadeObj == null)
+                        {
+                            fadeObj = new FadeOut(room, Color.white, 30f, false); // 130
+                            room.AddObject(fadeObj);
+                        }
+                        else
+                        {
+                            player.SuperHardSetPosition(new Vector2(player.mainBodyChunk.pos.x, 345));
+                            player.mainBodyChunk.vel = Vector2.zero;
+                            if (fadeObj.IsDoneFading())
+                            {
+                                if (newRoom == null)
+                                {
+                                    newRoom = room.game.world.GetAbstractRoom("CR_BOSS");
+                                }
+
+                                if (newRoom.realizedRoom == null)
+                                {
+                                    newRoom.RealizeRoom(room.game.world, room.game);
+                                }
+
+                                if (newRoom.realizedRoom != null && newRoom.realizedRoom.ReadyForPlayer && player != null)
+                                {
+                                    ConsoleWrite("teleport players");
+                                    for (int i = 0; i < room.game.AlivePlayers.Count; i++)
+                                    {
+                                        room.game.AlivePlayers[i].realizedCreature.abstractCreature.Move(newRoom.realizedRoom.GetWorldCoordinate(new Vector2(650, 145)));
+                                        room.game.AlivePlayers[i].realizedCreature.PlaceInRoom(newRoom.realizedRoom);
+                                        room.game.AlivePlayers[i].realizedCreature.abstractCreature.ChangeRooms(player.room.GetWorldCoordinate(player.mainBodyChunk.pos));
+                                    }
+
+                                    //player.room.AddObject(new FadeOut(player.room, Color.white, 420f, true));
+                                    fadeObj.Destroy();
+                                    room.game.cameras[0].virtualMicrophone.AllQuiet();
+                                    room.game.cameras[0].MoveCamera(player.room, 0);
+                                    fadeObj = null;
+                                    newRoom = null;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        public FadeOut fadeObj;
+        public AbstractRoom newRoom;
+    }
+
+    public class NextChallengeTeleport : UpdatableAndDeletable
+    {
+        public NextChallengeTeleport(Room room)
+        {
+            this.room = room;
+            ConsoleWrite("");
+            if (ArenaChallenges.currentArena >= ArenaChallenges.challenges.Count)
+            {
+                ConsoleWrite($"creating teleporter from {room.abstractRoom.name} to CR_REST");
+            }
+            else
+            {
+                ConsoleWrite($"creating teleporter from {room.abstractRoom.name} to {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
+            }
+        }
+
+        public override void Update(bool eu)
+        {
+            base.Update(eu);
+
+            if (fadeObj == null)
+            {
+                fadeObj = new FadeOut(room, Color.white, 130f, false); // 130
+                room.AddObject(fadeObj);
+            }
+
+            if (fadeObj != null && fadeObj.IsDoneFading())
+            {
+                bool exitChallenge = ArenaChallenges.currentArena >= ArenaChallenges.challenges.Count;
+                if (newRoom == null)
+                {
+                    if (exitChallenge)
+                    {
+                        newRoom = room.game.world.GetAbstractRoom("CR_REST");
+                    }
+                    else
+                    {
+                        Debug.Log($"Try get room {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
+                        newRoom = room.game.world.GetAbstractRoom(ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName);
                         if (newRoom == null)
                         {
-                            newRoom = room.game.world.GetAbstractRoom(ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName);
-                        }
-
-                        if (newRoom.realizedRoom == null)
-                        {
-                            newRoom.RealizeRoom(room.game.world, room.game);
-                        }
-
-                        if (newRoom.realizedRoom != null && newRoom.realizedRoom.ReadyForPlayer && player != null)
-                        {
-                            ConsoleWrite("teleporting players to " + ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName);
-                            for (int i = 0; i < room.game.AlivePlayers.Count; i++)
-                            {
-                                room.game.AlivePlayers[i].realizedCreature.abstractCreature.Move(newRoom.realizedRoom.LocalCoordinateOfNode(0));
-                                room.game.AlivePlayers[i].realizedCreature.PlaceInRoom(newRoom.realizedRoom);
-                                room.game.AlivePlayers[i].realizedCreature.abstractCreature.ChangeRooms(player.room.GetWorldCoordinate(player.mainBodyChunk.pos));
-                            }
-
-                            player.room.AddObject(new FadeOut(player.room, Color.white, 60f, true)); // not sure if this is deleted
-                            fadeObj.Destroy();
-                            room.game.cameras[0].virtualMicrophone.AllQuiet();
-                            room.game.cameras[0].MoveCamera(player.room, 0);
-                            fadeObj = null;
-                            newRoom = null;
-                            Manager.SpawnCreatures(player.room);
-                            Manager.ResetRoom(room);
-                            Destroy();
-                            //room.abstractRoom.Abstractize();
-                            //newRoom.realizedRoom.PlaySound(MoreSlugcatsEnums.MSCSoundID.Sat_Interference3, 0f, 1f, 0.95f);
+                            Debug.LogError($"Fail to get {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
+                            return;
                         }
                     }
+                }
+
+                if (newRoom.realizedRoom == null)
+                {
+                    newRoom.RealizeRoom(room.game.world, room.game);
+                }
+
+                if (newRoom.realizedRoom != null && newRoom.realizedRoom.ReadyForPlayer)
+                {
+                    int den = 0; 
+                    if (!exitChallenge)
+                    {
+                        den = ArenaChallenges.challenges[ArenaChallenges.currentArena].playerDen;
+                    }
+                    ConsoleWrite($"teleporting players from {room.abstractRoom.name} to " + newRoom.name + " in den " + den);
+
+
+
+
+                    for (int i = 0; i < room.game.AlivePlayers.Count; i++)
+                    {
+
+                        if (room.abstractRoom.name.ToLower() != newRoom.name.ToLower())
+                        {
+                            room.game.AlivePlayers[i].realizedCreature.Abstractize();
+                            room.game.AlivePlayers[i].Realize();
+                            room.game.AlivePlayers[i].realizedCreature.PlaceInRoom(newRoom.realizedRoom);
+                            room.game.AlivePlayers[i].realizedCreature.abstractCreature.Move(newRoom.realizedRoom.LocalCoordinateOfNode(den));
+                            room.game.AlivePlayers[i].realizedCreature.abstractCreature.ChangeRooms(newRoom.realizedRoom.GetWorldCoordinate(room.game.AlivePlayers[i].realizedCreature.mainBodyChunk.pos));
+                        }
+                        //else
+                        //{
+                        //    //room.game.AlivePlayers[i].Move(room.LocalCoordinateOfNode(den));
+                        //    //(room.game.AlivePlayers[i].realizedCreature as Player).SuperHardSetPosition(new Vector2((float)this.room.LocalCoordinateOfNode(den).x * 20f, (float)this.room.LocalCoordinateOfNode(den).y * 20f));
+                        //    //Vector2 pos = new Vector2(room.LocalCoordinateOfNode(den).x, room.LocalCoordinateOfNode(den).y);
+                        //    //(room.game.AlivePlayers[i].realizedCreature as Player).SuperHardSetPosition(pos);
+                        //}
+
+                        (room.game.AlivePlayers[i].realizedCreature as Player).SuperHardSetPosition(new Vector2((float)newRoom.realizedRoom.LocalCoordinateOfNode(den).x * 20f, (float)newRoom.realizedRoom.LocalCoordinateOfNode(den).y * 20f));
+
+                    }
+
+                    Manager.ResetRoom(room);
+
+                    newRoom.realizedRoom.AddObject(new FadeOut(newRoom.realizedRoom, Color.white, 60f, true)); // not sure if this is deleted       // dont worry i fixed that
+
+                    fadeObj.Destroy();
+                    room.game.cameras[0].virtualMicrophone.AllQuiet();
+                    room.game.cameras[0].MoveCamera(newRoom.realizedRoom, 0);
+
+                    if (room != newRoom.realizedRoom)
+                    {
+                        room.abstractRoom.Abstractize();
+                    }
+
+                    if (!exitChallenge)
+                    {
+                        ConsoleWrite("spawn creatures in " + newRoom.realizedRoom);
+                        Manager.SpawnCreatures(newRoom.realizedRoom);
+                    }
+                    else
+                    {
+                        RainWorldGame.ForceSaveNewDenLocation(this.room.game, "CR_REST", true);
+                    }
+
+                    fadeObj = null;
+                    newRoom = null;
+
+                    Destroy();
+                    //room.abstractRoom.Abstractize();
+                    //newRoom.realizedRoom.PlaySound(MoreSlugcatsEnums.MSCSoundID.Sat_Interference3, 0f, 1f, 0.95f);
                 }
             }
         }

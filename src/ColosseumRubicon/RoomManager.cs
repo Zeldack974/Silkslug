@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using RWCustom;
-
+using MoreSlugcats;
 
 namespace Silkslug.ColosseumRubicon
 {
@@ -16,7 +16,18 @@ namespace Silkslug.ColosseumRubicon
 
         public static List<RoomManager> roomManagers = new List<RoomManager>();
 
-        public static RoomManager GetRoomManager(Room room) => roomManagers.Find(r => r.room == room);
+        public static RoomManager GetRoomManager(Room room)
+        {
+            RoomManager manager = roomManagers.Find(r => r.room == room);
+
+            //if (manager != null)
+            //{
+            //    Debug.LogError("Manager not found");
+            //    ConsoleWrite("Manager not found");
+            //}
+
+            return manager;
+        }
 
         public RoomManager(Room room)
         {
@@ -43,6 +54,20 @@ namespace Silkslug.ColosseumRubicon
                         if (this.room.physicalObjects[j][k] is Creature && this.room.physicalObjects[j][k] is not Player && !this.room.physicalObjects[j][k].slatedForDeletetion)
                         {
                             allCreatureDead = allCreatureDead && (this.room.physicalObjects[j][k] as Creature).dead;
+
+                            Creature creature = (this.room.physicalObjects[j][k] as Creature);
+
+                            if (creature.dead)
+                            {
+                                for (int i = 0; i < 17; i++)
+                                {
+                                    this.room.AddObject(new Spark(creature.firstChunk.pos, Custom.RNV() * Mathf.Lerp(4f, 16f, UnityEngine.Random.value), creature.ShortCutColor(), null, 900, 4000));
+                                }
+
+                                this.room.PlaySound(SoundID.Spear_Stick_In_Creature, creature.firstChunk.pos, 1f, 0.5f);
+                                creature.Destroy();
+                            }
+
                             count++;
                         }
                     }
@@ -62,7 +87,7 @@ namespace Silkslug.ColosseumRubicon
 
                 if (allCreatureDead)
                 {
-                    if (creatureDetected && !transition)
+                    if (creatureDetected && !transition && this.room.game.AlivePlayers.Count() > 0)
                     {
                         ConsoleWrite("next challenge");
                         NextChallenge();
@@ -80,11 +105,27 @@ namespace Silkslug.ColosseumRubicon
             }
         }
 
+        public override void Destroy()
+        {
+            roomManagers.Remove(this);
+            base.Destroy();
+        }
+
         public void NextChallenge()
         {
             ConsoleWrite("previous challenge " + ArenaChallenges.currentArena);
             ArenaChallenges.currentArena++;
-            ConsoleWrite($"go to challenge {ArenaChallenges.currentArena} in arena {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
+
+            room.PlaySound(Sounds.BOXING_BELL, 0.5f, 1f, 1f);
+
+            if (ArenaChallenges.currentArena >= ArenaChallenges.challenges.Count())
+            {
+                ConsoleWrite("go to challenge FINAL in arena CR_BOSS but before a little rest in CR_REST");
+            }
+            else
+            {
+                ConsoleWrite($"go to challenge {ArenaChallenges.currentArena} in arena {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
+            }
             room.AddObject(new Warp.NextChallengeTeleport(room));
         }
 
@@ -110,6 +151,10 @@ namespace Silkslug.ColosseumRubicon
                     }
 
                     AbstractCreature ent = new AbstractCreature(room.game.world, StaticWorld.GetCreatureTemplate(type), null, room.LocalCoordinateOfNode(node), room.game.GetNewID());
+                    if (type == CreatureTemplate.Type.Scavenger || type == MoreSlugcatsEnums.CreatureTemplateType.ScavengerElite)
+                    {
+                        (ent.abstractAI as ScavengerAbstractAI).InitGearUp();
+                    }
                     //room.abstractRoom.MoveEntityToDen(ent);
                     ent.Move(room.LocalCoordinateOfNode(node));
                     ent.RealizeInRoom();
@@ -126,11 +171,28 @@ namespace Silkslug.ColosseumRubicon
 
         public void ResetRoom()
         {
+            ConsoleWrite($"reseting room {room.abstractRoom.name}");
             AbstractRoom abstractRoom = room.abstractRoom;
-            abstractRoom.Abstractize();
-            abstractRoom.RealizeRoom(abstractRoom.world, abstractRoom.world.game);
-            abstractRoom.realizedRoom.AddObject(this);
-            this.room = abstractRoom.realizedRoom;
+
+            foreach (var obj in room.updateList)
+            {
+                if (obj is FadeOut)
+                    obj.Destroy();
+            }
+
+            for (int i = 0; i < room.physicalObjects.Length; i++)
+            {
+                for (int j = 0; j < room.physicalObjects[i].Count(); j++)
+                {
+                    if (room.physicalObjects[i][j] is not Player)
+                        room.physicalObjects[i][j].Destroy();
+                }
+            }
+
+            //abstractRoom.Abstractize();
+            //abstractRoom.RealizeRoom(abstractRoom.world, abstractRoom.world.game);
+            //abstractRoom.realizedRoom.AddObject(this);
+            //this.room = abstractRoom.realizedRoom;
 
             creatureSpawned = false;
             creatureDetected = false;
@@ -139,7 +201,7 @@ namespace Silkslug.ColosseumRubicon
 
         public void GiveSpear()
         {
-
+            ConsoleWrite("giving players spear");
             for (int i = 0; i < room.game.AlivePlayers.Count; i++)
             {
                 for (int g = 0; g < room.game.AlivePlayers[i].realizedCreature.grasps.Length; g++)
@@ -157,6 +219,26 @@ namespace Silkslug.ColosseumRubicon
                     }
                 }
                 AbstractSpear spear;
+
+                //for (int j = 0; j < 1; j++)
+                //{
+                //    switch (ArenaChallenges.CurrentArena.spear)
+                //    {
+                //        case "explosive":
+                //            new AbstractSpear(this.room.world, null, this.room.abstractRoom.entities[i].pos, this.room.game.GetNewID(), true, false).RealizeInRoom();
+                //            break;
+                //        case "hell":
+                //            new AbstractSpear(this.room.world, null, this.room.abstractRoom.entities[i].pos, this.room.game.GetNewID(), false, Mathf.Lerp(0.35f, 0.6f, Custom.ClampedRandomVariation(0.5f, 0.5f, 2f))).RealizeInRoom();
+                //            break;
+                //        case "electric":
+                //             new AbstractSpear(this.room.world, null, this.room.abstractRoom.entities[i].pos, this.room.game.GetNewID(), false, true).RealizeInRoom();
+                //            break;
+                //        default:
+                //            new AbstractSpear(this.room.world, null, this.room.abstractRoom.entities[i].pos, this.room.game.GetNewID(), false, false).RealizeInRoom();
+                //            break;
+                //    }
+                //}
+
                 switch (ArenaChallenges.CurrentArena.spear)
                 {
                     case "explosive":
@@ -173,7 +255,7 @@ namespace Silkslug.ColosseumRubicon
                         break;
                 }
 
-                this.room.abstractRoom.entities.Add(spear);
+                //this.room.abstractRoom.entities.Add(spear);
                 spear.RealizeInRoom();
                 (room.game.AlivePlayers[i].realizedCreature as Player).SlugcatGrab(spear.realizedObject, 0);
                     
@@ -189,8 +271,10 @@ namespace Silkslug.ColosseumRubicon
                 {
                     for (int j = 0; j < this.room.game.Players.Count; j++)
                     {
-                        base.room.abstractRoom.creatures[i].state.socialMemory.GetOrInitiateRelationship(this.room.game.Players[j].ID).like = -1f;
-                        base.room.abstractRoom.creatures[i].state.socialMemory.GetOrInitiateRelationship(this.room.game.Players[j].ID).tempLike = -1f;
+                        base.room.abstractRoom.creatures[i].state.socialMemory.GetOrInitiateRelationship(this.room.game.Players[j].ID).like = -100f;
+                        base.room.abstractRoom.creatures[i].state.socialMemory.GetOrInitiateRelationship(this.room.game.Players[j].ID).tempLike = -100f;
+                        base.room.abstractRoom.creatures[i].state.socialMemory.GetOrInitiateRelationship(this.room.game.Players[j].ID).fear = -100f;
+                        base.room.abstractRoom.creatures[i].state.socialMemory.GetOrInitiateRelationship(this.room.game.Players[j].ID).know = 1f;
                     }
                 }
             }

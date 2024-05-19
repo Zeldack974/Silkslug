@@ -25,6 +25,19 @@ namespace Silkslug
                 new string[] { "1", "2" }
             })
             .Register();
+            new CommandBuilder("setnextchallenge")
+            .Run(args =>
+            {
+                try
+                {
+                    ColosseumRubicon.Manager.SetChallengeCommand(args);
+                }
+                catch { ConsoleWrite("Error in command", Color.red); }
+            })
+            //.AutoComplete(new string[][] {
+            //                new string[] { "1", "2" }
+            //})
+            .Register();
         }
 
         // Debugs commands

@@ -1,2 +1,0 @@
-Template: NONE
-DangerType: None

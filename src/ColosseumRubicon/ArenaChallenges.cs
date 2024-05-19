@@ -8,31 +8,50 @@ namespace Silkslug.ColosseumRubicon
 {
     public static class ArenaChallenges
     {
-        public static ArenaChallenge[] challenges
+        public static List<ArenaChallenge> challenges
         {
             get
             {
-                ArenaChallenge[] challenges = new ArenaChallenge[4];
+                List<ArenaChallenge> challenges = new List<ArenaChallenge>();
 
-                challenges[0] = new ArenaChallenge("CR_A01", new CreaturePlacment[]
-                {
-                    new CreaturePlacment("green")
-                });
 
-                challenges[1] = new ArenaChallenge("CR_A02", new CreaturePlacment[]
+                challenges.Add(new ArenaChallenge("CR_A02", new CreaturePlacment[]
                 {
-                    new CreaturePlacment("green", 1, 1, false),
-                }, "explosive");
+                    new CreaturePlacment("cyan", -1, 2),
+                }));
 
-                challenges[2] = new ArenaChallenge("CR_A01", new CreaturePlacment[]
+                challenges.Add(new ArenaChallenge("CR_frame", new CreaturePlacment[]
                 {
-                    new CreaturePlacment("blue", 2, 2, false),
-                    new CreaturePlacment("cyan", -1, 1),
-                }, "hell");
+                    new CreaturePlacment("yellow", -1, 10),
+                }, "hell", 2));
 
-                challenges[3] = new ArenaChallenge("CR_A01", new CreaturePlacment[]
+                challenges.Add(new ArenaChallenge("CR_A02", new CreaturePlacment[]
                 {
-                });
+                    new CreaturePlacment("KingVulture", -1, 1),
+                }));
+
+                challenges.Add(new ArenaChallenge("CR_stoneheads", new CreaturePlacment[]
+                {
+                    new CreaturePlacment("Scavenger", -1, 4),
+                    new CreaturePlacment("Elite"),
+                }));
+
+                challenges.Add(new ArenaChallenge("CR_frame", new CreaturePlacment[]
+                {
+                    new CreaturePlacment("MirosVulture", 12, 1),
+                }, "hell", 2));
+
+                challenges.Add(new ArenaChallenge("cr_warehouse", new CreaturePlacment[]
+                {
+                    new CreaturePlacment("FireBug", -1, 3),
+                }, "hell"));
+
+                challenges.Add(new ArenaChallenge("cr_warehouse", new CreaturePlacment[]
+                {
+                    new CreaturePlacment("red", 8, 1),
+                }, "electric"));
+
+
 
                 return challenges;
             }
@@ -47,11 +66,12 @@ namespace Silkslug.ColosseumRubicon
 
         public class ArenaChallenge
         {
-            public ArenaChallenge(string room, CreaturePlacment[] creatures, string spear = "spear")
+            public ArenaChallenge(string room, CreaturePlacment[] creatures, string spear = "spear", int playerDen = 0)
             {
                 roomName = room;
                 spawns = creatures;
                 this.spear = spear;
+                this.playerDen = playerDen;
             }
 
             public string roomName;
@@ -59,6 +79,8 @@ namespace Silkslug.ColosseumRubicon
             public CreaturePlacment[] spawns;
 
             public string spear;
+
+            public int playerDen;
         }
 
         public class CreaturePlacment

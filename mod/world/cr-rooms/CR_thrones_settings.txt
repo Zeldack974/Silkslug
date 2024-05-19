@@ -12,11 +12,11 @@ RandomItemDensity: 0.2173913
 RandomItemSpearChance: 0.2217391
 WaterReflectionAlpha: 1
 Palette: 39
-EffectColorA: 14
+EffectColorA: 18
 EffectColorB: 13
 Effects: LavaSurface-1-0-0, HeatWave-0.2065217-273-197, VoidMelt-0.1195652-967-394, LethalWater-1-300-49, WaterDepth-0.0326087-257-149, Brightness-0-0-0, WaterViscosity-0.5-810-517, SilenceWater-1-612-417, SkyBloom-0.3913043-0-0, 
-PlacedObjects: LightFixture><388.1655><404.3623><HolyFire~-174.6795~109~49, LightFixture><891.4082><406.3223><HolyFire~40.3205~101~52, KarmaShrine><630.9199><604.4332><-19~17, LightSource><641.4305><58.08615><0.3586957~EffectColor2~-404~11~50~86.60254~0~0~None~0~0, 
-AmbientSounds: SPOT><SO_NAT-Fire.ogg><813.587><404.6158><0.6630435><1><890.587><408.6158><-219.3553><9.644653><0><0.1, SPOT><SO_NAT-Fire.ogg><262.4395><387.314><0.5><1><389.4395><402.314><181.6447><16.64465><0><0.1, SPOT><SO_NAT-Burning.ogg><715.3749><279.4062><0.5><1><608.3749><59.40627><-223.3553><146.6447><0><0.2630436, SPOT><MSC-RitualMetal.ogg><732.8345><157.3877><0.2282609><0.9021739><646.8345><97.38777><-208.3553><94.64465><0><0.4260871, OMNI><AM_ENV-CityTone.ogg><390.9191><547.8171><0.3804348><0.8434783, OMNI><AM_WIN-SubWnd.ogg><563.3047><586.7069><0.2065217><0.8826087, OMNI><AM_WIN-StrongWnd2.ogg><737.5146><542.9495><0.3043478><0.9021739, 
+PlacedObjects: LightSource><649.8024><1.031189><1~Environment~-667~759~50~86.60254~1~0~None~0~0, 
+AmbientSounds: SPOT><MSC-RitualMetal.ogg><732.8345><157.3877><0.2282609><0.9021739><646.8345><97.38777><-4.355286><224.6447><0><0.4260871, OMNI><AM_ENV-CityTone.ogg><390.9191><547.8171><0.3804348><0.8434783, OMNI><AM_WIN-SubWnd.ogg><563.3047><586.7069><0.2608696><0.8826087, OMNI><AM_WIN-StrongWnd2.ogg><737.5146><542.9495><0.3804348><0.9021739, 
 Triggers: Spot<tA>event<tB>MusicEvent<eA>songName<eB>na_33 - else2<eA>vol<eB>0.3<eA>prio<eB>0.5<eA>mxThrt<eB>1<eA>loop<eB>0<eA>droneTol<eB>0<eA>rooms<eB>-1<eA>rest<eB>5<eA>fadeIn<eB>0<eA>oneSongPerCycle<eB>0<eA>stopAtDeath<eB>0<eA>stopAtGate<eB>0<tA>multiUse<tB>1<tA>toCycle<tB>-1<tA>fromCycle<tB>0<tA>delay<tB>0<tA>panPos<tB>748.561<tB>405.1905<tA>fireChance<tB>1<tA>entrance<tB>-1<tA>karma<tB>0<tA>slugcats<tB><tA>pos<tB>635.561<tB>389.1905<tA>handlePos<tB>-35.35534<tB>-35.35534, 
 FadePalette: 55, 0.8586956
 WetTerrain: OFF

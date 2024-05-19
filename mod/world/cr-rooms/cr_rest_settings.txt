@@ -1,0 +1,11 @@
+Template: NONE
+DangerType: None
+CeilingDrips: 0.5434783
+RumbleIntensity: 1
+WaveSpeed: 0
+WaveLength: 0
+SecondWaveLength: 0.1666667
+Clouds: 0
+Grime: 0.4891304
+WaterReflectionAlpha: 1
+PlacedObjects: LillyPuck><596.1295><145.5976><-33~-116~2~3, LillyPuck><407.7488><145.55><-239~-114~2~3, KarmaShrine><186.1356><245.103><3~46, 

@@ -10,6 +10,7 @@ using static SlugBase.Features.FeatureTypes;
 using static Silkslug.Shaw;
 using System.Collections.Generic;
 using Silkslug.ColosseumRubicon;
+using BepInEx.Logging;
 
 namespace Silkslug
 {
@@ -17,11 +18,13 @@ namespace Silkslug
     class Plugin : BaseUnityPlugin
     {
         private const string MOD_ID = "zeldak974.silkslug";
+        public static ManualLogSource log = BepInEx.Logging.Logger.CreateLogSource("SilkSlug");
 
         public static readonly PlayerFeature<float> SuperJump = PlayerFloat("silkslug/super_jump");
         public static readonly PlayerFeature<bool> SpearAbilites = PlayerBool("silkslug/spear_abilities");
 
         public static readonly SlugcatStats.Name ShawName = new SlugcatStats.Name("Shaw");
+
 
 
 
@@ -49,13 +52,82 @@ namespace Silkslug
             On.Spear.Update += Spear_Update;
 
             On.RoomSpecificScript.AddRoomSpecificScript += RoomSpecificScript_AddRoomSpecificScript;
+            On.SSOracleBehavior.PebblesConversation.AddEvents += PebblesConversation_AddEvents;
 
             On.SlugcatStats.IsSlugcatFromMSC += SlugcatStats_IsSlugcatFromMSC;
         }
 
+
         private bool SlugcatStats_IsSlugcatFromMSC(On.SlugcatStats.orig_IsSlugcatFromMSC orig, SlugcatStats.Name i)
         {
             return i.value == "Shaw" || orig(i);
+        }
+
+        private void PebblesConversation_AddEvents(On.SSOracleBehavior.PebblesConversation.orig_AddEvents orig, SSOracleBehavior.PebblesConversation self)
+        {
+            if (self.id == Conversation.ID.Pebbles_White && self.owner.oracle.room.game.GetStorySession.saveState.saveStateNumber == ShawName)
+            {
+                if (!self.owner.playerEnteredWithMark)
+                {
+                    self.events.Add(new Conversation.TextEvent(self, 0, ".  .  .", 0));
+                    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("...is this reaching you?"), 0));
+                    self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 4));
+                    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("No?"), 0));
+                    self.events.Add(new SSOracleBehavior.PebblesConversation.SpecialEvent(self, 0, "karma"));
+                    //self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("It should work now."), 0));
+                    self.owner.playerEnteredWithMark = true;
+                    return;
+                }
+                else
+                {
+                    self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 70));
+                    self.events.Add(new Conversation.TextEvent(self, 0, ". . .", 0));
+                    self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 70));
+                    self.events.Add(new Conversation.TextEvent(self, 0, ".  .  .", 0));
+                    self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 70));
+
+                }
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("A little insect, on the floor of my chamber. I think I know what you are looking for.\r\n"), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("You're stuck in a cycle, a repeating pattern. You want a way out."), 0));
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 20));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("No?"), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("It speak now?"), 0));
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 20));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("What?<LINE>You seek to defeat the most powerful beings of this world?"), 0));
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 60));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("How boring."), 0));
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 10));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("I don't need a killer right now, and I don't want a \"bug\" to cause more trouble in my systems."), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate(".  .  ."), 0));
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 210));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("I found the perfect place for you!<LINE>A place for all bloodthirsty murderers of yours."), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Our creators called it by several names, but I personally prefer HELL."), 0));
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 10));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Go to the west past the Farm Arrays."), 0));
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 20));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("What?<LINE>You came from there?"), 0));
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 10));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Too bad to be you."), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Anyway."), 0));
+                if (self.owner.playerEnteredWithMark)
+                {
+                    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Then down into the earth<LINE>where the land fissures, as deep as you can reach, where the ancients built their temples and danced their silly rituals."), 0));
+                }
+                else
+                {
+                    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Then down into the earth<LINE>where the land fissures, as deep as you can reach, where the ancients built their temples and danced their silly rituals.<LINE>The mark I gave you will let you through."), 0));
+                }
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 20));
+                //self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("If you can't find it, don't come back.<LINE>Next time I see you here, I'll turn you into a body."), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("I must resume my work."), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("If you can't find it, don't come back."), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Now go."), 0));
+                return;
+            }
+            else
+            {
+                orig(self);
+            }
         }
 
 
@@ -456,6 +528,10 @@ namespace Silkslug
             Sounds.Initialize();
             MachineConnector.SetRegisteredOI(MOD_ID, ShawOptions.instance);
             Futile.atlasManager.LoadImage("illustrations/rubiconintrotext");
+            Futile.atlasManager.LoadImage("illustrations/hkfront");
+            Futile.atlasManager.LoadImage("illustrations/hkback");
+
+
         }
 
     }
