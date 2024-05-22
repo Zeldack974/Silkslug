@@ -178,10 +178,10 @@ namespace Silkslug.ColosseumRubicon.Boss
 
         public void Open()
         {
-            preIntroFrames = 390;
-            totalFrames = 0;
-            //open = true;
-            //BossManager.Instance.SpawnBoss();
+            //preIntroFrames = 390;
+            //totalFrames = 0;
+            open = true;
+            BossManager.Instance.SpawnBoss();
         }
 
     }
