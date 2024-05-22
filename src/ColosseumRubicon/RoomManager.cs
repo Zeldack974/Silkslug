@@ -116,7 +116,7 @@ namespace Silkslug.ColosseumRubicon
             ConsoleWrite("previous challenge " + ArenaChallenges.currentArena);
             ArenaChallenges.currentArena++;
 
-            room.PlaySound(Sounds.BOXING_BELL, 0.5f, 1f, 1f);
+            room.PlaySound(Sounds.BOXING_BELL, 0.0f, 1f, 1f);
 
             if (ArenaChallenges.currentArena >= ArenaChallenges.challenges.Count())
             {

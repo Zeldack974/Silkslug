@@ -12,5 +12,8 @@
 [ADD]Hornet_Death/vol=0.2/dopplerFac=0.0 : HornetDeath
 [ADD]Hornet_Git_Gud/vol=0.2/dopplerFac=0.0 : HornetGitGud
 [ADD]Boxing_Bell/vol=0.2/dopplerFac=0.0 : BoxingBell
+[ADD]New_Location/vol=1.0/dopplerFac=0.0 : NewLocation
+[ADD]Double_Damage/vol=0.5/dopplerFac=0.0 : DoubleDamage
+[ADD]Damage/vol=0.5/dopplerFac=0.0 : Damage
 
 

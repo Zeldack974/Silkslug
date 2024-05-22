@@ -1,5 +1,6 @@
 ﻿global using static Silkslug.MyDevConsole;
 global using static Silkslug.Plugin;
+//global using Debug = UnityEngine.Debug;
 using BepInEx;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -11,6 +12,8 @@ using static Silkslug.Shaw;
 using System.Collections.Generic;
 using Silkslug.ColosseumRubicon;
 using BepInEx.Logging;
+using Silkslug.ColosseumRubicon.Boss;
+using Fisobs.Core;
 
 namespace Silkslug
 {
@@ -25,7 +28,15 @@ namespace Silkslug
 
         public static readonly SlugcatStats.Name ShawName = new SlugcatStats.Name("Shaw");
 
+        public static void Log(object msg)
+        {
+            log.LogInfo(msg);
+        }
 
+        public static void LogError(object msg)
+        {
+            log.LogError(msg);
+        }
 
 
         // Add hooks
@@ -34,6 +45,7 @@ namespace Silkslug
             On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
             try { RegisterCommands(); } catch { }
             ColosseumRubicon.Manager.OnEnable();
+            BossHooks.Register();
 
             // Put your custom hooks here!
             On.Player.Jump += Player_Jump;
@@ -55,8 +67,32 @@ namespace Silkslug
             On.SSOracleBehavior.PebblesConversation.AddEvents += PebblesConversation_AddEvents;
 
             On.SlugcatStats.IsSlugcatFromMSC += SlugcatStats_IsSlugcatFromMSC;
+            On.Music.MusicPlayer.GameRequestsSong += MusicPlayer_GameRequestsSong;
         }
 
+        private void MusicPlayer_GameRequestsSong(On.Music.MusicPlayer.orig_GameRequestsSong orig, Music.MusicPlayer self, MusicEvent musicEvent)
+        {
+            Plugin.Log("MusicPlayer_GameRequestsSong");
+            if (self.song != null)
+                Plugin.Log("already playing " + self.song.name);
+            if (!self.manager.rainWorld.setup.playMusic)
+                Plugin.Log("playMusic is false");
+            if (self.song != null && (self.song.priority >= musicEvent.prio))
+                Plugin.Log($"song priority to low: {musicEvent.prio} < {self.song.priority}");
+
+            if (self.manager.currentMainLoop.ID == ProcessManager.ProcessID.Game && (self.manager.currentMainLoop as RainWorldGame).session is StoryGameSession)
+            {
+                SaveState saveState2 = ((self.manager.currentMainLoop as RainWorldGame).session as StoryGameSession).saveState;
+                for (int j = 0; j < saveState2.deathPersistentSaveData.songsPlayRecords.Count; j++)
+                {
+                    if (saveState2.deathPersistentSaveData.songsPlayRecords[j].songName == musicEvent.songName)
+                        Plugin.Log($"no playing saved {saveState2.deathPersistentSaveData.songsPlayRecords[j].songName} == {musicEvent.songName}");
+                }
+            }
+
+            orig(self, musicEvent);
+            Plugin.Log("Playing song " + (self.song != null));
+        }
 
         private bool SlugcatStats_IsSlugcatFromMSC(On.SlugcatStats.orig_IsSlugcatFromMSC orig, SlugcatStats.Name i)
         {
@@ -256,6 +292,7 @@ namespace Silkslug
                     shawData.dashFrame--;
                     if (shawData.dashFrame <= 0 || self.canJump > 0 || self.canWallJump > 0)
                     {
+                        ConsoleWrite("end of dash");
                         shawData.dashFrame = 0;
                         shawData.attackCooldown = DashSlash.lifeTime + 1;
                         self.firstChunk.vel = new Vector2(0, 0);
@@ -525,12 +562,21 @@ namespace Silkslug
             Futile.atlasManager.LoadImage("atlas/slash1");
             Futile.atlasManager.LoadImage("atlas/slash2");
             Futile.atlasManager.LoadImage("atlas/longslash");
+
             Sounds.Initialize();
             MachineConnector.SetRegisteredOI(MOD_ID, ShawOptions.instance);
+
             Futile.atlasManager.LoadImage("illustrations/rubiconintrotext");
             Futile.atlasManager.LoadImage("illustrations/hkfront");
             Futile.atlasManager.LoadImage("illustrations/hkback");
 
+            Futile.atlasManager.LoadImage("atlas/eye0");
+            Futile.atlasManager.LoadImage("atlas/eye1");
+            Futile.atlasManager.LoadImage("atlas/eye2");
+
+            Futile.atlasManager.LoadImage("illustrations/bossintro");
+
+            Futile.atlasManager.LoadImage("atlas/hellknightbody");
 
         }
 

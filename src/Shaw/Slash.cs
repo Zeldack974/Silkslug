@@ -4,6 +4,7 @@ using Random = UnityEngine.Random;
 using static Silkslug.Shaw;
 using System.Collections.Generic;
 using Noise;
+using Silkslug.ColosseumRubicon.Boss;
 
 namespace Silkslug
 {
@@ -91,6 +92,17 @@ namespace Silkslug
                             this.room.PlaySound(Sounds.HERRO_PARRY, this.owner.firstChunk.pos);
                         }
                     }
+
+                    if (drawable != null && drawable is HellKnight)
+                    {
+                        HellKnight boss = (HellKnight)drawable;
+                        if (this.IsHit(boss.pos, boss.rad))
+                        {
+                            boss.TakeDamage(damage * 4f);
+                            this.hitSomething = true;
+                            this.room.PlaySound(SoundID.Spear_Stick_In_Creature, this.owner.firstChunk.pos);
+                        }
+                    }
                 }
             }
 
@@ -104,7 +116,7 @@ namespace Silkslug
                         {
                             for (int l = 0; l < this.room.physicalObjects[j][k].bodyChunks.Length; l++)
                             {
-                                if (this.IsHit(this.room.physicalObjects[j][k].bodyChunks[l].pos))
+                                if (this.IsHit(this.room.physicalObjects[j][k].bodyChunks[l].pos, this.room.physicalObjects[j][k].bodyChunks[l].rad))
                                 {
                                     if (this.room.physicalObjects[j][k] is Creature && !this.creaturesHit.Contains((this.room.physicalObjects[j][k] as Creature)) && (this.room.physicalObjects[j][k] is not Player || (ModManager.CoopAvailable && Custom.rainWorld.options.friendlyFire || this.room.game.IsArenaSession && this.room.game.GetArenaGameSession.arenaSitting.gameTypeSetup.spearsHitPlayers)))
                                     {
@@ -412,6 +424,17 @@ namespace Silkslug
                             hitSomething = true;
                         }
                     }
+
+                    if (drawable != null && drawable is HellKnight )
+                    {
+                        HellKnight boss = (HellKnight)drawable;
+                        if ((boss.pos - this.hitPos).magnitude < (boss.rad + this.hitRad))
+                        {
+                            boss.TakeDamage(damage * 4f);
+                            this.room.PlaySound(SoundID.Spear_Stick_In_Creature, boss.pos);
+                            hitSomething = true;
+                        }
+                    }
                 }
             }
 
@@ -521,9 +544,14 @@ namespace Silkslug
             {
                 if (this.hitSomething)
                 {
+                    ConsoleWrite("hit something");
                     shawData.dashFrame = 0;
                     this.owner.animation = Player.AnimationIndex.Flip;
-                    this.owner.firstChunk.vel.y = 15f * this.force;
+                    foreach (var chuck in this.owner.bodyChunks)
+                    {
+                        chuck.vel.y = 0;
+                    }
+                    this.owner.firstChunk.vel.y = 15f * 2f; // * this.force;
                     this.Destroy();
                 }
                 else

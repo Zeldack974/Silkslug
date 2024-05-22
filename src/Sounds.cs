@@ -16,6 +16,11 @@
         public static SoundID HORNET_GIT_GUD { get; private set; }
         public static SoundID HORNET_ATTACK { get; private set; }
         public static SoundID BOXING_BELL { get; private set; }
+        public static SoundID NEW_LOCATION { get; private set; }
+        public static SoundID DOUBLE_DAMAGE { get; private set; }
+        public static SoundID DAMAGE { get; private set; }
+
+
 
         // Call Initialize() from your plugin's Awake method.
         internal static void Initialize()
@@ -34,6 +39,9 @@
             HORNET_DEATH = new SoundID("Hornet_Death", true);
             HORNET_GIT_GUD = new SoundID("Hornet_Git_Gud", true);
             BOXING_BELL = new SoundID("Boxing_Bell", true);
+            NEW_LOCATION = new SoundID("New_Location", true);
+            DAMAGE = new SoundID("Damage", true);
+            
         }
     }
 }

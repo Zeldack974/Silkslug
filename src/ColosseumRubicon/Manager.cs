@@ -1,11 +1,13 @@
 ﻿
 using MoreSlugcats;
+using Silkslug.ColosseumRubicon.Boss;
 using static Silkslug.ColosseumRubicon.Warp;
 
 namespace Silkslug.ColosseumRubicon
 {
     public static class Manager
     {
+        public static bool DisablePauseMenu;
         public static void OnEnable()
         {
             Warp.OnEnable();
@@ -55,13 +57,28 @@ namespace Silkslug.ColosseumRubicon
             On.AbstractCreature.CheckVoidseaArena += AbstractCreature_CheckVoidseaArena;
             On.AbstractCreature.setCustomFlags += AbstractCreature_setCustomFlags;
             On.AbstractCreature.OpportunityToEnterDen += AbstractCreature_OpportunityToEnterDen;
-            On.Player.Update += Player_Update;
+            On.RainWorldGame.Update += RainWorldGame_Update;
+            On.RainWorldGame.ctor += RainWorldGame_ctor;
         }
 
-        private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
+        private static void RainWorldGame_ctor(On.RainWorldGame.orig_ctor orig, RainWorldGame self, ProcessManager manager)
         {
-            orig(self, eu);
-            ConsoleWrite($"player pos: {self.mainBodyChunk.pos}");
+            DisablePauseMenu = false;
+            orig(self, manager);
+        }
+
+        private static void RainWorldGame_Update(On.RainWorldGame.orig_Update orig, RainWorldGame self)
+        {
+            //if (((RWInput.CheckPauseButton(0, false) && !self.lastPauseButton) || Platform.systemMenuShowing) && (self.cameras[0].hud == null || self.IsArenaSession || self.cameras[0].hud.map == null || self.cameras[0].hud.map.fade < 0.1f) && (self.cameras[0].hud == null || self.IsArenaSession || !self.cameras[0].hud.textPrompt.gameOverMode) && self.manager.fadeToBlack == 0f && self.cameras[0].roomSafeForPause)
+            //{
+            //    ConsoleWrite("open pause menu with button");
+            //}
+            orig(self);
+            if (self.pauseMenu != null && DisablePauseMenu)
+            {
+                self.pauseMenu.ShutDownProcess();
+                self.pauseMenu = null;
+            }
         }
 
         private static void AbstractCreature_OpportunityToEnterDen(On.AbstractCreature.orig_OpportunityToEnterDen orig, AbstractCreature self, WorldCoordinate den)
@@ -99,14 +116,16 @@ namespace Silkslug.ColosseumRubicon
             if (!wasDead && self.dead)
             { 
                 ResetValues();
+                DisablePauseMenu = false;
             }
         }
+
+        public static bool playNewLocation = false;
 
         private static void Room_Loaded(On.Room.orig_Loaded orig, Room self)
         {
             //object obj = null;
             //obj.GetHashCode();
-
             if (self.abstractRoom.name == "SB_E05SAINT" && self.abstractRoom.firstTimeRealized)
             {
                 ConsoleWrite("Add RoomSpecificScript: " + (self.game.GetStorySession.saveState.saveStateNumber == Plugin.ShawName));
@@ -132,6 +151,12 @@ namespace Silkslug.ColosseumRubicon
                 self.AddObject(new CR_RESTWarp(self));
 
             }
+            else if (self.abstractRoom.name == "CR_VOSS" && self.abstractRoom.firstTimeRealized)
+            {
+                //Debug.Log("adding rest warp");
+                //self.AddObject(new BossManager(self));
+
+            }
             else if (self.world.name == "CR" && RoomManager.GetRoomManager(self) == null)
             {
                 Debug.Log("adding room manager");
@@ -139,6 +164,12 @@ namespace Silkslug.ColosseumRubicon
             }
 
             orig(self);
+            //if (playNewLocation)
+            //{
+            //    ConsoleWrite("new location !!!");
+            //    self.PlaySound(Sounds.HORNET_FIGHT_YELL_06, 0.0f, 1.0f, 1f);
+            //    playNewLocation = false;
+            //}
         }
     }
 }

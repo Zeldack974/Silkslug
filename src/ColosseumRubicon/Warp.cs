@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using RWCustom;
 using HUD;
+using Silkslug.ColosseumRubicon.Boss;
 
 namespace Silkslug.ColosseumRubicon;
 
@@ -31,6 +32,7 @@ internal class Warp
 
         if (self.game.GetStorySession.saveState.saveStateNumber == ShawName && self.reportBackToGate == null && self.specialWarpCallback != null && self.currentSpecialWarp == OverWorld.SpecialWarpType.WARP_VS_HR)
         {
+            Manager.playNewLocation = true;
             try
             {
 
@@ -174,7 +176,8 @@ internal class Warp
 
                 ConsoleWrite("start CR intro");
                 RubiconPopup.staticHUD.StartAnimation();
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Plugin.log.LogError(e.ToString());
             }
@@ -262,6 +265,17 @@ internal class Warp
         public override void Update(bool eu)
         {
             base.Update(eu);
+
+            if (room != null && room.ReadyForPlayer && room.readyForAI)
+            {
+                if (Manager.playNewLocation)
+                {
+                    ConsoleWrite("new location !!!");
+                    this.room.PlaySound(Sounds.NEW_LOCATION, 0.0f, 0.25f, 1f);
+                    Manager.playNewLocation = false;
+                }
+            }
+
             for (int index = 0; index < this.room.game.Players.Count; index++)
             {
                 if (this.room.game.Players[index].realizedCreature != null && (this.room.game.Players[index].realizedCreature as Player).room == this.room)
@@ -347,8 +361,9 @@ internal class Warp
                         player.SuperHardSetPosition(new Vector2((float)room.LocalCoordinateOfNode(0).x * 20f, (float)room.LocalCoordinateOfNode(0).y * 20f));
                     }
 
-                    if (player.mainBodyChunk.pos.x > 1180)
+                    if (player.mainBodyChunk.pos.x > 1111)
                     {
+                        player.mainBodyChunk.vel = new Vector2(10, 0);
                         if (fadeObj == null)
                         {
                             fadeObj = new FadeOut(room, Color.white, 30f, false); // 130
@@ -356,8 +371,10 @@ internal class Warp
                         }
                         else
                         {
-                            player.SuperHardSetPosition(new Vector2(player.mainBodyChunk.pos.x, 345));
-                            player.mainBodyChunk.vel = Vector2.zero;
+                            if (player.mainBodyChunk.pos.x > 1180)
+                            {
+                                player.SuperHardSetPosition(new Vector2(player.mainBodyChunk.pos.x, 345));
+                            }
                             if (fadeObj.IsDoneFading())
                             {
                                 if (newRoom == null)
@@ -372,20 +389,20 @@ internal class Warp
 
                                 if (newRoom.realizedRoom != null && newRoom.realizedRoom.ReadyForPlayer && player != null)
                                 {
-                                    ConsoleWrite("teleport players");
+                                    ConsoleWrite($"teleport {room.game.AlivePlayers.Count} players");
                                     for (int i = 0; i < room.game.AlivePlayers.Count; i++)
                                     {
                                         room.game.AlivePlayers[i].realizedCreature.abstractCreature.Move(newRoom.realizedRoom.GetWorldCoordinate(new Vector2(650, 145)));
                                         room.game.AlivePlayers[i].realizedCreature.PlaceInRoom(newRoom.realizedRoom);
                                         room.game.AlivePlayers[i].realizedCreature.abstractCreature.ChangeRooms(player.room.GetWorldCoordinate(player.mainBodyChunk.pos));
                                     }
-
-                                    //player.room.AddObject(new FadeOut(player.room, Color.white, 420f, true));
+                                    
                                     fadeObj.Destroy();
                                     room.game.cameras[0].virtualMicrophone.AllQuiet();
                                     room.game.cameras[0].MoveCamera(player.room, 0);
                                     fadeObj = null;
                                     newRoom = null;
+                                    BossManager.Initialize(player.room);
                                 }
                             }
                         }
