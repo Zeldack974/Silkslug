@@ -25,17 +25,18 @@ namespace Silkslug.ColosseumRubicon
             this.manager.musicPlayer.MenuRequestsSong("Hollow Knight Title Theme", 100, 0);
             this.manager.musicPlayer.song.Loop = true;
 
-            //this.bg = new MenuIllustration(this, this.scene, "illustrations", "hkmainmenu", this.manager.rainWorld.options.ScreenSize / 2f, true, true);
-            //this.bg.sprite.scaleX = this.manager.rainWorld.options.ScreenSize.x / 1200f;
-            //this.bg.sprite.scaleY = this.manager.rainWorld.options.ScreenSize.x / 1200f;
-            //this.bg.sprite.anchorX = 0.5f;
-            //this.bg.sprite.anchorY = 0.5f;
-            this.bg = new MenuIllustration(this, this.scene, "illustrations", "hklogo", this.manager.rainWorld.options.ScreenSize / 2f, true, true);
-            this.bg.sprite.scale = (this.manager.rainWorld.options.ScreenSize.x / 2346) * 0.60f;
+            this.bg = new MenuIllustration(this, this.scene, "illustrations", "hkmainmenu", this.manager.rainWorld.options.ScreenSize / 2f, true, true);
+            this.bg.sprite.scale = (this.manager.rainWorld.options.ScreenSize.x / 2880f);
             this.bg.sprite.anchorX = 0.5f;
             this.bg.sprite.anchorY = 0.5f;
-
             this.pages[0].subObjects.Add(this.bg);
+
+            this.text = new MenuIllustration(this, this.scene, "illustrations", "hklogo", this.manager.rainWorld.options.ScreenSize / 2f, true, true);
+            this.text.sprite.scale = (this.manager.rainWorld.options.ScreenSize.x / 2346) * 0.60f;
+            this.text.sprite.anchorX = 0.5f;
+            this.text.sprite.anchorY = 0.25f;
+            this.pages[0].subObjects.Add(this.text);
+
             this.startButton = new HoldButton(this, this.pages[0], base.Translate("NEW GAME"), "START", new Vector2(683f, 85f), 60f * 3f);
             this.pages[0].subObjects.Add(this.startButton);
 
