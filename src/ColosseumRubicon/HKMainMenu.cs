@@ -34,13 +34,13 @@ namespace Silkslug.ColosseumRubicon
             this.text = new MenuIllustration(this, this.scene, "illustrations", "hklogo", this.manager.rainWorld.options.ScreenSize / 2f, true, true);
             this.text.sprite.scale = (this.manager.rainWorld.options.ScreenSize.x / 2346) * 0.60f;
             this.text.sprite.anchorX = 0.5f;
-            this.text.sprite.anchorY = 0.25f;
+            this.text.sprite.anchorY = 0.5f;
             this.pages[0].subObjects.Add(this.text);
 
             this.startButton = new HoldButton(this, this.pages[0], base.Translate("NEW GAME"), "START", new Vector2(683f, 85f), 60f * 3f);
             this.pages[0].subObjects.Add(this.startButton);
 
-            for (int i = 1; i < 150; i++)
+            for (int i = 1; i < 200; i++)
             {
                 Particle particle = new(this, this.pages[0]);
                 this.pages[0].subObjects.Add(particle);
@@ -71,7 +71,8 @@ namespace Silkslug.ColosseumRubicon
             public FSprite sprite = GenerateParticle();
 
             public float fadeOutStart = UnityEngine.Random.Range(0.7f, 0.9f);
-            public float targetAlhpa = UnityEngine.Random.Range(0.2f, 0.8f);
+            public float targetAlhpa = UnityEngine.Random.Range(0.1f, 0.7f);
+            public float speedFactor = UnityEngine.Random.Range(1.5f, 2.5f);
 
             public Particle(Menu.Menu menu, MenuObject owner) : base(menu, owner)
             {
@@ -83,7 +84,7 @@ namespace Silkslug.ColosseumRubicon
             {
                 float screenWidth = RW.options.ScreenSize.x;
 
-                Vector2 movementFactor = Custom.DegToVec(this.sprite.rotation);
+                Vector2 movementFactor = Custom.DegToVec(this.sprite.rotation) * speedFactor;
                 float progress = sprite.x / screenWidth;
                 sprite.x += movementFactor.x;
                 sprite.y += movementFactor.y;
