@@ -7,12 +7,14 @@ using Menu;
 using RWCustom;
 using UnityEngine;
 using MoreSlugcats;
+using System.Runtime.CompilerServices;
 
 namespace Silkslug.ColosseumRubicon
 {
     public class HKMainMenu : Menu.Menu
     {
         public static ProcessManager.ProcessID HKMainMenuID = new ProcessManager.ProcessID("HKMaineMenu", true);
+
         public HKMainMenu(ProcessManager manager) : base(manager, HKMainMenuID)
         {
             this.pages.Add(new Page(this, null, "main", 0));
@@ -37,6 +39,11 @@ namespace Silkslug.ColosseumRubicon
             this.startButton = new HoldButton(this, this.pages[0], base.Translate("NEW GAME"), "START", new Vector2(683f, 85f), 60f * 3f);
             this.pages[0].subObjects.Add(this.startButton);
 
+            for (int i = 1; i < 150; i++)
+            {
+                Particle particle = new(this, this.pages[0]);
+                this.pages[0].subObjects.Add(particle);
+            }
         }
 
         //public override void Update()
@@ -55,6 +62,66 @@ namespace Silkslug.ColosseumRubicon
             {
                 ConsoleWrite("START NEW GAME");
                 this.manager.RequestMainProcessSwitch(ProcessManager.ProcessID.Game);
+            }
+        }
+
+        private class Particle : MenuObject
+        {
+            public FSprite sprite = GenerateParticle();
+
+            public float fadeOutStart = UnityEngine.Random.Range(0.7f, 0.9f);
+            public float targetAlhpa = UnityEngine.Random.Range(0.2f, 0.8f);
+
+            public Particle(Menu.Menu menu, MenuObject owner) : base(menu, owner)
+            {
+                owner.Container.AddChild(sprite);
+                Reset();
+            }
+
+            public override void GrafUpdate(float timeStacker)
+            {
+                float screenWidth = RW.options.ScreenSize.x;
+
+                Vector2 movementFactor = Custom.DegToVec(this.sprite.rotation);
+                float progress = sprite.x / screenWidth;
+                sprite.x += movementFactor.x;
+                sprite.y += movementFactor.y;
+                if (progress > 1 || (sprite.alpha <= 0 && progress >= fadeOutStart))
+                {
+                    Reset();
+                } else if (progress >= fadeOutStart)
+                {
+                    sprite.alpha -= 0.01f;
+                } else if (sprite.alpha < targetAlhpa)
+                {
+                    sprite.alpha += 0.02f;
+                }
+                base.GrafUpdate(timeStacker);
+            }
+
+            public static FSprite GenerateParticle()
+            {
+                FSprite particle = new FSprite("Futile_White");
+
+                particle.shader = RW.Shaders["FlatLight"];
+
+                return particle;
+            }
+
+            public void Reset()
+            {
+                if (sprite == null) return;
+
+                float screenWidth = RW.options.ScreenSize.x;
+                float screenHeight = RW.options.ScreenSize.y;
+                float margin = screenWidth / 0.9f;
+                float spawnX = UnityEngine.Random.Range(margin, screenWidth - margin);
+                float spawnY = UnityEngine.Random.Range(margin, screenHeight - margin);
+                sprite.scale = UnityEngine.Random.Range(0.5f, 1.5f);
+                sprite.x = spawnX;
+                sprite.y = spawnY;
+                sprite.rotation = UnityEngine.Random.Range(85, 95);
+                sprite.alpha = 0;
             }
         }
 

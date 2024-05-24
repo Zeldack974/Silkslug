@@ -8,7 +8,7 @@ namespace Silkslug
     internal static class MyDevConsole
     {
         public static ManualLogSource logSource = BepInEx.Logging.Logger.CreateLogSource("SilkSlug:ConsoleWrite");
-        private static RainWorld RW => UnityEngine.Object.FindObjectOfType<RainWorld>();
+        public static RainWorld RW => UnityEngine.Object.FindObjectOfType<RainWorld>();
 
         // Register Commands
         internal static void RegisterCommands()
