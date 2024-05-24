@@ -103,6 +103,16 @@ namespace Silkslug.ColosseumRubicon
                     //}
                 }
             }
+
+            if (spearTicks > 0)
+            {
+                spearTicks--;
+                if (spearTicks == 0)
+                {
+                    GiveSpear();
+                    spearTicks = -1;
+                }
+            }
         }
 
         public override void Destroy()
@@ -166,7 +176,7 @@ namespace Silkslug.ColosseumRubicon
             CreatePlayerHate();
 
             creatureSpawned = true;
-            GiveSpear();
+            spearTicks = 30;
         }
 
         public void ResetRoom()
@@ -198,6 +208,8 @@ namespace Silkslug.ColosseumRubicon
             creatureDetected = false;
             transition = false;
         }
+
+        public int spearTicks = -1;
 
         public void GiveSpear()
         {
@@ -257,6 +269,8 @@ namespace Silkslug.ColosseumRubicon
 
                 //this.room.abstractRoom.entities.Add(spear);
                 spear.RealizeInRoom();
+                spear.realizedObject.firstChunk.pos = room.game.AlivePlayers[i].realizedCreature.mainBodyChunk.pos;
+                spear.realizedObject.firstChunk.vel = Vector2.zero;
                 (room.game.AlivePlayers[i].realizedCreature as Player).SlugcatGrab(spear.realizedObject, 0);
                     
             }

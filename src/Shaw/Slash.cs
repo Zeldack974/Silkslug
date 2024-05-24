@@ -211,12 +211,12 @@ namespace Silkslug
             {
                 if (this.dir.x != 0)
                 {
-                    this.owner.firstChunk.vel.x = this.dir.normalized.x * -25f * this.force;
+                    this.owner.firstChunk.vel.x = this.dir.normalized.x * -15f * this.force;
                 }
 
                 if (this.dir.y < 0)
                 {
-                    this.owner.firstChunk.vel.y = this.dir.normalized.y * -35f * this.force;
+                    this.owner.firstChunk.vel.y = this.dir.normalized.y * -30f * this.force;
                 }
             }
         }

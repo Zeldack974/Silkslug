@@ -575,9 +575,9 @@ namespace Silkslug
             Futile.atlasManager.LoadImage("atlas/eye2");
 
             Futile.atlasManager.LoadImage("illustrations/bossintro");
-
             Futile.atlasManager.LoadImage("atlas/hellknightbody");
-
+            Futile.atlasManager.LoadImage("illustrations/bluedream");
+            //Futile.atlasManager.LoadImage("illustrations/hkmainmenu");
         }
 
     }

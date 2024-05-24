@@ -1,4 +1,5 @@
 ﻿
+using IL.Menu;
 using MoreSlugcats;
 using Silkslug.ColosseumRubicon.Boss;
 using static Silkslug.ColosseumRubicon.Warp;
@@ -59,6 +60,23 @@ namespace Silkslug.ColosseumRubicon
             On.AbstractCreature.OpportunityToEnterDen += AbstractCreature_OpportunityToEnterDen;
             On.RainWorldGame.Update += RainWorldGame_Update;
             On.RainWorldGame.ctor += RainWorldGame_ctor;
+            On.Player.Update += Player_Update;
+            On.ProcessManager.PostSwitchMainProcess += ProcessManager_PostSwitchMainProcess;
+        }
+
+        private static void ProcessManager_PostSwitchMainProcess(On.ProcessManager.orig_PostSwitchMainProcess orig, ProcessManager self, ProcessManager.ProcessID ID)
+        {
+
+            if (ID == HKMainMenu.HKMainMenuID)
+            {
+                self.currentMainLoop = new HKMainMenu(self);
+            }
+            orig(self, ID);
+        }
+
+        private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
+        {
+            orig(self, eu);
         }
 
         private static void RainWorldGame_ctor(On.RainWorldGame.orig_ctor orig, RainWorldGame self, ProcessManager manager)

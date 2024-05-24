@@ -8,6 +8,7 @@ namespace Silkslug.ColosseumRubicon.Boss.Halo
     /**
         Copyright (c) 2023 Maxi Mol & gruntonium
     **/
+
     //basically a tweaked copy from the game (TempleGuardGraphics.Halo)
     public class TempleGuardHalo : BaseHalo
     {
@@ -150,7 +151,7 @@ namespace Silkslug.ColosseumRubicon.Boss.Halo
 
             base.Update(eu); //lightning bolts and color cycle
 
-            deactivated = owner.dead;
+            //deactivated = owner.dead;
 
             if (activity > stress)
             {

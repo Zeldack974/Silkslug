@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MoreSlugcats;
 using UnityEngine;
 using Kittehface.Framework20;
+using static Menu.Remix.MixedUI.OpTextBox;
 
 namespace Silkslug.ColosseumRubicon.Boss
 {
@@ -53,9 +54,10 @@ namespace Silkslug.ColosseumRubicon.Boss
                 else
                 {
                     player.room.PlaySound(Sounds.DAMAGE, player.mainBodyChunk, false, 1f, 1f);
-                    player.mainBodyChunk.vel = new Vector2(0, 15f);
                 }
-                iFrame = 78;
+
+                player.mainBodyChunk.vel = new Vector2(0, 15f);
+                iFrame = 78 / 2;
 
                 return player.Karma > 0;
             }
@@ -84,7 +86,7 @@ namespace Silkslug.ColosseumRubicon.Boss
         {
             iFrame = Math.Max(0, iFrame - 1);
             BossManager bossManager = BossManager.Instance;
-            UnityEngine.Debug.Log($"pos: {self.mainBodyChunk.pos}");
+            //UnityEngine.Debug.Log($"pos: {self.mainBodyChunk.pos}");
 
             if (!self.slatedForDeletetion && self.room.abstractRoom.name == "CR_BOSS" && bossManager != null && bossManager.initialize && !self.dead)
             {
@@ -106,17 +108,17 @@ namespace Silkslug.ColosseumRubicon.Boss
 
                 if (self.mainBodyChunk.pos.y < minY)
                 {
-                    self.SuperHardSetPosition(new Vector2(650, 145));
+                    self.SuperHardSetPosition(new Vector2(650, minY + 200));
                     if (!self.TakeDamage(1))
                     {
                         self.Die();
                     }
                 }
-                //else if (self.mainBodyChunk.pos.y > maxY)
-                //{
-                //    self.mainBodyChunk.vel.y = 0;
-                //}
-                //self.mainBodyChunk.pos.y = Math.Min(self.mainBodyChunk.pos.y, maxY);
+                else if (self.mainBodyChunk.pos.y > maxY)
+                {
+                    self.mainBodyChunk.vel.y = 0;
+                }
+                self.mainBodyChunk.pos.y = Math.Min(self.mainBodyChunk.pos.y, maxY);
 
 
             }

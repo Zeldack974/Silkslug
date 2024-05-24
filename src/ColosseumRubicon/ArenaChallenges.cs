@@ -17,23 +17,26 @@ namespace Silkslug.ColosseumRubicon
 
                 challenges.Add(new ArenaChallenge("CR_A02", new CreaturePlacment[]
                 {
-                    new CreaturePlacment("cyan", -1, 2),
+                    new CreaturePlacment("cyan", -1, 3),
                 }));
 
                 challenges.Add(new ArenaChallenge("CR_frame", new CreaturePlacment[]
                 {
-                    new CreaturePlacment("yellow", -1, 10),
+                    new CreaturePlacment("BigSpider", -1, 8),
+                    new CreaturePlacment("SpitterSpider", -1, 4),
                 }, "hell", 2));
 
                 challenges.Add(new ArenaChallenge("CR_A02", new CreaturePlacment[]
                 {
                     new CreaturePlacment("KingVulture", -1, 1),
+                    new CreaturePlacment("Vulture", -1, 1),
+
                 }));
 
                 challenges.Add(new ArenaChallenge("CR_stoneheads", new CreaturePlacment[]
                 {
-                    new CreaturePlacment("Scavenger", -1, 4),
-                    new CreaturePlacment("Elite"),
+                    new CreaturePlacment("Scavenger", -1, 6),
+                    new CreaturePlacment("Elite", -1, 4),
                 }));
 
                 challenges.Add(new ArenaChallenge("CR_frame", new CreaturePlacment[]
@@ -43,7 +46,7 @@ namespace Silkslug.ColosseumRubicon
 
                 challenges.Add(new ArenaChallenge("cr_warehouse", new CreaturePlacment[]
                 {
-                    new CreaturePlacment("FireBug", -1, 3),
+                    new CreaturePlacment("FireBug", -1, 4),
                 }, "hell"));
 
                 challenges.Add(new ArenaChallenge("cr_warehouse", new CreaturePlacment[]

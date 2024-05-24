@@ -363,50 +363,50 @@ internal class Warp
 
                     if (player.mainBodyChunk.pos.x > 1111)
                     {
-                        player.mainBodyChunk.vel = new Vector2(10, 0);
                         if (fadeObj == null)
                         {
                             fadeObj = new FadeOut(room, Color.white, 30f, false); // 130
                             room.AddObject(fadeObj);
                         }
-                        else
+                    }
+                    if (fadeObj != null)
+                    {
+                        player.mainBodyChunk.vel = new Vector2(10, 0);
+
+                        if (player.mainBodyChunk.pos.x > 1180)
                         {
-                            if (player.mainBodyChunk.pos.x > 1180)
+                            player.SuperHardSetPosition(new Vector2(player.mainBodyChunk.pos.x, 345));
+                        }
+                        if (fadeObj.IsDoneFading())
+                        {
+                            if (newRoom == null)
                             {
-                                player.SuperHardSetPosition(new Vector2(player.mainBodyChunk.pos.x, 345));
+                                newRoom = room.game.world.GetAbstractRoom("CR_BOSS");
                             }
-                            if (fadeObj.IsDoneFading())
+
+                            if (newRoom.realizedRoom == null)
                             {
-                                if (newRoom == null)
+                                newRoom.RealizeRoom(room.game.world, room.game);
+                            }
+
+                            if (newRoom.realizedRoom != null && newRoom.realizedRoom.ReadyForPlayer && player != null)
+                            {
+                                ConsoleWrite($"teleport {room.game.AlivePlayers.Count} players");
+                                for (int i = 0; i < room.game.AlivePlayers.Count; i++)
                                 {
-                                    newRoom = room.game.world.GetAbstractRoom("CR_BOSS");
+                                    room.game.AlivePlayers[i].realizedCreature.abstractCreature.Move(newRoom.realizedRoom.GetWorldCoordinate(new Vector2(650, 145)));
+                                    room.game.AlivePlayers[i].realizedCreature.PlaceInRoom(newRoom.realizedRoom);
+                                    room.game.AlivePlayers[i].realizedCreature.abstractCreature.ChangeRooms(player.room.GetWorldCoordinate(player.mainBodyChunk.pos));
                                 }
 
-                                if (newRoom.realizedRoom == null)
-                                {
-                                    newRoom.RealizeRoom(room.game.world, room.game);
-                                }
-
-                                if (newRoom.realizedRoom != null && newRoom.realizedRoom.ReadyForPlayer && player != null)
-                                {
-                                    ConsoleWrite($"teleport {room.game.AlivePlayers.Count} players");
-                                    for (int i = 0; i < room.game.AlivePlayers.Count; i++)
-                                    {
-                                        room.game.AlivePlayers[i].realizedCreature.abstractCreature.Move(newRoom.realizedRoom.GetWorldCoordinate(new Vector2(650, 145)));
-                                        room.game.AlivePlayers[i].realizedCreature.PlaceInRoom(newRoom.realizedRoom);
-                                        room.game.AlivePlayers[i].realizedCreature.abstractCreature.ChangeRooms(player.room.GetWorldCoordinate(player.mainBodyChunk.pos));
-                                    }
-                                    
-                                    fadeObj.Destroy();
-                                    room.game.cameras[0].virtualMicrophone.AllQuiet();
-                                    room.game.cameras[0].MoveCamera(player.room, 0);
-                                    fadeObj = null;
-                                    newRoom = null;
-                                    BossManager.Initialize(player.room);
-                                }
+                                fadeObj.Destroy();
+                                room.game.cameras[0].virtualMicrophone.AllQuiet();
+                                room.game.cameras[0].MoveCamera(player.room, 0);
+                                fadeObj = null;
+                                newRoom = null;
+                                BossManager.Initialize(player.room);
                             }
                         }
-
                     }
                 }
             }
@@ -476,6 +476,7 @@ internal class Warp
                         den = ArenaChallenges.challenges[ArenaChallenges.currentArena].playerDen;
                     }
                     ConsoleWrite($"teleporting players from {room.abstractRoom.name} to " + newRoom.name + " in den " + den);
+                    ConsoleWrite($"worldPos: {newRoom.realizedRoom.LocalCoordinateOfNode(den)}, validPos: {new Vector2((float)newRoom.realizedRoom.LocalCoordinateOfNode(den).x * 20f, (float)newRoom.realizedRoom.LocalCoordinateOfNode(den).y * 20f)}, tilePos: {newRoom.realizedRoom.LocalCoordinateOfNode(den).Tile}");
 
 
 
@@ -495,11 +496,13 @@ internal class Warp
                         //{
                         //    //room.game.AlivePlayers[i].Move(room.LocalCoordinateOfNode(den));
                         //    //(room.game.AlivePlayers[i].realizedCreature as Player).SuperHardSetPosition(new Vector2((float)this.room.LocalCoordinateOfNode(den).x * 20f, (float)this.room.LocalCoordinateOfNode(den).y * 20f));
-                        //    //Vector2 pos = new Vector2(room.LocalCoordinateOfNode(den).x, room.LocalCoordinateOfNode(den).y);
+                        //    //Vector2 pos = new Vector2(room.LocalCoordinateOfNode(den).x, room.LocalCoordinateOfNode(den).y);r
                         //    //(room.game.AlivePlayers[i].realizedCreature as Player).SuperHardSetPosition(pos);
                         //}
 
-                        (room.game.AlivePlayers[i].realizedCreature as Player).SuperHardSetPosition(new Vector2((float)newRoom.realizedRoom.LocalCoordinateOfNode(den).x * 20f, (float)newRoom.realizedRoom.LocalCoordinateOfNode(den).y * 20f));
+                        (room.game.AlivePlayers[i].realizedCreature as Player).SuperHardSetPosition(new Vector2((float)newRoom.realizedRoom.LocalCoordinateOfNode(den).x * 20f, (float)newRoom.realizedRoom.LocalCoordinateOfNode(den).y * 20f) + new Vector2(0, 10));
+                        room.game.AlivePlayers[i].realizedCreature.mainBodyChunk.vel = Vector2.zero;
+                        room.game.AlivePlayers[i].realizedCreature.mainBodyChunk.lastPos = room.game.AlivePlayers[i].realizedCreature.mainBodyChunk.pos;
 
                     }
 

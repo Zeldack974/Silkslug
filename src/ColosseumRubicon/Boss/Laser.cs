@@ -40,8 +40,14 @@ namespace Silkslug.ColosseumRubicon.Boss
                     {
                         this.parent.player.Die();
                     }
+                    if (this.postLife == 1)
+                    {
+                        this.Impact(); this.Impact();
+
+                    }
+
                 }
-                if (this.postLife == posLifeTime)
+                if (this.postLife == posLifeTime && this.type != Boss.Laser.Type.PILLAR)
                 {
                     this.Impact();
                 }
@@ -121,8 +127,13 @@ namespace Silkslug.ColosseumRubicon.Boss
         public void Impact()
         {
             Vector2 vector = this.startPos + Custom.DegToVec(this.dir) * 600f * length;
-            Vector2 a = Custom.DegToVec(Custom.AimFromOneVectorToAnother(this.startPos, vector));
             IntVector2? intVector = SharedPhysics.RayTraceTilesForTerrainReturnFirstSolid(this.room, this.startPos, vector);
+            if (this.type != Boss.Laser.Type.EXPLODE)
+            {
+                intVector = room.GetTilePosition(vector);
+
+            }
+            Vector2 a = Custom.DegToVec(Custom.AimFromOneVectorToAnother(this.startPos, vector));
             if (intVector != null)
             {
                 Vector2 vector2 = this.room.MiddleOfTile(intVector.Value) - a * 7f;
@@ -151,14 +162,15 @@ namespace Silkslug.ColosseumRubicon.Boss
                     this.room.PlaySound(SoundID.Bomb_Explode, vector2, 0.8f, 0.75f + UnityEngine.Random.value * 0.5f);
                     return;
                 }
-                if (this.type == Boss.Laser.Type.LIGHTNING)
+                if (this.type == Boss.Laser.Type.LIGHTNING || this.type == Boss.Laser.Type.PILLAR)
                 {
                     LightningBolt lightningBolt = new LightningBolt(this.startPos, vector2, 0, this.width / 60f, 2f, 0f, 0.2f, false);
                     lightningBolt.intensity = 1f;
                     this.room.AddObject(lightningBolt);
                     this.room.PlaySound(SoundID.Death_Lightning_Spark_Spontaneous, vector2, 0.4f, 1.4f - UnityEngine.Random.value * 0.4f);
-                    this.room.AddObject(new LightningMachine.Impact(vector2, 16f, Color.white, true));
+                    //this.room.AddObject(new LightningMachine.Impact(vector2, 16f, Color.white, true));
                 }
+
             }
         }
 
