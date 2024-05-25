@@ -586,6 +586,14 @@ namespace Silkslug
             Futile.atlasManager.LoadImage("illustrations/achievement_image");
 
             FakeAchievementManager.LoadAchievements();
+
+            Futile.atlasManager.LoadImage("illustrations/hornethead");
+            for (int i = 1; i <= 51; i++)
+            {
+                string nb = i.ToString();
+                if (nb.Length < 2) nb = "0" + nb;
+                Futile.atlasManager.LoadImage("illustrations/memories/memory" + nb);
+            }
         }
 
     }
