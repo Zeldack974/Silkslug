@@ -1,6 +1,7 @@
 ﻿using BepInEx.Logging;
 using DevConsole.Commands;
 using Silkslug.ColosseumRubicon;
+using System.Linq;
 using UnityEngine;
 
 namespace Silkslug
@@ -59,7 +60,7 @@ namespace Silkslug
                 ConsoleWrite("DebugCommand[2] : " + "hello world", Color.yellow);
             } else if (args[0] == "achievement")
             {
-                FakeAchievementManager.ShowAchievement();
+                FakeAchievementManager.ShowAchievement(args[1]);
             }
         }
 

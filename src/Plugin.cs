@@ -584,6 +584,8 @@ namespace Silkslug
             // Achievement manager
             Futile.atlasManager.LoadImage("illustrations/achievement_background");
             Futile.atlasManager.LoadImage("illustrations/achievement_image");
+
+            FakeAchievementManager.LoadAchievements();
         }
 
     }

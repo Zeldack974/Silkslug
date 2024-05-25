@@ -8,17 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using RWCustom;
+using System.Reflection.Emit;
+using System.IO;
 
 namespace Silkslug.ColosseumRubicon
 {
     public class FakeAchievementManager : Menu.Menu
     {
-        public FContainer fContainer = new()
-        { 
-            y = -69,
-            x = RW.options.ScreenSize.x - (282 - 1),
-        };
-
         public State state = State.Appearing;
 
         public const float speedFactor = 1.5f;
@@ -33,13 +29,74 @@ namespace Silkslug.ColosseumRubicon
             Hidden
         }
 
-        public FakeAchievementManager(ProcessManager manager) : base(manager, new ProcessManager.ProcessID("FakeAchievementMenu", true))
+        public MenuLabel achievementTitle;
+        public MenuLabel achievementSubTitle;
+
+        public class Achievement
+        {
+            public string id;
+            public string title;
+            public string description;
+            public string imagePath; 
+
+            public Achievement(string id, string title, string description)
+            {
+                this.id = id;
+                this.title = title;
+                this.description = description;
+
+                imagePath = Path.Combine("achievements", this.id, "image");
+                Futile.atlasManager.LoadImage(imagePath);
+            }
+        }
+
+        public static List<Achievement> achievements;
+
+        public static void LoadAchievements()
+        {
+            Plugin.Log("Loading achievements");
+
+            List<ModManager.Mod> mods = (from mod in ModManager.InstalledMods where mod.enabled select mod).ToList();
+
+            achievements = new List<Achievement>();
+
+            foreach (ModManager.Mod mod in mods)
+            {
+                string achievementsPath = Path.Combine(mod.path, "achievements");
+                if (!Directory.Exists(achievementsPath)) continue;
+
+                string[] directories = Directory.GetDirectories(achievementsPath);
+
+                foreach (string directory in directories)
+                {
+                    string achievementId = new DirectoryInfo(directory).Name;
+                    string achievementPath = Path.Combine(achievementsPath, achievementId);
+
+                    Plugin.Log("Found achievement: " + achievementId + " | " + achievementPath);
+
+                    string infoFile = Path.Combine(achievementPath, "info.txt");
+                    string[] lines = File.ReadAllLines(infoFile);
+
+                    Plugin.Log("Before create achievement");
+
+                    Achievement achievement = new Achievement(achievementId, lines[0], lines[1]);
+
+                    Plugin.Log("Created:" + achievement.id + " " + achievement.imagePath);
+
+                    achievements.Add(achievement);
+                }
+            }
+        }
+
+        public FakeAchievementManager(ProcessManager manager, Achievement achievement) : base(manager, new ProcessManager.ProcessID("FakeAchievementMenu", true))
         {
             pages.Add(new Page(this, null, "main", 0));
-            pages[0].Container.AddChild(fContainer);
             PlaySound(Sounds.STEAM_ACHIEVEMENT);
 
-            fContainer.AddChild(
+            container.y = -69;
+            container.x = RW.options.ScreenSize.x - (282 - 1);
+
+            container.AddChild(
                 new FSprite("illustrations/achievement_background")
                 {
                     x = 0,
@@ -50,8 +107,8 @@ namespace Silkslug.ColosseumRubicon
                     anchorY = 0,
                 }
             );
-            fContainer.AddChild(
-                new FSprite("illustrations/achievement_image")
+            container.AddChild(
+                new FSprite(achievement.imagePath)
                 {
                     y = 13,
                     x = 11,
@@ -62,37 +119,31 @@ namespace Silkslug.ColosseumRubicon
                 }
             );
 
-            fContainer.AddChild(
-                new FLabel(Custom.GetDisplayFont(), "Embrace the Void")
-                {
-                    x = 71,
-                    y = 36,
-                    anchorX = 0,
-                    anchorY = 0,
-                    scale = 2f
-                }
-            );
+            achievementTitle = new MenuLabel(this, pages[0], achievement.title, new Vector2(70, 36), new Vector2(100, 10), false);
+            achievementSubTitle = new MenuLabel(this, pages[0], achievement.description, new Vector2(70, 20), new Vector2(100, 10), false);
+            achievementSubTitle.label.color = Color.gray;
 
-            Plugin.Log(Custom.GetDisplayFont());
+            achievementTitle.label.alignment = FLabelAlignment.Left;
+            achievementSubTitle.label.alignment = FLabelAlignment.Left;
 
-            fContainer.AddChild(
-                new FLabel(Custom.GetFont(), "Deep", new FTextParams())
-                {
-                    x = 71,
-                    y = 20,
-                    anchorX = 0,
-                    anchorY = 0,
-                    color = Color.gray,
-                    shader = RW.Shaders["Basic"]
-                }
-            );
+            achievementTitle.label.anchorY = 0;
+            achievementSubTitle.label.anchorY = 0;
         }
 
         public override void GrafUpdate(float timeStacker)
         {
+            if (achievementTitle != null && achievementSubTitle != null)
+            {
+                achievementTitle.label.x = achievementTitle.DrawX(timeStacker);
+                achievementTitle.label.y = achievementTitle.DrawY(timeStacker);
+
+                achievementSubTitle.label.x = achievementSubTitle.DrawX(timeStacker);
+                achievementSubTitle.label.y = achievementSubTitle.DrawY(timeStacker);
+            }
+
             if (state == State.Disappearing)
             {
-                this.fContainer.y -= speedFactor;
+                this.container.y -= speedFactor;
             }
             else if (shownTime >= 300)
             {
@@ -102,28 +153,33 @@ namespace Silkslug.ColosseumRubicon
             {
                 shownTime++;
             }
-            else if (fContainer.y >= 0)
+            else if (container.y >= 0)
             {
-                this.fContainer.y = 0;
+                this.container.y = 0;
                 this.state = State.Showed;
             }
             else if (state == State.Appearing)
             {
-                this.fContainer.y += speedFactor;
+                this.container.y += speedFactor;
             }
-            else if (fContainer.y <= -69)
+            else if (container.y <= -69)
             {
-                this.fContainer.y = -69;
+                this.container.y = -69;
                 this.state = State.Hidden;
             }
 
             this.pages[0].GrafUpdate(timeStacker);
         }
 
-        public static void ShowAchievement()
+        public static void ShowAchievement(string achievementId)
         {
             UnityEngine.Debug.Log("Creating achievement");
-            instance = new FakeAchievementManager(RW.processManager);
+
+            Achievement achievement = achievements.Find(achievement => achievement.id == achievementId);
+
+            if (achievement == null) throw new Exception($"Achievement not found : {achievementId}");
+
+            instance = new FakeAchievementManager(RW.processManager, achievement);
         }
 
         public static FakeAchievementManager instance;
