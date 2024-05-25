@@ -68,6 +68,8 @@ namespace Silkslug
 
             On.SlugcatStats.IsSlugcatFromMSC += SlugcatStats_IsSlugcatFromMSC;
             On.Music.MusicPlayer.GameRequestsSong += MusicPlayer_GameRequestsSong;
+
+            FakeAchievementManagerHooks.Register();
         }
 
         private void MusicPlayer_GameRequestsSong(On.Music.MusicPlayer.orig_GameRequestsSong orig, Music.MusicPlayer self, MusicEvent musicEvent)
@@ -578,6 +580,10 @@ namespace Silkslug
             Futile.atlasManager.LoadImage("atlas/hellknightbody");
             Futile.atlasManager.LoadImage("illustrations/bluedream");
             //Futile.atlasManager.LoadImage("illustrations/hkmainmenu");
+
+            // Achievement manager
+            Futile.atlasManager.LoadImage("illustrations/achievement_background");
+            Futile.atlasManager.LoadImage("illustrations/achievement_image");
         }
 
     }
