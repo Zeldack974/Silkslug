@@ -25,6 +25,8 @@ namespace Silkslug.ColosseumRubicon.Boss
 
         public int phase = 0;
 
+        public HellKnight boss;
+
 
         public bool upperArena { get => phase > 1; }
 
@@ -112,7 +114,8 @@ namespace Silkslug.ColosseumRubicon.Boss
         public void SpawnBoss()
         {
             ConsoleWrite("spawning boss");
-            room.AddObject(new HellKnight(room, eye.eyeCenter - new Vector2(0, 50)));
+            boss = new HellKnight(room, eye.eyeCenter - new Vector2(0, 50));
+            room.AddObject(boss);
             Manager.DisablePauseMenu = false;
         }
 

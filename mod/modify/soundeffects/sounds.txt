@@ -15,6 +15,6 @@
 [ADD]New_Location/vol=1.0/dopplerFac=0.0 : NewLocation
 [ADD]Double_Damage/vol=0.5/dopplerFac=0.0 : DoubleDamage
 [ADD]Damage/vol=0.5/dopplerFac=0.0 : Damage
-[ADD]Steam_Achievement/vol=1.0/dopplerFac=0.0 : SteamAchievement
+[ADD]Steam_Achievement/vol=0.5/dopplerFac=0.0 : SteamAchievement
 
 

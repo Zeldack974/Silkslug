@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MoreSlugcats;
 using Noise;
+using RWCustom;
 using UnityEngine;
 
 namespace Silkslug.ColosseumRubicon
@@ -12,7 +13,6 @@ namespace Silkslug.ColosseumRubicon
     public class HKLevel : CosmeticSprite
     {
         public bool cinematicStarted;
-        public int explosionTicks = 30;
         public SingularityBomb bomb;
         public bool playerSpawned;
         public HKLevel(Room room)
@@ -40,19 +40,20 @@ namespace Silkslug.ColosseumRubicon
 
             if (room.ReadyForPlayer)
             {
-                if (!cinematicStarted && room.game.Players[0].realizedCreature.mainBodyChunk.pos.x >= 540f)
+                if (!cinematicStarted && room.game.Players[0].realizedCreature.mainBodyChunk.pos.x >= 240f)
                 {
-                    room.game.Players[0].realizedCreature.mainBodyChunk.pos.x = 540f;
+                    room.game.Players[0].realizedCreature.mainBodyChunk.pos.x = 240f;
                     room.game.Players[0].realizedCreature.mainBodyChunk.vel.x = 0f;
-                    Vector2 pos = new Vector2(540f, 730f);
-                    AbstractCreature abstractCreature = new AbstractCreature(room.world, StaticWorld.GetCreatureTemplate(CreatureTemplate.Type.Scavenger), null, room.GetWorldCoordinate(pos), room.game.GetNewID());
+                    Vector2 pos = new Vector2(540f, 730f + 300f);
+                    AbstractCreature abstractCreature = new AbstractCreature(room.world, StaticWorld.GetCreatureTemplate(MoreSlugcatsEnums.CreatureTemplateType.ScavengerElite), null, room.GetWorldCoordinate(pos), room.game.GetNewID());
                     abstractCreature.RealizeInRoom();
 
                     AbstractPhysicalObject Abstbomb = new AbstractPhysicalObject(room.world, MoreSlugcatsEnums.AbstractObjectType.SingularityBomb, null, room.GetWorldCoordinate(pos), room.game.GetNewID());
+                    (abstractCreature.abstractAI as ScavengerAbstractAI).InitGearUp();
+
                     Abstbomb.RealizeInRoom();
                     bomb = Abstbomb.realizedObject as SingularityBomb;
-                    abstractCreature.realizedCreature.Grab(Abstbomb.realizedObject, UnityEngine.Random.Range(0, abstractCreature.realizedCreature.grasps.Length), 0, Creature.Grasp.Shareability.CanNotShare, 0.5f, true, true);
-
+                    this.room.PlaySound(SoundID.Bomb_Explode, abstractCreature.realizedCreature.firstChunk.pos);
 
                     abstractCreature.realizedCreature.mainBodyChunk.pos = pos;
                     //abstractCreature.realizedCreature.mainBodyChunk.vel.y = - 100f;
@@ -63,15 +64,27 @@ namespace Silkslug.ColosseumRubicon
 
                 if (cinematicStarted)
                 {
-                    if (explosionTicks == 0)
+                    if (room.game.Players[0].realizedCreature.mainBodyChunk.pos.x >= 800f && !bomb.ignited)
                     {
                         bomb.ignited = true;
+                        //bomb.firstChunk.vel += Custom.DirVec(bomb.firstChunk.pos, room.game.Players[0].realizedCreature.mainBodyChunk.pos).normalized * 20;
+                        bomb.firstChunk.vel.y += 10;
                     }
+
+                    if (bomb != null && !bomb.abstractPhysicalObject.slatedForDeletion)
+                    {
+                        if (bomb.activateSucktion)
+                        {
+                            room.game.Players[0].realizedCreature.mainBodyChunk.vel = Custom.DirVec(room.game.Players[0].realizedCreature.mainBodyChunk.pos, bomb.firstChunk.pos).normalized * 50;
+                        }
+                    }
+
+
                     if (room.game.Players[0].realizedCreature.dead)
                     {
-                        room.game.rainWorld.processManager.RequestMainProcessSwitch(ProcessManager.ProcessID.Credits);
+
+                        room.game.rainWorld.processManager.RequestMainProcessSwitch(ProcessManager.ProcessID.Statistics);
                     }
-                    explosionTicks--;
                 }
             }
         }

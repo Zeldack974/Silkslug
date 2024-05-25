@@ -62,6 +62,12 @@ namespace Silkslug.ColosseumRubicon
             On.RainWorldGame.ctor += RainWorldGame_ctor;
             On.Player.Update += Player_Update;
             On.ProcessManager.PostSwitchMainProcess += ProcessManager_PostSwitchMainProcess;
+            On.Player.CanBeSwallowed += Player_CanBeSwallowed;
+        }
+
+        private static bool Player_CanBeSwallowed(On.Player.orig_CanBeSwallowed orig, Player self, PhysicalObject testObj)
+        {
+            return orig(self, testObj) && self.room.abstractRoom.name != "CR_THEEND";
         }
 
         private static void ProcessManager_PostSwitchMainProcess(On.ProcessManager.orig_PostSwitchMainProcess orig, ProcessManager self, ProcessManager.ProcessID ID)
@@ -76,7 +82,7 @@ namespace Silkslug.ColosseumRubicon
 
         private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
-            //UnityEngine.Debug.Log("pos: " + self.mainBodyChunk.pos);
+            UnityEngine.Debug.Log("pos: " + self.mainBodyChunk.pos);
             orig(self, eu);
         }
 

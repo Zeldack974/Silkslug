@@ -31,6 +31,10 @@ namespace Silkslug.ColosseumRubicon.Boss
         public static int iFrame = 0;
         public static bool TakeDamage(this Player player, int damage = 1)
         {
+            if (BossManager.Instance != null && BossManager.Instance.boss != null && BossManager.Instance.boss.dead)
+            {
+                return true;
+            }
             if (player.Karma > 0 || player.KarmaIsReinforced || iFrame > 0)
             {
                 if (iFrame > 0)
