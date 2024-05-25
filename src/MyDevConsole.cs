@@ -1,6 +1,7 @@
 ﻿using BepInEx.Logging;
 using DevConsole.Commands;
 using Silkslug.ColosseumRubicon;
+using System.Linq;
 using UnityEngine;
 
 namespace Silkslug
@@ -23,7 +24,7 @@ namespace Silkslug
                 catch { ConsoleWrite("Error in command", Color.red); }
             })
             .AutoComplete(new string[][] {
-                new string[] { "hkmenu", "1" }
+                new string[] { "hkmenu", "1", "achievement" }
             })
             .Register();
             new CommandBuilder("setnextchallenge")
@@ -57,6 +58,9 @@ namespace Silkslug
             else if (args[0] == "1")
             {
                 ConsoleWrite("DebugCommand[2] : " + "hello world", Color.yellow);
+            } else if (args[0] == "achievement")
+            {
+                FakeAchievementManager.ShowAchievement(args[1]);
             }
         }
 
