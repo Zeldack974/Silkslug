@@ -1,6 +1,7 @@
 ﻿using BepInEx.Logging;
 using DevConsole.Commands;
 using Silkslug.ColosseumRubicon;
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -21,7 +22,7 @@ namespace Silkslug
                 {
                     DebugCommand(args);
                 }
-                catch { ConsoleWrite("Error in command", Color.red); }
+                catch (Exception e) { ConsoleWrite("Error in command", Color.red); Plugin.LogError(e); }
             })
             .AutoComplete(new string[][] {
                 new string[] { "hkmenu", "1", "achievement" }
@@ -34,7 +35,7 @@ namespace Silkslug
                 {
                     ColosseumRubicon.Manager.SetChallengeCommand(args);
                 }
-                catch { ConsoleWrite("Error in command", Color.red); }
+                catch (Exception e) { ConsoleWrite("Error in command", Color.red); Plugin.LogError(e.Message); }
             })
             //.AutoComplete(new string[][] {
             //                new string[] { "1", "2" }

@@ -10,6 +10,8 @@ using UnityEngine;
 using RWCustom;
 using System.Reflection.Emit;
 using System.IO;
+using SlugBase;
+using Newtonsoft.Json;
 
 namespace Silkslug.ColosseumRubicon
 {
@@ -35,15 +37,23 @@ namespace Silkslug.ColosseumRubicon
         public class Achievement
         {
             public string id;
-            public string title;
-            public string description;
-            public string imagePath; 
+            public Dictionary<string, Dictionary<string, string>> translations;
+            public string imagePath;
 
-            public Achievement(string id, string title, string description)
+            private string GetLocalization(string localization)
+            {
+                var transformedTranslations = translations.ToDictionary(x => x.Key.ToLower(), x => x.Value);
+                if (transformedTranslations.ContainsKey(RW.options.language.value.ToLower())) return transformedTranslations[RW.options.language.value.ToLower()][localization];
+                return transformedTranslations["english"][localization];
+            }
+
+            public string title => GetLocalization("title");
+            public string description => GetLocalization("description");
+
+            public Achievement(string id, Dictionary<string, Dictionary<string, string>> localizations)
             {
                 this.id = id;
-                this.title = title;
-                this.description = description;
+                this.translations = localizations;
 
                 imagePath = Path.Combine("achievements", this.id, "image");
                 Futile.atlasManager.LoadImage(imagePath);
@@ -51,6 +61,11 @@ namespace Silkslug.ColosseumRubicon
         }
 
         public static List<Achievement> achievements;
+
+        public static Dictionary<string, object> ToDictionnary(object arg)
+        {
+            return arg.GetType().GetProperties().ToDictionary(property => property.Name, property => property.GetValue(arg));
+        }
 
         public static void LoadAchievements()
         {
@@ -74,12 +89,12 @@ namespace Silkslug.ColosseumRubicon
 
                     Plugin.Log("Found achievement: " + achievementId + " | " + achievementPath);
 
-                    string infoFile = Path.Combine(achievementPath, "info.txt");
-                    string[] lines = File.ReadAllLines(infoFile);
+                    string infoFile = Path.Combine(achievementPath, "info.json");
+                    var localizations = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(File.ReadAllText(infoFile));
 
                     Plugin.Log("Before create achievement");
 
-                    Achievement achievement = new Achievement(achievementId, lines[0], lines[1]);
+                    Achievement achievement = new Achievement(achievementId, localizations);
 
                     Plugin.Log("Created:" + achievement.id + " " + achievement.imagePath);
 
