@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using RWCustom;
 
 namespace Silkslug.ColosseumRubicon
 {
@@ -36,6 +37,8 @@ namespace Silkslug.ColosseumRubicon
         {
             pages.Add(new Page(this, null, "main", 0));
             pages[0].Container.AddChild(fContainer);
+            PlaySound(Sounds.STEAM_ACHIEVEMENT);
+
             fContainer.AddChild(
                 new FSprite("illustrations/achievement_background")
                 {
@@ -58,12 +61,35 @@ namespace Silkslug.ColosseumRubicon
                     anchorY = 0,
                 }
             );
+
+            fContainer.AddChild(
+                new FLabel(Custom.GetDisplayFont(), "Embrace the Void")
+                {
+                    x = 71,
+                    y = 36,
+                    anchorX = 0,
+                    anchorY = 0,
+                    scale = 2f
+                }
+            );
+
+            Plugin.Log(Custom.GetDisplayFont());
+
+            fContainer.AddChild(
+                new FLabel(Custom.GetFont(), "Deep", new FTextParams())
+                {
+                    x = 71,
+                    y = 20,
+                    anchorX = 0,
+                    anchorY = 0,
+                    color = Color.gray,
+                    shader = RW.Shaders["Basic"]
+                }
+            );
         }
 
         public override void GrafUpdate(float timeStacker)
         {
-            Plugin.Log(fContainer.y);
-            Plugin.Log(state);
             if (state == State.Disappearing)
             {
                 this.fContainer.y -= speedFactor;
