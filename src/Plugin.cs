@@ -14,6 +14,8 @@ using Silkslug.ColosseumRubicon;
 using BepInEx.Logging;
 using Silkslug.ColosseumRubicon.Boss;
 using Fisobs.Core;
+using System.Xml.Schema;
+using DressMySlugcat;
 
 namespace Silkslug
 {
@@ -69,7 +71,16 @@ namespace Silkslug
             On.SlugcatStats.IsSlugcatFromMSC += SlugcatStats_IsSlugcatFromMSC;
             On.Music.MusicPlayer.GameRequestsSong += MusicPlayer_GameRequestsSong;
 
+            On.ProcessManager.ActualProcessSwitch += ProcessManager_ActualProcessSwitch;
+
             FakeAchievementManagerHooks.Register();
+        }
+
+        private void ProcessManager_ActualProcessSwitch(On.ProcessManager.orig_ActualProcessSwitch orig, ProcessManager self, ProcessManager.ProcessID ID, float fadeOutSeconds)
+        {
+            orig(self, ID, fadeOutSeconds);
+
+            SkinApplyer.SetSlornetSkin();
         }
 
         private void MusicPlayer_GameRequestsSong(On.Music.MusicPlayer.orig_GameRequestsSong orig, Music.MusicPlayer self, MusicEvent musicEvent)
@@ -595,6 +606,5 @@ namespace Silkslug
                 Futile.atlasManager.LoadImage("illustrations/memories/memory" + nb);
             }
         }
-
     }
 }

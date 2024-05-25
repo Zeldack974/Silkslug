@@ -25,7 +25,7 @@ namespace Silkslug
                 catch (Exception e) { ConsoleWrite("Error in command", Color.red); Plugin.LogError(e); }
             })
             .AutoComplete(new string[][] {
-                new string[] { "hkmenu", "1", "achievement" }
+                new string[] { "hkmenu", "1", "achievement", "apply_skin" }
             })
             .Register();
             new CommandBuilder("setnextchallenge")
@@ -62,6 +62,10 @@ namespace Silkslug
             } else if (args[0] == "achievement")
             {
                 FakeAchievementManager.ShowAchievement(args[1]);
+            }
+            else if (args[0] == "apply_skin")
+            {
+                SkinApplyer.SetSlornetSkin();
             }
         }
 
