@@ -134,15 +134,18 @@ namespace Silkslug.ColosseumRubicon
                 }
             );
 
-            achievementTitle = new MenuLabel(this, pages[0], achievement.title, new Vector2(70, 36), new Vector2(100, 10), false);
-            achievementSubTitle = new MenuLabel(this, pages[0], achievement.description, new Vector2(70, 20), new Vector2(100, 10), false);
+            achievementTitle = new MenuLabel(this, pages[0], achievement.title, new Vector2(70, 36), new Vector2(200, 10), false);
+            achievementSubTitle = new MenuLabel(this, pages[0], achievement.description, new Vector2(70, 20 + 15), new Vector2(200, 10), false);
             achievementSubTitle.label.color = Color.gray;
 
             achievementTitle.label.alignment = FLabelAlignment.Left;
             achievementSubTitle.label.alignment = FLabelAlignment.Left;
 
             achievementTitle.label.anchorY = 0;
-            achievementSubTitle.label.anchorY = 0;
+            achievementSubTitle.label.anchorY = 1;
+
+            WordWrapLabel(achievementTitle.label, achievementTitle.size.x, 1);
+            WordWrapLabel(achievementSubTitle.label, achievementSubTitle.size.x, 2);
         }
 
         public override void GrafUpdate(float timeStacker)
@@ -198,5 +201,68 @@ namespace Silkslug.ColosseumRubicon
         }
 
         public static FakeAchievementManager instance;
+
+        public static void WordWrapLabel(FLabel label, float maxWidth, int maxLines)
+        {
+            string text = "";
+            string[] array = label.text.Split(Environment.NewLine.ToCharArray());
+            for (int i = 0; i < array.Length; i++)
+            {
+                string text2 = "";
+                if (array[i].Length != 0)
+                {
+                    string[] array2 = array[i].Split(new char[] { ' ' });
+                    if (array2.Length > 1)
+                    {
+                        for (int j = 0; j < array2.Length; j++)
+                        {
+                            text2 = text2 + array2[j] + " ";
+                            label.text = text2;
+                            if (label.textRect.width > maxWidth)
+                            {
+                                if (text.Split(Environment.NewLine.ToCharArray()).Length >= maxLines)
+                                {
+                                    label.text = text.Remove(text.Length - 1, 1) + "...";
+                                    return;
+                                }
+                                text = text + Environment.NewLine + array2[j] + " ";
+                                text2 = array2[j] + " ";
+                            }
+                            else
+                            {
+                                text = text + array2[j] + " ";
+                            }
+                        }
+                        if (i != array.Length - 1)
+                        {
+                            text += Environment.NewLine;
+                        }
+                    }
+                    else
+                    {
+                        for (int k = 0; k < array[i].Length; k++)
+                        {
+                            text2 += array[i][k].ToString();
+                            label.text = text2;
+                            if (label.textRect.width > maxWidth)
+                            {
+                                if (text.Split(Environment.NewLine.ToCharArray()).Length >= maxLines)
+                                {
+                                    label.text = text.Remove(text.Length - 1, 1) + "...";
+                                    return;
+                                }
+                                text = text + Environment.NewLine + array[i][k].ToString();
+                                text2 = array[i][k].ToString();
+                            }
+                            else
+                            {
+                                text += array[i][k].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            label.text = text;
+        }
     }
 }
