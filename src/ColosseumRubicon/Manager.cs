@@ -76,6 +76,7 @@ namespace Silkslug.ColosseumRubicon
 
         private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
+            //UnityEngine.Debug.Log("pos: " + self.mainBodyChunk.pos);
             orig(self, eu);
         }
 

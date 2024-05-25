@@ -115,6 +115,7 @@ namespace Silkslug.ColosseumRubicon.Boss
             sLeaser.sprites[3] = new FSprite("illustrations/bossintro", true);
             sLeaser.sprites[3].x = rCam.room.RoomRect.Center.x;
             sLeaser.sprites[3].y = rCam.room.RoomRect.Center.y / 2;
+            sLeaser.sprites[3].SetAnchor(new Vector2(0.5f, 0.5f));
             sLeaser.sprites[3].isVisible = false;
 
             this.AddToContainer(sLeaser, rCam, null);
@@ -131,9 +132,10 @@ namespace Silkslug.ColosseumRubicon.Boss
                 //if (open)
                     sLeaser.sprites[i]._container.AddChildAtIndex(sLeaser.sprites[i], maxCloudIndex - 2);
             }
+            sLeaser.sprites[3].SetPosition(rCam.sSize / 2f);
+
 
             eyeCenter = camPos + rCam.sSize / 2 + new Vector2(0, 10);
-            sLeaser.sprites[1].SetPosition(this.pos - camPos);
             sLeaser.sprites[1].isVisible = open;
 
             sLeaser.sprites[2].isVisible = introFrames > 0;
