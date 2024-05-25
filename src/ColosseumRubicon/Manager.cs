@@ -63,6 +63,12 @@ namespace Silkslug.ColosseumRubicon
             On.Player.Update += Player_Update;
             On.ProcessManager.PostSwitchMainProcess += ProcessManager_PostSwitchMainProcess;
             On.Player.CanBeSwallowed += Player_CanBeSwallowed;
+            On.RainCycle.GetDesiredCycleLength += RainCycle_GetDesiredCycleLength;
+        }
+
+        private static int RainCycle_GetDesiredCycleLength(On.RainCycle.orig_GetDesiredCycleLength orig, RainCycle self)
+        {
+            return self.world.region.name != "CR" ? orig(self) : 2147483647;
         }
 
         private static bool Player_CanBeSwallowed(On.Player.orig_CanBeSwallowed orig, Player self, PhysicalObject testObj)
