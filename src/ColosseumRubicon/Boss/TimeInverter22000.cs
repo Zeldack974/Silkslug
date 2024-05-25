@@ -51,9 +51,9 @@ namespace Silkslug.ColosseumRubicon.Boss
 
                 if (gowTicks >= totalTicks)
                 {
-                    this.Destroy();
                     Manager.DisablePauseMenu = false;
                     RainWorldGame.ForceSaveNewDenLocation(this.room.game, "CR_THEEND", true);
+                    this.Destroy();
                     this.room.game.rainWorld.processManager.RequestMainProcessSwitch(HKMainMenu.HKMainMenuID);
                 }
             }
@@ -62,7 +62,7 @@ namespace Silkslug.ColosseumRubicon.Boss
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
             sLeaser.sprites = new FSprite[1];
-            sLeaser.sprites[0] = new FSprite("illustrations/bluedream", true);
+            sLeaser.sprites[0] = new FSprite("illustrations/memories/memory01", true);
             sLeaser.sprites[0].alpha = 0f;
             AddToContainer(sLeaser, rCam, null);
         }

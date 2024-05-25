@@ -209,6 +209,7 @@ namespace Silkslug.ColosseumRubicon.Boss
         {
             if (Custom.DistLess(pos, this.pos, 10)) return;
             player.room.AddObject(new ShockWave(this.pos, 750f, 0.35f, 15, true));
+            this.room.PlaySound(SoundID.HUD_Pause_Game, this.pos, 2f, UnityEngine.Random.Range(0.5f, 0.75f));
             this.pos = pos;
         }
 
