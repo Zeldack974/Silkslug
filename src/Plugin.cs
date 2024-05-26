@@ -71,10 +71,14 @@ namespace Silkslug
             On.SSOracleBehavior.PebblesConversation.AddEvents += PebblesConversation_AddEvents;
             On.ProjectionScreen.AddImage_string += ProjectionScreen_AddImage_string;
 
+            On.Menu.SlugcatSelectMenu.UpdateStartButtonText += SlugcatSelectMenu_UpdateStartButtonText;
+            On.Menu.SlugcatSelectMenu.ContinueStartedGame += SlugcatSelectMenu_ContinueStartedGame;
+
             On.SlugcatStats.IsSlugcatFromMSC += SlugcatStats_IsSlugcatFromMSC;
             On.Music.MusicPlayer.GameRequestsSong += MusicPlayer_GameRequestsSong;
 
             On.Menu.MainMenu.ctor += MainMenu_ctor;
+
         }
 
         private void MainMenu_ctor(On.Menu.MainMenu.orig_ctor orig, Menu.MainMenu self, ProcessManager manager, bool showRegionSpecificBkg)
