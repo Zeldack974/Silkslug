@@ -65,11 +65,38 @@ namespace Silkslug
 
             On.RoomSpecificScript.AddRoomSpecificScript += RoomSpecificScript_AddRoomSpecificScript;
             On.SSOracleBehavior.PebblesConversation.AddEvents += PebblesConversation_AddEvents;
+            On.ProjectionScreen.AddImage_string += ProjectionScreen_AddImage_string;
 
             On.SlugcatStats.IsSlugcatFromMSC += SlugcatStats_IsSlugcatFromMSC;
             On.Music.MusicPlayer.GameRequestsSong += MusicPlayer_GameRequestsSong;
 
+            On.Menu.SlugcatSelectMenu.UpdateStartButtonText += SlugcatSelectMenu_UpdateStartButtonText;
+            On.Menu.SlugcatSelectMenu.ContinueStartedGame += SlugcatSelectMenu_ContinueStartedGame;
+
+
             FakeAchievementManagerHooks.Register();
+        }
+
+        private void SlugcatSelectMenu_ContinueStartedGame(On.Menu.SlugcatSelectMenu.orig_ContinueStartedGame orig, Menu.SlugcatSelectMenu self, SlugcatStats.Name storyGameCharacter)
+        {
+            if (self.slugcatPages[self.slugcatPageIndex].slugcatNumber == ShawName && (bool)self.saveGameData[ShawName]?.ascended)
+            {
+                self.redSaveState = self.manager.rainWorld.progression.GetOrInitiateSaveState(ShawName, null, self.manager.menuSetup, false);
+                self.manager.RequestMainProcessSwitch(ProcessManager.ProcessID.Statistics);
+                self.PlaySound(SoundID.MENU_Switch_Page_Out);
+                return;
+            }
+            orig(self, storyGameCharacter);
+        }
+
+        private void SlugcatSelectMenu_UpdateStartButtonText(On.Menu.SlugcatSelectMenu.orig_UpdateStartButtonText orig, Menu.SlugcatSelectMenu self)
+        {
+            orig(self);
+            if (self.startButton.menuLabel.text == self.Translate("CONTINUE") && self.slugcatPages[self.slugcatPageIndex].slugcatNumber == ShawName && (bool)self.saveGameData[ShawName]?.ascended)
+            {
+                self.startButton.menuLabel.text = self.Translate("STATISTICS");
+                return;
+            }
         }
 
         private void MusicPlayer_GameRequestsSong(On.Music.MusicPlayer.orig_GameRequestsSong orig, Music.MusicPlayer self, MusicEvent musicEvent)
@@ -99,6 +126,15 @@ namespace Silkslug
         private bool SlugcatStats_IsSlugcatFromMSC(On.SlugcatStats.orig_IsSlugcatFromMSC orig, SlugcatStats.Name i)
         {
             return i.value == "Shaw" || orig(i);
+        }
+
+        private ProjectedImage ProjectionScreen_AddImage_string(On.ProjectionScreen.orig_AddImage_string orig, ProjectionScreen self, string name)
+        {
+            if (self.room.game.GetStorySession.saveState.saveStateNumber == ShawName && name.ToLower().StartsWith("AIimg3"))
+            {
+                return orig(self, "Shaw-" + name);
+            }
+            return orig(self, name);
         }
 
         private void PebblesConversation_AddEvents(On.SSOracleBehavior.PebblesConversation.orig_AddEvents orig, SSOracleBehavior.PebblesConversation self)

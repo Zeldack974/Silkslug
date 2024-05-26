@@ -42,6 +42,18 @@ namespace Silkslug.ColosseumRubicon
             RoomManager.GetRoomManager(room).spawnCreatures();
         }
 
+        public static void PlayMusic(Room room)
+        {
+            room.game.manager.musicPlayer.GameRequestsSong(new MusicEvent()
+            {
+                prio = 100,
+                songName = "RW_Threat_Metropolis",
+                cyclesRest = 0,
+                stopAtDeath = false,
+                loop = true,
+            });
+        }
+
         public static void SetChallengeCommand(string[] args)
         {
             if (args.Length == 0) { return; }
@@ -63,17 +75,28 @@ namespace Silkslug.ColosseumRubicon
             On.Player.Update += Player_Update;
             On.ProcessManager.PostSwitchMainProcess += ProcessManager_PostSwitchMainProcess;
             On.Player.CanBeSwallowed += Player_CanBeSwallowed;
+            On.Player.SlugcatGrab += Player_SlugcatGrab;
             On.RainCycle.GetDesiredCycleLength += RainCycle_GetDesiredCycleLength;
         }
 
+
         private static int RainCycle_GetDesiredCycleLength(On.RainCycle.orig_GetDesiredCycleLength orig, RainCycle self)
         {
-            return self.world.region.name != "CR" ? orig(self) : 2147483647;
+            return ((self.world.name != "CR")) ? orig(self) : 2147483647;
+        }
+
+        private static void Player_SlugcatGrab(On.Player.orig_SlugcatGrab orig, Player self, PhysicalObject obj, int graspUsed)
+        {
+            if (self.room.abstractRoom.name == "CR_THEEND")
+            {
+                return;
+            }
+            orig(self, obj, graspUsed);
         }
 
         private static bool Player_CanBeSwallowed(On.Player.orig_CanBeSwallowed orig, Player self, PhysicalObject testObj)
         {
-            return orig(self, testObj) && self.room.abstractRoom.name != "CR_THEEND";
+            return orig(self, testObj) && (self.room.world.name != "CR");
         }
 
         private static void ProcessManager_PostSwitchMainProcess(On.ProcessManager.orig_PostSwitchMainProcess orig, ProcessManager self, ProcessManager.ProcessID ID)
