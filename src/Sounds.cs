@@ -19,7 +19,6 @@
         public static SoundID NEW_LOCATION { get; private set; }
         public static SoundID DOUBLE_DAMAGE { get; private set; }
         public static SoundID DAMAGE { get; private set; }
-        public static SoundID STEAM_ACHIEVEMENT { get; private set; }
 
 
 
