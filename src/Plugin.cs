@@ -30,6 +30,8 @@ namespace Silkslug
 
         public static readonly SlugcatStats.Name ShawName = new SlugcatStats.Name("Shaw");
 
+        public static bool Initialized = false;
+
         public static void Log(object msg)
         {
             log.LogInfo(msg);
@@ -71,16 +73,18 @@ namespace Silkslug
             On.SlugcatStats.IsSlugcatFromMSC += SlugcatStats_IsSlugcatFromMSC;
             On.Music.MusicPlayer.GameRequestsSong += MusicPlayer_GameRequestsSong;
 
-            On.ProcessManager.ActualProcessSwitch += ProcessManager_ActualProcessSwitch;
-
-            FakeAchievementManagerHooks.Register();
+            On.Menu.MainMenu.ctor += MainMenu_ctor;
         }
 
-        private void ProcessManager_ActualProcessSwitch(On.ProcessManager.orig_ActualProcessSwitch orig, ProcessManager self, ProcessManager.ProcessID ID, float fadeOutSeconds)
+        private void MainMenu_ctor(On.Menu.MainMenu.orig_ctor orig, Menu.MainMenu self, ProcessManager manager, bool showRegionSpecificBkg)
         {
-            orig(self, ID, fadeOutSeconds);
+            orig(self, manager, showRegionSpecificBkg);
+            if (!Initialized && SkinApplyer.IsSlornetEnabled)
+            {
+                SkinApplyer.SetDefaults();
+            }
 
-            SkinApplyer.SetSlornetSkin();
+            Initialized = true;
         }
 
         private void MusicPlayer_GameRequestsSong(On.Music.MusicPlayer.orig_GameRequestsSong orig, Music.MusicPlayer self, MusicEvent musicEvent)
@@ -595,8 +599,6 @@ namespace Silkslug
             // Achievement manager
             Futile.atlasManager.LoadImage("illustrations/achievement_background");
             Futile.atlasManager.LoadImage("illustrations/achievement_image");
-
-            FakeAchievementManager.LoadAchievements();
 
             Futile.atlasManager.LoadImage("illustrations/hornethead");
             for (int i = 1; i <= 51; i++)
