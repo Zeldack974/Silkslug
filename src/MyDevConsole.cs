@@ -26,7 +26,7 @@ namespace Silkslug
                 catch (Exception e) { ConsoleWrite("Error in command", Color.red); Plugin.LogError(e); }
             })
             .AutoComplete(new string[][] {
-                new string[] { "hkmenu", "1", "apply_skin", "sawblade" }
+                new string[] { "hkmenu", "1", "apply_skin" }
             })
             .Register();
             new CommandBuilder("setnextchallenge")
@@ -64,10 +64,6 @@ namespace Silkslug
             else if (args[0] == "apply_skin")
             {
                 SkinApplyer.SetSlornetSkin();
-            }
-            else if (args[0] == "sawblade")
-            {
-                //GameConsole.TargetPos.Room.realizedRoom.AddObject(new SawBlade(GameConsole.TargetPos.Room.realizedRoom, new Vector2(Futile.mousePosition.x, Futile.mousePosition.y) + GameConsole.TargetPos.Room.realizedRoom.game.cameras[0].pos, args.Length > 1 ? int.Parse(args[1]) : 50));
             }
         }
 
