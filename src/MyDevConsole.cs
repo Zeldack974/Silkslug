@@ -67,7 +67,7 @@ namespace Silkslug
             }
             else if (args[0] == "sawblade")
             {
-                GameConsole.TargetPos.Room.realizedRoom.AddObject(new SawBlade(GameConsole.TargetPos.Room.realizedRoom, new Vector2(Futile.mousePosition.x, Futile.mousePosition.y) + GameConsole.TargetPos.Room.realizedRoom.game.cameras[0].pos, args.Length > 1 ? int.Parse(args[1]) : 50));
+                //GameConsole.TargetPos.Room.realizedRoom.AddObject(new SawBlade(GameConsole.TargetPos.Room.realizedRoom, new Vector2(Futile.mousePosition.x, Futile.mousePosition.y) + GameConsole.TargetPos.Room.realizedRoom.game.cameras[0].pos, args.Length > 1 ? int.Parse(args[1]) : 50));
             }
         }
 
