@@ -11,6 +11,7 @@ using UnityEngine.PlayerLoop;
 using MoreSlugcats;
 using static Silkslug.ColosseumRubicon.Boss.HellKnight.Attack;
 using System.Diagnostics;
+using FakeAchievements;
 
 namespace Silkslug.ColosseumRubicon.Boss
 {

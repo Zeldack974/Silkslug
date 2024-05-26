@@ -14,6 +14,8 @@ using Silkslug.ColosseumRubicon;
 using BepInEx.Logging;
 using Silkslug.ColosseumRubicon.Boss;
 using Fisobs.Core;
+using System.Xml.Schema;
+using DressMySlugcat;
 
 namespace Silkslug
 {
@@ -27,6 +29,8 @@ namespace Silkslug
         public static readonly PlayerFeature<bool> SpearAbilites = PlayerBool("silkslug/spear_abilities");
 
         public static readonly SlugcatStats.Name ShawName = new SlugcatStats.Name("Shaw");
+
+        public static bool Initialized = false;
 
         public static void Log(object msg)
         {
@@ -70,11 +74,18 @@ namespace Silkslug
             On.SlugcatStats.IsSlugcatFromMSC += SlugcatStats_IsSlugcatFromMSC;
             On.Music.MusicPlayer.GameRequestsSong += MusicPlayer_GameRequestsSong;
 
-            On.Menu.SlugcatSelectMenu.UpdateStartButtonText += SlugcatSelectMenu_UpdateStartButtonText;
-            On.Menu.SlugcatSelectMenu.ContinueStartedGame += SlugcatSelectMenu_ContinueStartedGame;
+            On.Menu.MainMenu.ctor += MainMenu_ctor;
+        }
 
+        private void MainMenu_ctor(On.Menu.MainMenu.orig_ctor orig, Menu.MainMenu self, ProcessManager manager, bool showRegionSpecificBkg)
+        {
+            orig(self, manager, showRegionSpecificBkg);
+            if (!Initialized && SkinApplyer.IsSlornetEnabled)
+            {
+                SkinApplyer.SetDefaults();
+            }
 
-            FakeAchievementManagerHooks.Register();
+            Initialized = true;
         }
 
         private void SlugcatSelectMenu_ContinueStartedGame(On.Menu.SlugcatSelectMenu.orig_ContinueStartedGame orig, Menu.SlugcatSelectMenu self, SlugcatStats.Name storyGameCharacter)
@@ -621,8 +632,6 @@ namespace Silkslug
             Futile.atlasManager.LoadImage("illustrations/achievement_background");
             Futile.atlasManager.LoadImage("illustrations/achievement_image");
 
-            FakeAchievementManager.LoadAchievements();
-
             Futile.atlasManager.LoadImage("illustrations/hornethead");
             for (int i = 1; i <= 51; i++)
             {
@@ -631,6 +640,5 @@ namespace Silkslug
                 Futile.atlasManager.LoadImage("illustrations/memories/memory" + nb);
             }
         }
-
     }
 }

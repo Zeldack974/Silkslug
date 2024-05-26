@@ -42,7 +42,6 @@
             BOXING_BELL = new SoundID("Boxing_Bell", true);
             NEW_LOCATION = new SoundID("New_Location", true);
             DAMAGE = new SoundID("Damage", true);
-            STEAM_ACHIEVEMENT = new SoundID("Steam_Achievement", true);
         }
     }
 }

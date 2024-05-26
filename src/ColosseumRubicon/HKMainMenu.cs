@@ -8,6 +8,7 @@ using RWCustom;
 using UnityEngine;
 using MoreSlugcats;
 using System.Runtime.CompilerServices;
+using FakeAchievements;
 
 namespace Silkslug.ColosseumRubicon
 {

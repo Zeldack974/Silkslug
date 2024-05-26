@@ -1,6 +1,7 @@
 ﻿using BepInEx.Logging;
 using DevConsole.Commands;
 using Silkslug.ColosseumRubicon;
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -21,10 +22,10 @@ namespace Silkslug
                 {
                     DebugCommand(args);
                 }
-                catch { ConsoleWrite("Error in command", Color.red); }
+                catch (Exception e) { ConsoleWrite("Error in command", Color.red); Plugin.LogError(e); }
             })
             .AutoComplete(new string[][] {
-                new string[] { "hkmenu", "1", "achievement" }
+                new string[] { "hkmenu", "1", "apply_skin" }
             })
             .Register();
             new CommandBuilder("setnextchallenge")
@@ -34,7 +35,7 @@ namespace Silkslug
                 {
                     ColosseumRubicon.Manager.SetChallengeCommand(args);
                 }
-                catch { ConsoleWrite("Error in command", Color.red); }
+                catch (Exception e) { ConsoleWrite("Error in command", Color.red); Plugin.LogError(e.Message); }
             })
             //.AutoComplete(new string[][] {
             //                new string[] { "1", "2" }
@@ -58,9 +59,10 @@ namespace Silkslug
             else if (args[0] == "1")
             {
                 ConsoleWrite("DebugCommand[2] : " + "hello world", Color.yellow);
-            } else if (args[0] == "achievement")
+            }
+            else if (args[0] == "apply_skin")
             {
-                FakeAchievementManager.ShowAchievement(args[1]);
+                SkinApplyer.SetSlornetSkin();
             }
         }
 
