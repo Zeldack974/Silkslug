@@ -20,6 +20,7 @@
         public static SoundID DOUBLE_DAMAGE { get; private set; }
         public static SoundID DAMAGE { get; private set; }
         public static SoundID STEAM_ACHIEVEMENT { get; private set; }
+        public static SoundID SAW_LOOP { get; private set; }
 
 
 
@@ -42,6 +43,8 @@
             BOXING_BELL = new SoundID("Boxing_Bell", true);
             NEW_LOCATION = new SoundID("New_Location", true);
             DAMAGE = new SoundID("Damage", true);
+            SAW_LOOP = new SoundID("Saw_Loop", true);
+
         }
     }
 }

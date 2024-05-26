@@ -612,9 +612,12 @@ namespace Silkslug
         // Load any resources, such as sprites or sounds
         private void LoadResources(RainWorld rainWorld)
         {
-            Futile.atlasManager.LoadImage("atlas/slash1");
-            Futile.atlasManager.LoadImage("atlas/slash2");
-            Futile.atlasManager.LoadImage("atlas/longslash");
+            ConsoleWrite("load assets !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+            Futile.atlasManager.LoadImage("assets/slash1");
+            Futile.atlasManager.LoadImage("assets/slash2");
+            Futile.atlasManager.LoadImage("assets/longslash");
+
 
             Sounds.Initialize();
             MachineConnector.SetRegisteredOI(MOD_ID, ShawOptions.instance);
@@ -623,26 +626,31 @@ namespace Silkslug
             Futile.atlasManager.LoadImage("illustrations/hkfront");
             Futile.atlasManager.LoadImage("illustrations/hkback");
 
-            Futile.atlasManager.LoadImage("atlas/eye0");
-            Futile.atlasManager.LoadImage("atlas/eye1");
-            Futile.atlasManager.LoadImage("atlas/eye2");
+            Futile.atlasManager.LoadImage("assets/eye0");
+            Futile.atlasManager.LoadImage("assets/eye1");
+            Futile.atlasManager.LoadImage("assets/eye2");
 
             Futile.atlasManager.LoadImage("illustrations/bossintro");
-            Futile.atlasManager.LoadImage("atlas/hellknightbody");
+            Futile.atlasManager.LoadImage("assets/hellknightbody");
             Futile.atlasManager.LoadImage("illustrations/bluedream");
-            //Futile.atlasManager.LoadImage("illustrations/hkmainmenu");
 
-            // Achievement manager
-            Futile.atlasManager.LoadImage("illustrations/achievement_background");
-            Futile.atlasManager.LoadImage("illustrations/achievement_image");
+            Futile.atlasManager.LoadImage("assets/sawblade");
 
             Futile.atlasManager.LoadImage("illustrations/hornethead");
+
             for (int i = 1; i <= 51; i++)
             {
                 string nb = i.ToString();
                 if (nb.Length < 2) nb = "0" + nb;
                 Futile.atlasManager.LoadImage("illustrations/memories/memory" + nb);
             }
+
+            ConsoleWrite("have saw: " + Futile.atlasManager._allElementsByName.ContainsKey("assets/sawblade"));
+
+
+            //// Achievement manager
+            //Futile.atlasManager.LoadImage("illustrations/achievement_background");
+            //Futile.atlasManager.LoadImage("illustrations/achievement_image");
         }
     }
 }

@@ -95,7 +95,7 @@ namespace Silkslug.ColosseumRubicon.Boss
         {
             base.InitiateSprites(sLeaser, rCam);
             sLeaser.sprites = new FSprite[4];
-            sLeaser.sprites[0] = new FSprite("atlas/eye2", true);
+            sLeaser.sprites[0] = new FSprite("assets/eye2", true);
             sLeaser.sprites[0].scale = 0.25f;
             sLeaser.sprites[0].shader = rCam.game.rainWorld.Shaders["Background"];
 
@@ -148,15 +148,15 @@ namespace Silkslug.ColosseumRubicon.Boss
 
             if (openFrames == -1)
             {
-                sLeaser.sprites[0].SetElementByName(open ? "atlas/eye2" : "atlas/eye0");
+                sLeaser.sprites[0].SetElementByName(open ? "assets/eye2" : "assets/eye0");
             }
             else if (openFrames > 60 * 1.5f)
             {
-                sLeaser.sprites[0].SetElementByName("atlas/eye1");
+                sLeaser.sprites[0].SetElementByName("assets/eye1");
             }
             else
             {
-                sLeaser.sprites[0].SetElementByName("atlas/eye2");
+                sLeaser.sprites[0].SetElementByName("assets/eye2");
             }
 
             if (base.slatedForDeletetion || this.room != rCam.room)

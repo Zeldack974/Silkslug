@@ -103,6 +103,16 @@ namespace Silkslug
                             this.room.PlaySound(SoundID.Spear_Stick_In_Creature, this.owner.firstChunk.pos);
                         }
                     }
+
+                    if (drawable != null && drawable is SawBlade)
+                    {
+                        SawBlade saw = (SawBlade)drawable;
+                        if (this.IsHit(saw.pos, saw.rad - 15))
+                        {
+                            this.hitSomething = true;
+                            this.room.PlaySound(Sounds.HERRO_PARRY, saw.pos, 1f, 1.5f);
+                        }
+                    }
                 }
             }
 
@@ -225,7 +235,7 @@ namespace Silkslug
         {
             base.InitiateSprites(sLeaser, rCam);
             sLeaser.sprites = new FSprite[1];
-            sLeaser.sprites[0] = new FSprite("atlas/slash1", true);
+            sLeaser.sprites[0] = new FSprite("assets/slash1", true);
             sLeaser.sprites[0].anchorY = 0;
             sLeaser.sprites[0].width = this.size * 0.5895f;
             sLeaser.sprites[0].height = this.size;;
@@ -248,7 +258,7 @@ namespace Silkslug
 
             if (frame > lifeTime)
             {
-                sLeaser.sprites[0].SetElementByName("atlas/slash2");
+                sLeaser.sprites[0].SetElementByName("assets/slash2");
             }
 
             this.pos = (Vector2.Lerp(this.owner.firstChunk.pos, this.owner.firstChunk.lastPos, 0.35f) - (this.dir * (this.size / 3)));
@@ -435,6 +445,16 @@ namespace Silkslug
                             hitSomething = true;
                         }
                     }
+
+                    if (drawable != null && drawable is SawBlade)
+                    {
+                        SawBlade saw = (SawBlade)drawable;
+                        if ((saw.pos - this.hitPos).magnitude < (saw.rad + this.hitRad))
+                        {
+                            this.room.PlaySound(Sounds.HERRO_PARRY, saw.pos, 1f, 2f);
+                            hitSomething = true;
+                        }
+                    }
                 }
             }
 
@@ -585,7 +605,7 @@ namespace Silkslug
         {
             base.InitiateSprites(sLeaser, rCam);
             sLeaser.sprites = new FSprite[1];
-            sLeaser.sprites[0] = new FSprite("atlas/longslash", true);
+            sLeaser.sprites[0] = new FSprite("assets/longslash", true);
             sLeaser.sprites[0].anchorY = 0;
             sLeaser.sprites[0].width = this.size * 0.42f;
             sLeaser.sprites[0].height = this.size;

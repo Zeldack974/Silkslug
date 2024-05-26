@@ -15,5 +15,7 @@
 [ADD]New_Location/vol=1.0/dopplerFac=0.0 : NewLocation
 [ADD]Double_Damage/vol=0.5/dopplerFac=0.0 : DoubleDamage
 [ADD]Damage/vol=0.5/dopplerFac=0.0 : Damage
+[ADD]Saw_Loop/vol=0.5/dopplerFac=0.5 : SawLoop1, SawLoop2, SawLoop3
+
 
 

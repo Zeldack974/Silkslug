@@ -218,7 +218,7 @@ namespace Silkslug.ColosseumRubicon.Boss
         public void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
             sLeaser.sprites = new FSprite[3];
-            sLeaser.sprites[0] = new FSprite("atlas/hellknightbody", true);
+            sLeaser.sprites[0] = new FSprite("assets/hellknightbody", true);
             sLeaser.sprites[1] = new FSprite("Futile_White", true); // debug
             sLeaser.sprites[1].shader = this.room.game.rainWorld.Shaders["VectorCircle"];
             sLeaser.sprites[1].isVisible = showHitbox;
