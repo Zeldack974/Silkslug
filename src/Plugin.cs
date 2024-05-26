@@ -50,6 +50,7 @@ namespace Silkslug
             try { RegisterCommands(); } catch { }
             ColosseumRubicon.Manager.OnEnable();
             BossHooks.Register();
+            DevtoolObjects.Register();
 
             // Put your custom hooks here!
             On.Player.Jump += Player_Jump;
