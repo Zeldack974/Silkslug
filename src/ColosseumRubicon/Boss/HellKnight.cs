@@ -11,6 +11,7 @@ using UnityEngine.PlayerLoop;
 using MoreSlugcats;
 using static Silkslug.ColosseumRubicon.Boss.HellKnight.Attack;
 using System.Diagnostics;
+using FakeAchievements;
 
 namespace Silkslug.ColosseumRubicon.Boss
 {
@@ -202,7 +203,7 @@ namespace Silkslug.ColosseumRubicon.Boss
                 dead = true;
                 currentAttack = null;
                 room.AddObject(new TimeInverter22000(room));
-                //FakeAchievementManager.ShowAchievement("embrace_the_void");
+                FakeAchievementManager.ShowAchievement("embrace_the_void");
             }
         }
 

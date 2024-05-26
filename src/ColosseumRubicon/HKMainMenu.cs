@@ -8,6 +8,7 @@ using RWCustom;
 using UnityEngine;
 using MoreSlugcats;
 using System.Runtime.CompilerServices;
+using FakeAchievements;
 
 namespace Silkslug.ColosseumRubicon
 {
@@ -46,7 +47,7 @@ namespace Silkslug.ColosseumRubicon
                 this.pages[0].subObjects.Add(particle);
             }
 
-            //FakeAchievementManager.ShowAchievement("the_cycle");
+            FakeAchievementManager.ShowAchievement("the_cycle");
         }
 
         //public override void Update()
