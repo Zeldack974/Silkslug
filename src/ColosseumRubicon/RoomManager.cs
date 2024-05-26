@@ -211,6 +211,23 @@ namespace Silkslug.ColosseumRubicon
 
         public int spearTicks = -1;
 
+        public void StartMusic()
+        {
+            //List<string> soundsName = new List<string>()
+            //{
+
+            //};
+
+            //room.game.manager.musicPlayer.FadeOutAllSongs(0.5f);
+            //this.room.game.manager.musicPlayer.GameRequestsSong(new MusicEvent()
+            //{
+            //    prio = 100,
+            //    songName = "RW_Threat_Metropolis",
+            //    cyclesRest = 0,
+            //    stopAtDeath = true,
+            //    loop = false,
+            //});
+        }
         public void GiveSpear()
         {
             ConsoleWrite("giving players spear");

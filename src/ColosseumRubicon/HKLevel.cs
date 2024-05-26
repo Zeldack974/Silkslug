@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MoreSlugcats;
 using Noise;
 using RWCustom;
+using SlugBase.Assets;
 using UnityEngine;
 
 namespace Silkslug.ColosseumRubicon
@@ -15,6 +17,7 @@ namespace Silkslug.ColosseumRubicon
         public bool cinematicStarted;
         public SingularityBomb bomb;
         public bool playerSpawned;
+        public bool sessionEnded;
         public HKLevel(Room room)
         {
             this.room = room;
@@ -80,10 +83,16 @@ namespace Silkslug.ColosseumRubicon
                     }
 
 
-                    if (room.game.Players[0].realizedCreature.dead)
+                    if (!sessionEnded && room.game.Players[0].realizedCreature.dead)
                     {
-
+                        room.game.manager.musicPlayer.FadeOutAllSongs(20f);
+                        //room.game.GetStorySession.saveState.deathPersistentSaveData.altEnding = true;
+                        room.game.GetStorySession.saveState.deathPersistentSaveData.ascended = true;
+                        room.game.manager.rainWorld.progression.SaveWorldStateAndProgression(false);
                         room.game.rainWorld.processManager.RequestMainProcessSwitch(ProcessManager.ProcessID.Statistics);
+                        //room.game.GetStorySession.saveState.SessionEnded(room.game, true, false);
+                        //room.game.manager.rainWorld.progression.SaveProgressionAndDeathPersistentDataOfCurrentState(false, false);
+                        sessionEnded = true;
                     }
                 }
             }

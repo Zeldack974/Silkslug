@@ -327,6 +327,7 @@ internal class Warp
                                 newRoom = null;
                                 Manager.ResetValues();
                                 Manager.SpawnCreatures(player.room);
+                                Manager.PlayMusic(player.room);
                                 //room.abstractRoom.Abstractize();
                                 //newRoom.realizedRoom.PlaySound(MoreSlugcatsEnums.MSCSoundID.Sat_Interference3, 0f, 1f, 0.95f);
                             }
@@ -527,6 +528,7 @@ internal class Warp
                     else
                     {
                         RainWorldGame.ForceSaveNewDenLocation(this.room.game, "CR_REST", true);
+                        newRoom.realizedRoom.game.manager.musicPlayer.FadeOutAllSongs(6f);
                     }
 
                     fadeObj = null;
