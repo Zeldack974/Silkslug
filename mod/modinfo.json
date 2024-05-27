@@ -4,7 +4,7 @@
 	"version": "1.0.4",
 	"authors": "ZΞLDΛK",
 	"description": "Homage to a game, a game that sold dreams, hopes, but will never come to be.",
-	"requirements": [ "slime-cubed.slugbase", "moreslugcats", "regionkit", "ddemile.fake_achievements" ],
-	"requirements_names": [ "SlugBase", "More Slugcats Expansion", "RegionKit", "Fake Achievements" ],
+	"requirements": [ "slime-cubed.slugbase", "moreslugcats", "regionkit", "crs" ],
+	"requirements_names": [ "SlugBase", "More Slugcats Expansion", "RegionKit", "Custom Regions Support" ],
 	"tags": [ "Custom Slugcat" ]
 }

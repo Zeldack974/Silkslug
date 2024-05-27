@@ -87,9 +87,10 @@ namespace Silkslug.ColosseumRubicon
                     {
                         room.game.manager.musicPlayer.FadeOutAllSongs(20f);
                         //room.game.GetStorySession.saveState.deathPersistentSaveData.altEnding = true;
-                        room.game.GetStorySession.saveState.deathPersistentSaveData.ascended = true;
-                        room.game.manager.rainWorld.progression.SaveWorldStateAndProgression(false);
+                        //room.game.GetStorySession.saveState.deathPersistentSaveData.ascended = true;
+                        //room.game.manager.rainWorld.progression.SaveWorldStateAndProgression(false);
                         room.game.rainWorld.processManager.RequestMainProcessSwitch(ProcessManager.ProcessID.Statistics);
+                        RainWorldGame.BeatGameMode(this.room.game, true);
                         //room.game.GetStorySession.saveState.SessionEnded(room.game, true, false);
                         //room.game.manager.rainWorld.progression.SaveProgressionAndDeathPersistentDataOfCurrentState(false, false);
                         sessionEnded = true;

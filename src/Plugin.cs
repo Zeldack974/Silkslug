@@ -79,7 +79,20 @@ namespace Silkslug
             On.Music.MusicPlayer.GameRequestsSong += MusicPlayer_GameRequestsSong;
 
             On.Menu.MainMenu.ctor += MainMenu_ctor;
+            On.RainWorldGame.BeatGameMode += RainWorldGame_BeatGameMode;
 
+        }
+
+        private void RainWorldGame_BeatGameMode(On.RainWorldGame.orig_BeatGameMode orig, RainWorldGame game, bool standardVoidSea)
+        {
+            if (game.GetStorySession.saveState.saveStateNumber == ShawName)
+            {
+                if (game.rainWorld.progression.miscProgressionData.SetTokenCollected(new MultiplayerUnlocks.LevelUnlockID("CRHell")))
+                {
+                    game.manager.specialUnlockText = game.rainWorld.inGameTranslator.Translate("Colosseum Rubicon content is now available in Arena Mode.");
+                }
+            }
+            orig(game, standardVoidSea);
         }
 
         private void MainMenu_ctor(On.Menu.MainMenu.orig_ctor orig, Menu.MainMenu self, ProcessManager manager, bool showRegionSpecificBkg)
