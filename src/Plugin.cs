@@ -72,6 +72,7 @@ namespace Silkslug
             On.RoomSpecificScript.AddRoomSpecificScript += RoomSpecificScript_AddRoomSpecificScript;
             On.SSOracleBehavior.PebblesConversation.AddEvents += PebblesConversation_AddEvents;
             On.ProjectionScreen.AddImage_string += ProjectionScreen_AddImage_string;
+            On.ProjectionScreen.AddImage_List1_int += ProjectionScreen_AddImage_List1_int;
 
             On.Menu.SlugcatSelectMenu.UpdateStartButtonText += SlugcatSelectMenu_UpdateStartButtonText;
             On.Menu.SlugcatSelectMenu.ContinueStartedGame += SlugcatSelectMenu_ContinueStartedGame;
@@ -83,7 +84,6 @@ namespace Silkslug
             On.RainWorldGame.BeatGameMode += RainWorldGame_BeatGameMode;
 
         }
-
 
         private void RainWorldGame_BeatGameMode(On.RainWorldGame.orig_BeatGameMode orig, RainWorldGame game, bool standardVoidSea)
         {
@@ -159,9 +159,21 @@ namespace Silkslug
             return i.value == "Shaw" || orig(i);
         }
 
+        private ProjectedImage ProjectionScreen_AddImage_List1_int(On.ProjectionScreen.orig_AddImage_List1_int orig, ProjectionScreen self, List<string> names, int cycleTime)
+        {
+            List<string> transformedNames = names.ConvertAll(name =>
+            {
+                if (self.room.game.GetStorySession.saveState.saveStateNumber == ShawName && name.ToLower().StartsWith("aiimg3")) return $"Shaw-{name}";
+
+                return name;
+            });
+
+            return orig(self, transformedNames, cycleTime);
+        }
+
         private ProjectedImage ProjectionScreen_AddImage_string(On.ProjectionScreen.orig_AddImage_string orig, ProjectionScreen self, string name)
         {
-            if (self.room.game.GetStorySession.saveState.saveStateNumber == ShawName && name.ToLower().StartsWith("AIimg3"))
+            if (self.room.game.GetStorySession.saveState.saveStateNumber == ShawName && name.ToLower().StartsWith("aiimg2"))
             {
                 return orig(self, "Shaw-" + name);
             }
@@ -654,6 +666,11 @@ namespace Silkslug
             Futile.atlasManager.LoadImage("illustrations/hornethead");
 
             Futile.atlasManager.LoadAtlas("atlases/memoriesaltas");
+
+            Futile.atlasManager.LoadImage("illustrations/shaw-aiimg2");
+            Futile.atlasManager.LoadImage("illustrations/shaw-aiimg3");
+            Futile.atlasManager.LoadImage("illustrations/shaw-aiimg3a");
+            Futile.atlasManager.LoadImage("illustrations/shaw-aiimg3b");
 
             Sounds.Initialize();
             MachineConnector.SetRegisteredOI(MOD_ID, ShawOptions.instance);
