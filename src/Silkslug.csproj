@@ -24,8 +24,7 @@
 
         <Delete Files="@(RemovePlugins)" />
         <!-- Copier à la fois les DLL et les PDB -->
-        <Copy SourceFiles="@(CopyPlugins)" DestinationFolder="../mod/plugins/" />
-        <Copy SourceFiles="@(CopyPdbs)" DestinationFolder="../mod/plugins/" />
+        <Copy SourceFiles="@(CopyPlugins);@(CopyPDBs)" DestinationFolder="../mod/newest/plugins/" />
     </Target>
     
 </Project>
