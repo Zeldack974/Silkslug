@@ -16,6 +16,7 @@ using Silkslug.ColosseumRubicon.Boss;
 using Fisobs.Core;
 using System.Xml.Schema;
 using DressMySlugcat;
+using System;
 
 namespace Silkslug
 {
@@ -82,6 +83,7 @@ namespace Silkslug
             On.RainWorldGame.BeatGameMode += RainWorldGame_BeatGameMode;
 
         }
+
 
         private void RainWorldGame_BeatGameMode(On.RainWorldGame.orig_BeatGameMode orig, RainWorldGame game, bool standardVoidSea)
         {
@@ -626,15 +628,14 @@ namespace Silkslug
         // Load any resources, such as sprites or sounds
         private void LoadResources(RainWorld rainWorld)
         {
+
+
+
             ConsoleWrite("load assets !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
             Futile.atlasManager.LoadImage("assets/slash1");
             Futile.atlasManager.LoadImage("assets/slash2");
             Futile.atlasManager.LoadImage("assets/longslash");
-
-
-            Sounds.Initialize();
-            MachineConnector.SetRegisteredOI(MOD_ID, ShawOptions.instance);
 
             Futile.atlasManager.LoadImage("illustrations/rubiconintrotext");
             Futile.atlasManager.LoadImage("illustrations/hkfront");
@@ -652,15 +653,10 @@ namespace Silkslug
 
             Futile.atlasManager.LoadImage("illustrations/hornethead");
 
-            for (int i = 1; i <= 51; i++)
-            {
-                string nb = i.ToString();
-                if (nb.Length < 2) nb = "0" + nb;
-                Futile.atlasManager.LoadImage("illustrations/memories/memory" + nb);
-            }
+            Futile.atlasManager.LoadAtlas("atlases/memoriesaltas");
 
-            ConsoleWrite("have saw: " + Futile.atlasManager._allElementsByName.ContainsKey("assets/sawblade"));
-
+            Sounds.Initialize();
+            MachineConnector.SetRegisteredOI(MOD_ID, ShawOptions.instance);
 
             //// Achievement manager
             //Futile.atlasManager.LoadImage("illustrations/achievement_background");

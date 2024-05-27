@@ -66,8 +66,9 @@ namespace Silkslug.ColosseumRubicon.Boss
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
+            ConsoleWrite(string.Join(", ", Futile.atlasManager._allElementsByName.ToList().ConvertAll(e => e.Key)));
             sLeaser.sprites = new FSprite[2];
-            sLeaser.sprites[0] = new FSprite("illustrations/memories/memory01", true);
+            sLeaser.sprites[0] = new FSprite("silksong_memory01", true);
             sLeaser.sprites[0].alpha = 0f;
             sLeaser.sprites[0].SetAnchor(new Vector2(0.5f, 0.5f));
             sLeaser.sprites[1] = new FSprite("illustrations/hornethead", true);
@@ -101,8 +102,8 @@ namespace Silkslug.ColosseumRubicon.Boss
 
                     string nb = ((int)Math.Min(Mathf.Lerp(1, 52, num * num), 51)).ToString();
                     if (nb.Length < 2) nb = "0" + nb;
-                    ConsoleWrite("image name: " + "illustrations/memories/memory" + nb);
-                    sLeaser.sprites[0].SetElementByName("illustrations/memories/memory" + nb);
+                    ConsoleWrite("image name: " + "silksong_memory" + nb);
+                    sLeaser.sprites[0].SetElementByName("silksong_memory" + nb);
 
                     sLeaser.sprites[0].SetPosition(center.x, center.y);
                     sLeaser.sprites[0].scale = Mathf.Lerp(1.5f, (rCam.sSize.y / 144f) * 1.15f, num * num * num);
