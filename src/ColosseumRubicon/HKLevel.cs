@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FakeAchievements;
 using MoreSlugcats;
 using Noise;
 using RWCustom;
@@ -23,7 +24,6 @@ namespace Silkslug.ColosseumRubicon
             this.room = room;
 
         }
-        // 540, 730
 
         public override void Update(bool eu)
         {
@@ -91,6 +91,7 @@ namespace Silkslug.ColosseumRubicon
                         //room.game.manager.rainWorld.progression.SaveWorldStateAndProgression(false);
                         room.game.rainWorld.processManager.RequestMainProcessSwitch(ProcessManager.ProcessID.Statistics);
                         RainWorldGame.BeatGameMode(this.room.game, true);
+                        FakeAchievementManager.ShowAchievement("unfortunate_development");
                         //room.game.GetStorySession.saveState.SessionEnded(room.game, true, false);
                         //room.game.manager.rainWorld.progression.SaveProgressionAndDeathPersistentDataOfCurrentState(false, false);
                         sessionEnded = true;
