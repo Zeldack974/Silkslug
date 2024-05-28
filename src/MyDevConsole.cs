@@ -26,7 +26,7 @@ namespace Silkslug
                 catch (Exception e) { ConsoleWrite("Error in command", Color.red); Plugin.LogError(e); }
             })
             .AutoComplete(new string[][] {
-                new string[] { "hkmenu", "1", "apply_skin" }
+                new string[] { "hkmenu", "1", "apply_skin", "lock_arenas" }
             })
             .Register();
             new CommandBuilder("setnextchallenge")
@@ -64,6 +64,15 @@ namespace Silkslug
             else if (args[0] == "apply_skin")
             {
                 SkinApplyer.SetSlornetSkin();
+            }
+            else if (args[0] == "lock_arenas")
+            {
+                int val = RW.progression.miscProgressionData.levelTokens.RemoveAll(t =>
+                {
+                    ConsoleWrite("remove one CRHell from life");
+                    return t.value == "CRHell";
+                });
+                ConsoleWrite($"removed ");
             }
         }
 
