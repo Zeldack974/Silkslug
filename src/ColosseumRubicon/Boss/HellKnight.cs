@@ -123,7 +123,7 @@ namespace Silkslug.ColosseumRubicon.Boss
                 return;
             }
 
-            ConsoleWrite($"phase {Phase} need to go to phase: [2]{health <= (maxHealth - 100f)} [3]{health <= ((maxHealth - 100f) - 6f * 3f)}");
+            //ConsoleWrite($"phase {Phase} need to go to phase: [2]{health <= (maxHealth - 100f)} [3]{health <= ((maxHealth - 100f) - 6f * 3f)}");
 
 
             if (health <= (maxHealth - 100f) && Phase == 0)
@@ -142,7 +142,7 @@ namespace Silkslug.ColosseumRubicon.Boss
                 {
                     if (currentAttack.name == "deathcircle")
                     {
-                        ConsoleWrite("go to phase 3");
+                        Plugin.Log("go to phase 3");
                         currentAttack = new Attack.Cooldown(this, 60 * 3);
                         fadeOut = new FadeOut(room, Color.white, 60 * 3, false);
                         room.AddObject(fadeOut);
@@ -151,13 +151,13 @@ namespace Silkslug.ColosseumRubicon.Boss
                 }
                     else
                     {
-                        ConsoleWrite("start death circle");
+                        Plugin.Log("start death circle");
                         currentAttack = new DeathCircle(this);
                     }
                     return;
                 }
 
-                //ConsoleWrite($"attack finished: {currentAttack.name}");
+                Plugin.Log($"attack finished: {currentAttack.name}");
                 if (currentAttack.name == "cooldown")
                 {
                     if (Phase == 0)
@@ -180,7 +180,6 @@ namespace Silkslug.ColosseumRubicon.Boss
 
         public void TakeDamage(float damage)
         {
-            ConsoleWrite("teleport to " + pos);
             //if (Phase == 0)
             //{
             //    damage = 100;
@@ -194,12 +193,12 @@ namespace Silkslug.ColosseumRubicon.Boss
             //    damage = health;
             //}
             damage = health;
-            UnityEngine.Debug.Log($"HellKnight took {damage} damage {health}/{maxHealth}");
+            Plugin.Log($"HellKnight took {damage} damage {health}/{maxHealth}");
 
             health = Math.Max(health - damage, 0);
             if (health == 0 && !dead)
             {
-                ConsoleWrite("Die! PURGATORY GUARDIAN HELL KNIGHT");
+                Plugin.Log("Die! PURGATORY GUARDIAN HELL KNIGHT");
                 dead = true;
                 currentAttack = null;
                 room.AddObject(new TimeInverter22000(room));

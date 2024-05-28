@@ -103,7 +103,6 @@ namespace Silkslug
             Vector2 vector = Vector2.Lerp(lastPos, pos, timeStacker);
             sLeaser.sprites[0].SetPosition(vector - camPos);
             sLeaser.sprites[0].scale = (rad / 555f) * 2f;
-            UnityEngine.Debug.Log(Time.time * 40);
 
             sLeaser.sprites[0].rotation = (sLeaser.sprites[0].rotation + 360f * (2f / 3f)) % 361f;
 

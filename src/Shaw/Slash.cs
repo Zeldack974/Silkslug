@@ -564,7 +564,7 @@ namespace Silkslug
             {
                 if (this.hitSomething)
                 {
-                    ConsoleWrite("hit something");
+                    //ConsoleWrite("hit something");
                     shawData.dashFrame = 0;
                     this.owner.animation = Player.AnimationIndex.Flip;
                     foreach (var chuck in this.owner.bodyChunks)

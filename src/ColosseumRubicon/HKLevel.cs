@@ -34,7 +34,6 @@ namespace Silkslug.ColosseumRubicon
                 {
                     if (abstractPlayer.realizedCreature != null)
                     {
-                        ConsoleWrite("teleport player");
                         (abstractPlayer.realizedCreature as Player).SuperHardSetPosition(new Vector2((float)(room.LocalCoordinateOfNode(0).x + 2) * 20f, (float)room.LocalCoordinateOfNode(0).y * 20f));
                     }
                 }
@@ -134,7 +133,6 @@ namespace Silkslug.ColosseumRubicon
         {
             base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
             float ratio = 1358 / 722;
-            Debug.Log($"camPos: {camPos}, screenSize: {rCam.sSize}");
             foreach (FSprite sprite in sLeaser.sprites)
             {
                 sprite.SetAnchor(new Vector2(0.5f, 0.5f));

@@ -64,7 +64,7 @@ namespace Silkslug.ColosseumRubicon
         {
             if (message == "START")
             {
-                ConsoleWrite("START NEW GAME");
+                Plugin.Log("START NEW GAME");
                 this.manager.RequestMainProcessSwitch(ProcessManager.ProcessID.Game);
             }
         }

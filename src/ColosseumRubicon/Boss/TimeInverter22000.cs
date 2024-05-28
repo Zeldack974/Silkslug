@@ -44,7 +44,7 @@ namespace Silkslug.ColosseumRubicon.Boss
             if (active)
             {
                 growTicks++;
-                UnityEngine.Debug.Log("gowTicks: " + growTicks);
+                //UnityEngine.Debug.Log("gowTicks: " + growTicks);
                 foreach (var abstractPlayer in room.game.Players)
                 {
                     (abstractPlayer.realizedCreature as Player).SuperHardSetPosition(new Vector2(700, 1200));
@@ -66,7 +66,7 @@ namespace Silkslug.ColosseumRubicon.Boss
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
-            ConsoleWrite(string.Join(", ", Futile.atlasManager._allElementsByName.ToList().ConvertAll(e => e.Key)));
+            //ConsoleWrite(string.Join(", ", Futile.atlasManager._allElementsByName.ToList().ConvertAll(e => e.Key)));
             sLeaser.sprites = new FSprite[2];
             sLeaser.sprites[0] = new FSprite("silksong_memory01", true);
             sLeaser.sprites[0].alpha = 0f;
@@ -102,7 +102,7 @@ namespace Silkslug.ColosseumRubicon.Boss
 
                     string nb = ((int)Math.Min(Mathf.Lerp(1, 52, num * num), 51)).ToString();
                     if (nb.Length < 2) nb = "0" + nb;
-                    ConsoleWrite("image name: " + "silksong_memory" + nb);
+                    Plugin.Log("image name: " + "silksong_memory" + nb);
                     sLeaser.sprites[0].SetElementByName("silksong_memory" + nb);
 
                     sLeaser.sprites[0].SetPosition(center.x, center.y);

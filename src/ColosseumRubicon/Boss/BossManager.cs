@@ -32,7 +32,7 @@ namespace Silkslug.ColosseumRubicon.Boss
 
         public BossManager(Room room)
         {
-            ConsoleWrite("Creating BossManager");
+            Plugin.Log("Creating BossManager");
             this.room = room;
             Instance = this;
 
@@ -44,7 +44,7 @@ namespace Silkslug.ColosseumRubicon.Boss
 
             if (fadeOut != null && fadeOut.IsDoneFading())
             {
-                ConsoleWrite("open the eye");
+                Plugin.Log("open the eye");
                 fadeOut.Destroy();
                 fadeOut = null;
                 eye.Open();
@@ -53,7 +53,7 @@ namespace Silkslug.ColosseumRubicon.Boss
 
         public override void Destroy()
         {
-            ConsoleWrite("BossManager Destroyed");
+            Plugin.Log("BossManager Destroyed");
             Instance = null;
             base.Destroy();
         }
@@ -70,7 +70,7 @@ namespace Silkslug.ColosseumRubicon.Boss
 
         public void Init()
         {
-            ConsoleWrite("Initialize BossManager");
+            Plugin.Log("Initialize BossManager");
 
             foreach (var obj in room.updateList)
             {
@@ -113,7 +113,7 @@ namespace Silkslug.ColosseumRubicon.Boss
 
         public void SpawnBoss()
         {
-            ConsoleWrite("spawning boss");
+            Plugin.Log("spawning boss");
             boss = new HellKnight(room, eye.eyeCenter - new Vector2(0, 50));
             room.AddObject(boss);
             Manager.DisablePauseMenu = false;
@@ -121,7 +121,7 @@ namespace Silkslug.ColosseumRubicon.Boss
 
         public void GiveSpears()
         {
-            ConsoleWrite($"giving spears to {room.game.AlivePlayers.Count} players");
+            Plugin.Log($"giving spears to {room.game.AlivePlayers.Count} players");
 
             for (int i = 0; i < room.game.AlivePlayers.Count; i++)
             {

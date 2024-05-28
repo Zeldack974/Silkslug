@@ -39,8 +39,6 @@ namespace Silkslug.ColosseumRubicon
 
         public static void SpawnCreatures(Room room)
         {
-            ConsoleWrite("room: " +  room);
-            ConsoleWrite("manager: " + RoomManager.GetRoomManager(room));
             RoomManager.GetRoomManager(room).spawnCreatures();
         }
 
@@ -189,11 +187,11 @@ namespace Silkslug.ColosseumRubicon
             //obj.GetHashCode();
             if (self.abstractRoom.name == "SB_E05SAINT" && self.abstractRoom.firstTimeRealized)
             {
-                ConsoleWrite("Add RoomSpecificScript: " + (self.game.GetStorySession.saveState.saveStateNumber == Plugin.ShawName));
+                Plugin.Log("Add RoomSpecificScript: " + (self.game.GetStorySession.saveState.saveStateNumber == Plugin.ShawName));
                 if (self.game.GetStorySession.saveState.saveStateNumber == Plugin.ShawName)
                 {
                     self.AddObject(new MSCRoomSpecificScript.VS_E05WrapAround(self));
-                    ConsoleWrite("RoomSpecificScript added");
+                    Plugin.Log("RoomSpecificScript added");
                 }
                 //self.AddObject(new RoomSpecificScript.SB_A14KarmaIncrease(self));
             }
@@ -208,7 +206,7 @@ namespace Silkslug.ColosseumRubicon
             }
             else if (self.abstractRoom.name == "CR_REST" && self.abstractRoom.firstTimeRealized)
             {
-                Debug.Log("adding rest warp");
+                Plugin.Log("adding rest warp");
                 self.AddObject(new CR_RESTWarp(self));
 
             }
@@ -220,7 +218,7 @@ namespace Silkslug.ColosseumRubicon
             }
             else if (self.world.name == "CR" && RoomManager.GetRoomManager(self) == null)
             {
-                Debug.Log("adding room manager");
+                Plugin.Log("adding room manager");
                 self.AddObject(new RoomManager(self));
             }
 

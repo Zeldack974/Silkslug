@@ -22,7 +22,6 @@ namespace Silkslug.ColosseumRubicon
 
             //if (manager != null)
             //{
-            //    Debug.LogError("Manager not found");
             //    ConsoleWrite("Manager not found");
             //}
 
@@ -89,7 +88,7 @@ namespace Silkslug.ColosseumRubicon
                 {
                     if (creatureDetected && !transition && this.room.game.AlivePlayers.Count() > 0)
                     {
-                        ConsoleWrite("next challenge");
+                        Plugin.Log("next challenge");
                         NextChallenge();
                         transition = true;
                     }
@@ -123,29 +122,28 @@ namespace Silkslug.ColosseumRubicon
 
         public void NextChallenge()
         {
-            ConsoleWrite("previous challenge " + ArenaChallenges.currentArena);
+            Plugin.Log("previous challenge " + ArenaChallenges.currentArena);
             ArenaChallenges.currentArena++;
 
             room.PlaySound(Sounds.BOXING_BELL, 0.0f, 1f, 1f);
 
             if (ArenaChallenges.currentArena >= ArenaChallenges.challenges.Count())
             {
-                ConsoleWrite("go to challenge FINAL in arena CR_BOSS but before a little rest in CR_REST");
+                Plugin.Log("go to challenge FINAL in arena CR_BOSS but before a little rest in CR_REST");
             }
             else
             {
-                ConsoleWrite($"go to challenge {ArenaChallenges.currentArena} in arena {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
+                Plugin.Log($"go to challenge {ArenaChallenges.currentArena} in arena {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
             }
             room.AddObject(new Warp.NextChallengeTeleport(room));
         }
 
         public void spawnCreatures()
         {
-            ConsoleWrite($"Spawn creatures for challenge {ArenaChallenges.currentArena}");
+            Plugin.Log($"Spawn creatures for challenge {ArenaChallenges.currentArena}");
             foreach (ArenaChallenges.CreaturePlacment spawn in challenge.spawns)
             {
-                ConsoleWrite();
-                ConsoleWrite($"try spawn {spawn.number} {spawn.creature} in {spawn.denId} :");
+                Plugin.Log($"try spawn {spawn.number} {spawn.creature} in {spawn.denId} :");
                 for (int i = 1; i <= spawn.number; i++)
                 {
                     int node = spawn.denId;
@@ -156,7 +154,7 @@ namespace Silkslug.ColosseumRubicon
 
                     if (node == -1)
                     {
-                        Debug.LogError("try to spawn creature on node -1");
+                        Plugin.LogError("try to spawn creature on node -1");
                         return;
                     }
 
@@ -169,7 +167,7 @@ namespace Silkslug.ColosseumRubicon
                     ent.Move(room.LocalCoordinateOfNode(node));
                     ent.RealizeInRoom();
 
-                    ConsoleWrite($"spawn {type.value} in {node}");
+                    Plugin.Log($"spawn {type.value} in {node}");
                 }
             }
 
@@ -181,7 +179,7 @@ namespace Silkslug.ColosseumRubicon
 
         public void ResetRoom()
         {
-            ConsoleWrite($"reseting room {room.abstractRoom.name}");
+            Plugin.Log($"reseting room {room.abstractRoom.name}");
             AbstractRoom abstractRoom = room.abstractRoom;
 
             foreach (var obj in room.updateList)
@@ -230,7 +228,7 @@ namespace Silkslug.ColosseumRubicon
         }
         public void GiveSpear()
         {
-            ConsoleWrite("giving players spear");
+            Plugin.Log("giving players spear");
             for (int i = 0; i < room.game.AlivePlayers.Count; i++)
             {
                 for (int g = 0; g < room.game.AlivePlayers[i].realizedCreature.grasps.Length; g++)

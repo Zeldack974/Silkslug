@@ -36,7 +36,7 @@ internal class Warp
             try
             {
 
-                ConsoleWrite("New World loaded");
+                Plugin.Log("New World loaded");
                 World world = self.activeWorld;
                 World world2 = self.worldLoader.ReturnWorld();
                 AbstractRoom abstractRoom = null;
@@ -174,7 +174,7 @@ internal class Warp
                     GC.Collect();
                 }
 
-                ConsoleWrite("start CR intro");
+                Plugin.Log("start CR intro");
                 RubiconPopup.staticHUD.StartAnimation();
             }
             catch (Exception e)
@@ -186,7 +186,7 @@ internal class Warp
         {
             orig(self);
         }
-        ConsoleWrite("New World Load Finish");
+        Plugin.Log("New world load finished");
     }
 
     private static void VS_E05WrapAround_Update(On.MoreSlugcats.MSCRoomSpecificScript.VS_E05WrapAround.orig_Update orig, MSCRoomSpecificScript.VS_E05WrapAround self, bool eu)
@@ -214,7 +214,7 @@ internal class Warp
         orig(self, eu);
         if (!loadStarted && self.loadStarted)
         {
-            ConsoleWrite("Load Started");
+            Plugin.Log("Load started");
             self.room.world.game.globalRain.ResetRain();
             RainWorldGame.ForceSaveNewDenLocation(self.room.game, "CR_START", true);
 
@@ -233,8 +233,8 @@ internal class Warp
 
     private static void OverWorld_InitiateSpecialWarp(On.OverWorld.orig_InitiateSpecialWarp orig, OverWorld self, OverWorld.SpecialWarpType warp, ISpecialWarp callback)
     {
-        ConsoleWrite("OverWorld_InitiateSpecialWarp " + RainWorld.ShowLogs);
-        ConsoleWrite("world loader: " + self.worldLoader);
+        Plugin.Log("OverWorld_InitiateSpecialWarp " + RainWorld.ShowLogs);
+        Plugin.Log("world loader: " + self.worldLoader);
         if (warp == OverWorld.SpecialWarpType.WARP_VS_HR && self.game.GetStorySession.saveState.saveStateNumber == ShawName)
         {
             self.reportBackToGate = null;
@@ -242,9 +242,9 @@ internal class Warp
             self.specialWarpCallback = callback;
             if (RainWorld.ShowLogs)
             {
-                Debug.Log("Switch Worlds Special! " + warp.ToString());
+                Plugin.Log("Switch Worlds Special! " + warp.ToString());
             }
-            ConsoleWrite("Switch Worlds Special! CR");
+            Plugin.Log("Switch Worlds Special! CR");
             self.worldLoader = new WorldLoader(self.game, self.PlayerCharacterNumber, false, "CR", self.GetRegion("CR"), self.game.setupValues);
             self.worldLoader.NextActivity();
             //ConsoleWrite("Change special warp WorldLoader from HR to CR");
@@ -270,7 +270,7 @@ internal class Warp
             {
                 if (Manager.playNewLocation)
                 {
-                    ConsoleWrite("new location !!!");
+                    Plugin.Log("new location !!!");
                     this.room.PlaySound(Sounds.NEW_LOCATION, 0.0f, 0.25f, 1f);
                     Manager.playNewLocation = false;
                 }
@@ -311,7 +311,7 @@ internal class Warp
 
                             if (newRoom.realizedRoom != null && newRoom.realizedRoom.ReadyForPlayer && player != null)
                             {
-                                ConsoleWrite("teleport players");
+                                Plugin.Log("teleport players");
                                 for (int i = 0; i < room.game.AlivePlayers.Count; i++)
                                 {
                                     room.game.AlivePlayers[i].realizedCreature.abstractCreature.Move(newRoom.realizedRoom.LocalCoordinateOfNode(0));
@@ -392,7 +392,7 @@ internal class Warp
 
                             if (newRoom.realizedRoom != null && newRoom.realizedRoom.ReadyForPlayer && player != null)
                             {
-                                ConsoleWrite($"teleport {room.game.AlivePlayers.Count} players");
+                                Plugin.Log($"teleport {room.game.AlivePlayers.Count} players");
                                 for (int i = 0; i < room.game.AlivePlayers.Count; i++)
                                 {
                                     room.game.AlivePlayers[i].realizedCreature.abstractCreature.Move(newRoom.realizedRoom.GetWorldCoordinate(new Vector2(650, 145)));
@@ -422,14 +422,13 @@ internal class Warp
         public NextChallengeTeleport(Room room)
         {
             this.room = room;
-            ConsoleWrite("");
             if (ArenaChallenges.currentArena >= ArenaChallenges.challenges.Count)
             {
-                ConsoleWrite($"creating teleporter from {room.abstractRoom.name} to CR_REST");
+                Plugin.Log($"creating teleporter from {room.abstractRoom.name} to CR_REST");
             }
             else
             {
-                ConsoleWrite($"creating teleporter from {room.abstractRoom.name} to {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
+                Plugin.Log($"creating teleporter from {room.abstractRoom.name} to {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
             }
         }
 
@@ -454,11 +453,11 @@ internal class Warp
                     }
                     else
                     {
-                        Debug.Log($"Try get room {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
+                        //Plugin.Log($"Try get room {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
                         newRoom = room.game.world.GetAbstractRoom(ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName);
                         if (newRoom == null)
                         {
-                            Debug.LogError($"Fail to get {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
+                            Plugin.LogError($"Fail to get {ArenaChallenges.challenges[ArenaChallenges.currentArena].roomName}");
                             return;
                         }
                     }
@@ -476,8 +475,8 @@ internal class Warp
                     {
                         den = ArenaChallenges.challenges[ArenaChallenges.currentArena].playerDen;
                     }
-                    ConsoleWrite($"teleporting players from {room.abstractRoom.name} to " + newRoom.name + " in den " + den);
-                    ConsoleWrite($"worldPos: {newRoom.realizedRoom.LocalCoordinateOfNode(den)}, validPos: {new Vector2((float)newRoom.realizedRoom.LocalCoordinateOfNode(den).x * 20f, (float)newRoom.realizedRoom.LocalCoordinateOfNode(den).y * 20f)}, tilePos: {newRoom.realizedRoom.LocalCoordinateOfNode(den).Tile}");
+                    Plugin.Log($"teleporting players from {room.abstractRoom.name} to " + newRoom.name + " in den " + den);
+                    //Plugin.Log($"worldPos: {newRoom.realizedRoom.LocalCoordinateOfNode(den)}, validPos: {new Vector2((float)newRoom.realizedRoom.LocalCoordinateOfNode(den).x * 20f, (float)newRoom.realizedRoom.LocalCoordinateOfNode(den).y * 20f)}, tilePos: {newRoom.realizedRoom.LocalCoordinateOfNode(den).Tile}");
 
 
 
@@ -522,7 +521,7 @@ internal class Warp
 
                     if (!exitChallenge)
                     {
-                        ConsoleWrite("spawn creatures in " + newRoom.realizedRoom);
+                        Plugin.Log("spawn creatures in " + newRoom.realizedRoom);
                         Manager.SpawnCreatures(newRoom.realizedRoom);
                     }
                     else

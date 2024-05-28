@@ -45,7 +45,7 @@ namespace Silkslug.ColosseumRubicon.Boss.Halo
 
         public TempleGuardHalo(HellKnight owner) : base(owner)
         {
-            ConsoleWrite("creating TempleGuardHalo");
+            Plugin.Log("creating TempleGuardHalo");
             firstSprite = 0;
             rad = new float[2, 3];
             rad[0, 0] = 0f;

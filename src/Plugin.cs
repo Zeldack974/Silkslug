@@ -381,7 +381,6 @@ namespace Silkslug
                     shawData.dashFrame--;
                     if (shawData.dashFrame <= 0 || self.canJump > 0 || self.canWallJump > 0)
                     {
-                        ConsoleWrite("end of dash");
                         shawData.dashFrame = 0;
                         shawData.attackCooldown = DashSlash.lifeTime + 1;
                         self.firstChunk.vel = new Vector2(0, 0);
@@ -649,9 +648,7 @@ namespace Silkslug
         private void LoadResources(RainWorld rainWorld)
         {
 
-
-
-            ConsoleWrite("load assets !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Plugin.Log("load assets !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
             Futile.atlasManager.LoadImage("assets/slash1");
             Futile.atlasManager.LoadImage("assets/slash2");

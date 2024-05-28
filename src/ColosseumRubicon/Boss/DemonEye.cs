@@ -74,7 +74,7 @@ namespace Silkslug.ColosseumRubicon.Boss
                 }
             }
 
-            UnityEngine.Debug.Log(introFrames);
+            //UnityEngine.Debug.Log(introFrames);
 
             if (introFrames > 0)
             {
