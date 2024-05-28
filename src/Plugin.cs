@@ -17,6 +17,7 @@ using Fisobs.Core;
 using System.Xml.Schema;
 using DressMySlugcat;
 using System;
+using System.IO;
 
 namespace Silkslug
 {
@@ -82,8 +83,15 @@ namespace Silkslug
 
             On.Menu.MainMenu.ctor += MainMenu_ctor;
             On.RainWorldGame.BeatGameMode += RainWorldGame_BeatGameMode;
+            On.MultiplayerUnlocks.IsLevelUnlocked += MultiplayerUnlocks_IsLevelUnlocked;
 
         }
+
+        private bool MultiplayerUnlocks_IsLevelUnlocked(On.MultiplayerUnlocks.orig_IsLevelUnlocked orig, MultiplayerUnlocks self, string levelName)
+        {
+            return orig(self, levelName.ToLower());
+        }
+
 
         private void RainWorldGame_BeatGameMode(On.RainWorldGame.orig_BeatGameMode orig, RainWorldGame game, bool standardVoidSea)
         {

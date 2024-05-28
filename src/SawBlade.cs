@@ -36,8 +36,8 @@ namespace Silkslug
 
             if (room.ReadyForPlayer && (soundEmitter == null || !soundEmitter.soundStillPlaying))
             {
-                soundEmitter = new PositionedSoundEmitter(this.pos, 1f, 1f);
-                room.PlaySound(Sounds.SAW_LOOP, soundEmitter, true, 0.75f, 1f, false);
+                soundEmitter = new PositionedSoundEmitter(this.pos, 1.0f, 1f);
+                room.PlaySound(Sounds.SAW_LOOP, soundEmitter, true, 1f, 1f, false);
             }
 
             if (Time.time > continueTIme)

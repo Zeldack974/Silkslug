@@ -69,10 +69,10 @@ namespace Silkslug
             {
                 int val = RW.progression.miscProgressionData.levelTokens.RemoveAll(t =>
                 {
-                    ConsoleWrite("remove one CRHell from life");
                     return t.value == "CRHell";
                 });
-                ConsoleWrite($"removed ");
+                RW.progression.SaveProgression(false, true);
+                ConsoleWrite($"removed {val} CRHell");
             }
         }
 
