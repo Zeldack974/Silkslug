@@ -3,6 +3,7 @@ using DevConsole;
 using DevConsole.Commands;
 using Silkslug.ColosseumRubicon;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -67,12 +68,16 @@ namespace Silkslug
             }
             else if (args[0] == "lock_arenas")
             {
+                List<string> tokens = [
+                    "CRHell",
+                    "CRPain"
+                ];
                 int val = RW.progression.miscProgressionData.levelTokens.RemoveAll(t =>
                 {
-                    return t.value == "CRHell";
+                    return tokens.Contains(t.value);
                 });
                 RW.progression.SaveProgression(false, true);
-                ConsoleWrite($"removed {val} CRHell");
+                ConsoleWrite($"removed {val} tokens");
             }
         }
 
