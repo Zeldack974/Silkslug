@@ -36,7 +36,7 @@ namespace Silkslug
 
             if (room.ReadyForPlayer && (soundEmitter == null || !soundEmitter.soundStillPlaying))
             {
-                soundEmitter = new PositionedSoundEmitter(this.pos, 1.0f, 1f);
+                soundEmitter = new PositionedSoundEmitter(this.pos, 0.25f, 1f);
                 room.PlaySound(Sounds.SAW_LOOP, soundEmitter, true, 1f, 1f, false);
             }
 
@@ -74,7 +74,18 @@ namespace Silkslug
                                     (room.physicalObjects[i][j] as Creature).Violence(null, Vector2.zero, this.room.physicalObjects[i][j].bodyChunks[k], null, Creature.DamageType.Blunt, 10f, 10f);
                                     room.PlaySound(SoundID.Spear_Stick_In_Creature, room.physicalObjects[i][j].firstChunk);
                                 }
+
                                 room.physicalObjects[i][j].firstChunk.vel = Custom.DirVec(pos, room.physicalObjects[i][j].bodyChunks[k].pos).normalized * 25f;
+
+                                if (room.physicalObjects[i][j] is Weapon && (room.physicalObjects[i][j] as Weapon).mode == Weapon.Mode.Thrown)
+                                {
+                                    room.PlaySound(SoundID.Spear_Bounce_Off_Creauture_Shell, room.physicalObjects[i][j].firstChunk.pos);
+                                    for (int p = 0; p < 17; p++)
+                                    {
+                                        this.room.AddObject(new Spark(room.physicalObjects[i][j].firstChunk.pos, Custom.RNV() * Mathf.Lerp(4f, 16f, UnityEngine.Random.value), Color.white, null, 900, 4000));
+                                    }
+                                    //room.physicalObjects[i][j].Destroy();
+                                }
                             }
                         }
                     }
