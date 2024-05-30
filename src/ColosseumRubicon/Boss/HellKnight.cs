@@ -202,7 +202,7 @@ namespace Silkslug.ColosseumRubicon.Boss
                 dead = true;
                 currentAttack = null;
                 room.AddObject(new TimeInverter22000(room));
-                AchievementsManager.ShowAchievement("embrace_the_void");
+                AchievementsManager.ShowAchievement(Achievements.EmbraceTheVoid);
             }
         }
 

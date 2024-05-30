@@ -47,7 +47,7 @@ namespace Silkslug.ColosseumRubicon
                 this.pages[0].subObjects.Add(particle);
             }
 
-            AchievementsManager.ShowAchievement("the_cycle");
+            AchievementsManager.ShowAchievement(Achievements.TheCycle);
         }
 
         //public override void Update()
