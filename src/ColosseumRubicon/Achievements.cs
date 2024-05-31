@@ -10,5 +10,6 @@ namespace Silkslug.ColosseumRubicon
     {
         public static string EmbraceTheVoid = "embrace_the_void";
         public static string TheCycle = "the_cycle";
+        public static string UnfortunateDevelopment = "unfortunate_development";
     }
 }

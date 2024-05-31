@@ -90,7 +90,7 @@ namespace Silkslug.ColosseumRubicon
                         //room.game.manager.rainWorld.progression.SaveWorldStateAndProgression(false);
                         room.game.rainWorld.processManager.RequestMainProcessSwitch(ProcessManager.ProcessID.Statistics);
                         RainWorldGame.BeatGameMode(this.room.game, true);
-                        FakeAchievementManager.ShowAchievement("unfortunate_development");
+                        AchievementsManager.ShowAchievement(Achievements.UnfortunateDevelopment);
                         //room.game.GetStorySession.saveState.SessionEnded(room.game, true, false);
                         //room.game.manager.rainWorld.progression.SaveProgressionAndDeathPersistentDataOfCurrentState(false, false);
                         sessionEnded = true;
