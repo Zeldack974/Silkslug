@@ -192,7 +192,7 @@ namespace Silkslug.ColosseumRubicon.Boss
             //{
             //    damage = health;
             //}
-            damage = health;
+            //damage = health;
             Plugin.Log($"HellKnight took {damage} damage {health}/{maxHealth}");
 
             health = Math.Max(health - damage, 0);
