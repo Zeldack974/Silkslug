@@ -1,0 +1,11 @@
+{
+	"id": "Death_Shaw",
+	"scene_folder": "scenes/death - shaw",
+	"images": [
+		{ "name": "4",    "pos": [620, -50], "depth": 2.3, "shader": "Basic" },
+		{ "name": "3",    "pos": [620, -50], "depth": 2.2, "shader": "Basic" },
+		{ "name": "2",    "pos": [620, -50], "depth": 2.0, "shader": "Basic" },
+		{ "name": "1",    "pos": [620, -50], "depth": 1.8, "shader": "Basic" }
+	],
+	"idle_depths": [ 2.8 ]
+}

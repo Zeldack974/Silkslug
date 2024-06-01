@@ -18,6 +18,8 @@
 
 		"select_menu_scene": "Menu_Shaw",
 		"select_menu_scene_ascended": "Ghost_Shaw",
-		"sleep_scene": "Sleep_Shaw"
+		"sleep_scene": "Sleep_Shaw",
+		"death_scene": "Death_Shaw",
+		"starve_scene": "Death_Shaw"
 	}
 }
