@@ -44,7 +44,7 @@ namespace Silkslug.ColosseumRubicon
 
         public static void PlayMusic(Room room)
         {
-            room.game.manager.musicPlayer.GameRequestsSong(new MusicEvent()
+            room.game.manager.musicPlayer?.GameRequestsSong(new MusicEvent()
             {
                 prio = 100,
                 songName = "RW_Threat_Metropolis",

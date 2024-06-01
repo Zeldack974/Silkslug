@@ -216,8 +216,8 @@ namespace Silkslug.ColosseumRubicon
 
             //};
 
-            //room.game.manager.musicPlayer.FadeOutAllSongs(0.5f);
-            //this.room.game.manager.musicPlayer.GameRequestsSong(new MusicEvent()
+            //room.game.manager.musicPlayer?.FadeOutAllSongs(0.5f);
+            //this.room.game.manager.musicPlayer?.GameRequestsSong(new MusicEvent()
             //{
             //    prio = 100,
             //    songName = "RW_Threat_Metropolis",

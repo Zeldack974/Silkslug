@@ -94,15 +94,18 @@ namespace Silkslug.ColosseumRubicon.Boss
             room.AddObject(eye);
 
             Plugin.Log("request music");
-            this.room.game.manager.musicPlayer.GameRequestsSong(new MusicEvent()
+            if (this.room.game.manager.musicPlayer != null)
             {
-                prio = 100,
-                songName = "RW_91 - Sheer Ice Torrent",
-                loop = true,
-                cyclesRest = 0,
-                stopAtDeath = true,
-            });
-            this.room.game.manager.musicPlayer.song.subTracks[0].source.time = 3;
+                this.room.game.manager.musicPlayer.GameRequestsSong(new MusicEvent()
+                {
+                    prio = 100,
+                    songName = "RW_91 - Sheer Ice Torrent",
+                    loop = true,
+                    cyclesRest = 0,
+                    stopAtDeath = true,
+                });
+                this.room.game.manager.musicPlayer.song.subTracks[0].source.time = 3;
+            }
 
 
             //ConsoleWrite($"room: {room.abstractRoom.realizedRoom}, ready for players: {room.ReadyForPlayer}, room obj: {room.updateList.Count}");

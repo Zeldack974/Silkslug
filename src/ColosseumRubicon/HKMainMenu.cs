@@ -22,9 +22,9 @@ namespace Silkslug.ColosseumRubicon
             if (manager.musicPlayer != null)
             {
                 manager.musicPlayer.FadeOutAllSongs(30f);
+                this.manager.musicPlayer.MenuRequestsSong("Hollow Knight Title Theme", 100, 0);
+                this.manager.musicPlayer.song.Loop = true;
             }
-            this.manager.musicPlayer.MenuRequestsSong("Hollow Knight Title Theme", 100, 0);
-            this.manager.musicPlayer.song.Loop = true;
 
             this.bg = new MenuIllustration(this, this.scene, "illustrations", "hkmainmenu", this.manager.rainWorld.options.ScreenSize / 2f, true, true);
             this.bg.sprite.scale = (this.manager.rainWorld.options.ScreenSize.x / 2880f);

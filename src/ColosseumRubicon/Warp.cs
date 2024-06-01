@@ -527,7 +527,7 @@ internal class Warp
                     else
                     {
                         RainWorldGame.ForceSaveNewDenLocation(this.room.game, "CR_REST", true);
-                        newRoom.realizedRoom.game.manager.musicPlayer.FadeOutAllSongs(6f);
+                        newRoom.realizedRoom.game.manager.musicPlayer?.FadeOutAllSongs(6f);
                     }
 
                     fadeObj = null;

@@ -20,7 +20,7 @@ namespace Silkslug.ColosseumRubicon.Boss
             fadeOut = new FadeOut(room, Color.black, 60 * 10, false); // 60 * 10
             room.AddObject(fadeOut);
             Manager.DisablePauseMenu = true;
-            this.room.game.manager.musicPlayer.FadeOutAllSongs(0.5f);
+            this.room.game.manager.musicPlayer?.FadeOutAllSongs(0.5f);
 
         }
 
@@ -32,7 +32,7 @@ namespace Silkslug.ColosseumRubicon.Boss
             if (fadeOut != null && fadeOut.IsDoneFading() && !this.slatedForDeletetion && !active)
             {
                 active = true;
-                this.room.game.manager.musicPlayer.GameRequestsSong(new MusicEvent()
+                this.room.game.manager.musicPlayer?.GameRequestsSong(new MusicEvent()
                 {
                     prio = 100,
                     songName = "22 Minutes",
