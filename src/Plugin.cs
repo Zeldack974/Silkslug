@@ -78,7 +78,7 @@ namespace Silkslug
             On.Menu.SlugcatSelectMenu.UpdateStartButtonText += SlugcatSelectMenu_UpdateStartButtonText;
             On.Menu.SlugcatSelectMenu.ContinueStartedGame += SlugcatSelectMenu_ContinueStartedGame;
 
-            On.SlugcatStats.IsSlugcatFromMSC += SlugcatStats_IsSlugcatFromMSC;
+            //On.SlugcatStats.IsSlugcatFromMSC += SlugcatStats_IsSlugcatFromMSC;
             On.Music.MusicPlayer.GameRequestsSong += MusicPlayer_GameRequestsSong;
 
             On.Menu.MainMenu.ctor += MainMenu_ctor;
