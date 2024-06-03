@@ -19,6 +19,7 @@ namespace Silkslug
             this.size = size;
             this.force = force;
             this.damage = damage;
+            this.room.InGameNoise(new InGameNoise(this.owner.mainBodyChunk.pos, 8000f, this.owner, 1f));
         }
 
         public Vector2 dir;
@@ -366,6 +367,7 @@ namespace Silkslug
             this.size = size;
             this.force = force;
             this.damage = damage;
+            this.room.InGameNoise(new InGameNoise(this.owner.mainBodyChunk.pos, 8000f, this.owner, 1f));
         }
 
         public Vector2 dir;

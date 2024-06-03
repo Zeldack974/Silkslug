@@ -84,7 +84,17 @@ namespace Silkslug
             On.Menu.MainMenu.ctor += MainMenu_ctor;
             On.RainWorldGame.BeatGameMode += RainWorldGame_BeatGameMode;
             On.MultiplayerUnlocks.IsLevelUnlocked += MultiplayerUnlocks_IsLevelUnlocked;
+            On.Room.Loaded += Room_Loaded;
 
+        }
+
+        private void Room_Loaded(On.Room.orig_Loaded orig, Room self)
+        {
+            if (self.abstractRoom.firstTimeRealized && self.abstractRoom.name == "VS_E06")
+            {
+                self.AddObject(new Warp.VS_E06Unstuck(self));
+            }
+            orig(self);
         }
 
         private bool MultiplayerUnlocks_IsLevelUnlocked(On.MultiplayerUnlocks.orig_IsLevelUnlocked orig, MultiplayerUnlocks self, string levelName)
@@ -228,20 +238,28 @@ namespace Silkslug
                 self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("I found the perfect place for you!<LINE>A place for all bloodthirsty murderers of yours."), 0));
                 self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Our creators called it by several names, but I personally prefer HELL."), 0));
                 self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 10));
-                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Go to the west past the Farm Arrays."), 0));
-                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 20));
-                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("What?<LINE>You came from there?"), 0));
-                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 10));
-                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Too bad to be you."), 0));
-                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Anyway."), 0));
                 if (self.owner.playerEnteredWithMark)
                 {
-                    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Then down into the earth<LINE>where the land fissures, as deep as you can reach, where the ancients built their temples and danced their silly rituals."), 0));
+                    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Go to the west past the Farm Arrays, and then down into the earth<LINE>where the land fissures, as deep as you can reach, where the ancients built their temples and danced their silly rituals."), 0));
                 }
                 else
                 {
-                    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Then down into the earth<LINE>where the land fissures, as deep as you can reach, where the ancients built their temples and danced their silly rituals.<LINE>The mark I gave you will let you through."), 0));
+                    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Go to the west past the Farm Arrays, and then down into the earth<LINE>where the land fissures, as deep as you can reach, where the ancients built their temples and danced their silly rituals.<LINE>The mark I gave you will let you through."), 0));
                 }
+                //self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Go to the west past the Farm Arrays."), 0));
+                //self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 20));
+                //self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("What?<LINE>You came from there?"), 0));
+                //self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 10));
+                //self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Too bad to be you."), 0));
+                //self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Anyway."), 0));
+                //if (self.owner.playerEnteredWithMark)
+                //{
+                //    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Then down into the earth<LINE>where the land fissures, as deep as you can reach, where the ancients built their temples and danced their silly rituals."), 0));
+                //}
+                //else
+                //{
+                //    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Then down into the earth<LINE>where the land fissures, as deep as you can reach, where the ancients built their temples and danced their silly rituals.<LINE>The mark I gave you will let you through."), 0));
+                //}
                 self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 20));
                 //self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("If you can't find it, don't come back.<LINE>Next time I see you here, I'll turn you into a body."), 0));
                 self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("I must resume my work."), 0));
@@ -360,6 +378,7 @@ namespace Silkslug
         private void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
             orig(self, eu);
+            UnityEngine.Debug.Log($"pos: {self.mainBodyChunk.pos}");
             //if (self.slugcatStats.name.ToString() == "White" && Random.value >= 0.75)
             //{
             //    self.room.AddObject(new Slash(self.room, self, null, new Vector2(1, 0), 100f, 1f, 0f));

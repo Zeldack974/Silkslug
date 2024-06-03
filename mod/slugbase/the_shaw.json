@@ -17,7 +17,7 @@
 		},
 
 		"world_state": [ "Shaw", "Red" ],
-		"start_room": "LF_H01",
+		"start_room": "VS_E06",
 
 		"select_menu_scene": "Menu_Shaw",
 		"select_menu_scene_ascended": "Ghost_Shaw",

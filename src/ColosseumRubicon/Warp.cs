@@ -543,5 +543,26 @@ internal class Warp
         public FadeOut fadeObj;
         public AbstractRoom newRoom;
     }
+
+    public class VS_E06Unstuck : UpdatableAndDeletable
+    {
+        public VS_E06Unstuck(Room room)
+        {
+            this.room = room;
+        }
+
+        public override void Update(bool eu)
+        {
+            base.Update(eu);
+
+            for (int i = 0; i < room.game.AlivePlayers.Count; i++)
+            {
+                if (room.ReadyForPlayer && room.game.AlivePlayers[i].realizedCreature != null && room.game.AlivePlayers[i].pos.x == 15 && room.game.AlivePlayers[i].pos.y == 25)
+                {
+                    (room.game.AlivePlayers[i].realizedCreature as Player).SuperHardSetPosition(new Vector2(200f, 1470f));
+                }
+            }
+        }
+    }
 }
 
