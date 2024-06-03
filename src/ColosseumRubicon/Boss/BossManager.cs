@@ -41,7 +41,6 @@ namespace Silkslug.ColosseumRubicon.Boss
         public override void Update(bool eu)
         {
             base.Update(eu);
-
             if (fadeOut != null && fadeOut.IsDoneFading())
             {
                 Plugin.Log("open the eye");

@@ -378,7 +378,7 @@ namespace Silkslug
         private void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
             orig(self, eu);
-            UnityEngine.Debug.Log($"pos: {self.mainBodyChunk.pos}");
+            //UnityEngine.Debug.Log($"pos: {self.mainBodyChunk.pos}");
             //if (self.slugcatStats.name.ToString() == "White" && Random.value >= 0.75)
             //{
             //    self.room.AddObject(new Slash(self.room, self, null, new Vector2(1, 0), 100f, 1f, 0f));

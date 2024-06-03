@@ -19,6 +19,18 @@ namespace Silkslug.ColosseumRubicon.Boss
             On.Player.Update += Player_Update;
             On.Player.Die += Player_Die;
             On.AboveCloudsView.CloseCloud.DrawSprites += CloseCloud_DrawSprites;
+            On.RoomCamera.Update += RoomCamera_Update;
+        }
+
+        private static void RoomCamera_Update(On.RoomCamera.orig_Update orig, RoomCamera self)
+        {
+            orig(self);
+            // 713.8 1185.6
+            if (self.room != null && self.room.abstractRoom.name == "CR_BOSS" && BossManager.Instance != null && self.cameraNumber == 0)
+            {
+                Vector2 pos = BossManager.Instance.upperArena ? new Vector2(20f, 825f) : new Vector2(0, 10);
+                self.pos = pos;
+            }
         }
 
         private static void CloseCloud_DrawSprites(On.AboveCloudsView.CloseCloud.orig_DrawSprites orig, AboveCloudsView.CloseCloud self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
