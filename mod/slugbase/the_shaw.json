@@ -9,8 +9,11 @@
 		"throw_skill": 2,
 		"walk_speed": 1.3,
 		"back_spear": true,
+		"food_min": 6,
+		"food_max": 8,
 		"diet": {
-			"base": "Red"
+			"base": "Red",
+			"corpses": 0.5
 		},
 
 		"world_state": [ "Shaw", "Red" ],
