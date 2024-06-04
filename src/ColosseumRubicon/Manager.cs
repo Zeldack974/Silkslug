@@ -49,7 +49,7 @@ namespace Silkslug.ColosseumRubicon
                 prio = 100,
                 songName = "RW_Threat_Metropolis",
                 cyclesRest = 0,
-                stopAtDeath = false,
+                stopAtDeath = true,
                 loop = true,
             });
         }

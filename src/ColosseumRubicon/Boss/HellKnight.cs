@@ -180,18 +180,18 @@ namespace Silkslug.ColosseumRubicon.Boss
 
         public void TakeDamage(float damage)
         {
-            if (Phase == 0)
-            {
-                damage = 100;
-            }
-            if (Phase == 1)
-            {
-                damage = 6 * 3 + 1;
-            }
-            if (Phase == 2)
-            {
-                damage = health;
-            }
+            //if (Phase == 0)
+            //{
+            //    damage = 100;
+            //}
+            //if (Phase == 1)
+            //{
+            //    damage = 6 * 3 + 1;
+            //}
+            //if (Phase == 2)
+            //{
+            //    damage = health;
+            //}
             //damage = health;
             Plugin.Log($"HellKnight took {damage} damage {health}/{maxHealth}");
 
