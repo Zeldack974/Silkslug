@@ -79,28 +79,7 @@ namespace Silkslug.ColosseumRubicon
             On.Player.CanBeSwallowed += Player_CanBeSwallowed;
             On.Player.SlugcatGrab += Player_SlugcatGrab;
             On.RainCycle.GetDesiredCycleLength += RainCycle_GetDesiredCycleLength;
-            On.Music.MusicPlayer.NewRegion += MusicPlayer_NewRegion;
-            On.Music.MusicPlayer.Update += MusicPlayer_Update;
             
-        }
-
-        private static void MusicPlayer_Update(On.Music.MusicPlayer.orig_Update orig, Music.MusicPlayer self)
-        {
-            if (self.threatTracker != null)
-            {
-                UnityEngine.Debug.Log("current threat: " + self.threatTracker.currentThreat);
-            }
-            orig(self);
-        }
-
-        private static void MusicPlayer_NewRegion(On.Music.MusicPlayer.orig_NewRegion orig, Music.MusicPlayer self, string newRegion)
-        {
-            ConsoleWrite("register new region music: " + newRegion);
-            if (self.proceduralMusic == null)
-            {
-                ConsoleWrite("creating new procedural");
-            }
-            orig(self, newRegion);
         }
 
         private static int RainCycle_GetDesiredCycleLength(On.RainCycle.orig_GetDesiredCycleLength orig, RainCycle self)
@@ -135,7 +114,6 @@ namespace Silkslug.ColosseumRubicon
         private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
             //UnityEngine.Debug.Log("pos: " + self.mainBodyChunk.pos);
-            UnityEngine.Debug.Log("creature count: " + self.room.abstractRoom.creatures.Count);
             if (self.room.abstractRoom.name == "SB_E05SAINT" && !playerSeeDevSorry)
             {
                 playerSeeDevSorry = true;
