@@ -165,6 +165,7 @@ namespace Silkslug.ColosseumRubicon
                     }
                     //room.abstractRoom.MoveEntityToDen(ent);
                     ent.Move(room.LocalCoordinateOfNode(node));
+                    room.abstractRoom.AddEntity(ent);
                     ent.RealizeInRoom();
 
                     Plugin.Log($"spawn {type.value} in {node}");

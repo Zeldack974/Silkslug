@@ -15,7 +15,12 @@ namespace Silkslug.ColosseumRubicon
                 List<ArenaChallenge> challenges = new List<ArenaChallenge>();
 
 
-                challenges.Add(new ArenaChallenge("CR_A02", new CreaturePlacment[]
+                //challenges.Add(new ArenaChallenge("CR_A02", new CreaturePlacment[]
+                //{
+                //    new CreaturePlacment("RedCenti", -1, 10),
+                //}, "hell"));
+
+                challenges.Add(new ArenaChallenge("CR_A01", new CreaturePlacment[]
                 {
                     new CreaturePlacment("cyan", -1, 3),
                 }));

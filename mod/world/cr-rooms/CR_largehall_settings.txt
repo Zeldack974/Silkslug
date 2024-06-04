@@ -14,9 +14,8 @@ WaterReflectionAlpha: 1
 Palette: 39
 EffectColorA: 14
 EffectColorB: 13
-Effects: LavaSurface-1-0-0, HeatWave-0.2065217-273-197, VoidMelt-0.1195652-967-394, LethalWater-1-300-49, WaterDepth-0.0326087-257-149, Brightness-0-78--15, WaterViscosity-0.5-810-517, SilenceWater-1-612-417, SkyBloom-0.3913043-3-77, 
+Effects: LavaSurface-1-0-0, HeatWave-0.2065217-273-197, VoidMelt-0.1195652-967-394, LethalWater-1-300-49, WaterDepth-0.0326087-257-149, Brightness-0-78-0, WaterViscosity-0.5-810-517, SilenceWater-1-612-417, SkyBloom-0.3913043-3-77, 
 PlacedObjects: LightBeam><28.66257><747.6799><-35~-688~1262~-676~1256~2~179~-451~0.3782611~0~0~1~None~0~0, 
 AmbientSounds: SPOT><MSC-RitualMetal.ogg><732.8345><157.3877><0.2282609><0.9021739><646.8345><97.38777><-2.355286><562.6447><0><0.4260871, OMNI><AM_ENV-CityTone.ogg><390.9191><547.8171><0.3804348><0.8434783, OMNI><AM_WIN-SubWnd.ogg><563.3047><586.7069><0.2065217><0.8826087, OMNI><AM_WIN-StrongWnd2.ogg><737.5146><542.9495><0.3043478><0.9021739, 
-Triggers: Spot<tA>event<tB>MusicEvent<eA>songName<eB>na_33 - else2<eA>vol<eB>0.3<eA>prio<eB>0.5<eA>mxThrt<eB>1<eA>loop<eB>0<eA>droneTol<eB>0<eA>rooms<eB>-1<eA>rest<eB>5<eA>fadeIn<eB>0<eA>oneSongPerCycle<eB>0<eA>stopAtDeath<eB>0<eA>stopAtGate<eB>0<tA>multiUse<tB>1<tA>toCycle<tB>-1<tA>fromCycle<tB>0<tA>delay<tB>0<tA>panPos<tB>748.561<tB>405.1905<tA>fireChance<tB>1<tA>entrance<tB>-1<tA>karma<tB>0<tA>slugcats<tB><tA>pos<tB>635.561<tB>389.1905<tA>handlePos<tB>-35.35534<tB>-35.35534, 
 FadePalette: 55, 0.8586956
 WetTerrain: OFF
