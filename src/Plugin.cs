@@ -21,7 +21,7 @@ using System.IO;
 
 namespace Silkslug
 {
-    [BepInPlugin(MOD_ID, "Silkslug", "1.0.4")]
+    [BepInPlugin(MOD_ID, "Silkslug", "1.1.0")]
     class Plugin : BaseUnityPlugin
     {
         private const string MOD_ID = "zeldak974.silkslug";

@@ -1,7 +1,7 @@
 {
 	"id": "zeldak974.silkslug",
 	"name": "Silkslug (The Shaw)",
-	"version": "1.0.4",
+	"version": "1.1.0",
 	"authors": "ZΞLDΛK",
 	"description": "Homage to a game, a game that sold dreams, hopes, but will never come to be.",
 	"requirements": [ "slime-cubed.slugbase", "moreslugcats", "regionkit", "crs" ],
