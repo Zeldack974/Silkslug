@@ -36,7 +36,7 @@ namespace Silkslug
 
             if (room.ReadyForPlayer && (soundEmitter == null || !soundEmitter.soundStillPlaying))
             {
-                soundEmitter = new PositionedSoundEmitter(this.pos, 0.25f, 1f);
+                soundEmitter = new PositionedSoundEmitter(this.pos, 0.5f, 1f);
                 room.PlaySound(Sounds.SAW_LOOP, soundEmitter, true, 1f, 1f, false);
             }
 
@@ -69,7 +69,7 @@ namespace Silkslug
                         {
                             if (Custom.DistLess(pos, room.physicalObjects[i][j].bodyChunks[k].pos, rad))
                             {
-                                if (room.physicalObjects[i][j] is Creature && !(room.physicalObjects[i][j] as Creature).dead)
+                                if (room.physicalObjects[i][j] is Creature) // !(room.physicalObjects[i][j] as Creature).dead
                                 {
                                     (room.physicalObjects[i][j] as Creature).Violence(null, Vector2.zero, this.room.physicalObjects[i][j].bodyChunks[k], null, Creature.DamageType.Blunt, 10f, 10f);
                                     room.PlaySound(SoundID.Spear_Stick_In_Creature, room.physicalObjects[i][j].firstChunk);

@@ -20,8 +20,26 @@ namespace Silkslug
             //RegisterManagedObject<V1.RoomParticleSystem, V1.WholeScreenSpawnerData, ManagedRepresentation>("WholeScreenSpawner", PARTICLES_POM_CATEGORY);
             //RegisterEmptyObjectType<SawBladeData, ManagedRepresentation>("SawBlade", "Gameplay");
             RegisterManagedObject(new ManagedObjectType("SawBlade", "Gameplay", typeof(SawBlade), typeof(SawBladeData), typeof(ManagedRepresentation)));
+            RegisterManagedObject(new ManagedObjectType("MovingPlatform", "Gameplay", typeof(MovingPlatform), typeof(PlatformData), typeof(ManagedRepresentation)));
 
+        }
 
+        public class PlatformData : ManagedData
+        {
+            [FloatField("speed", 0f, 100, 20f, displayName: "Speed")]
+            internal float speed;
+
+            [FloatField("wait", 0f, 5f, 0.5f, displayName: "Wait")]
+            internal float wait;
+
+            [IntVector2Field("vec", 0, 2)]
+            internal IntVector2 Vec;
+
+            [IntVector2Field("scaleVec", 3, 1, IntVector2Field.IntVectorReprType.rect)]
+            public IntVector2 scaleVec;
+            public PlatformData(PlacedObject owner) : base(owner, null)
+            {
+            }
         }
 
         public class SawBladeData : ManagedData
