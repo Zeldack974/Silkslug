@@ -140,8 +140,12 @@ namespace Silkslug
         {
             base.InitiateSprites(sLeaser, rCam);
 
-            sLeaser.sprites = new FSprite[1];
+            sLeaser.sprites = new FSprite[2];
             sLeaser.sprites[0] = new FSprite("Futile_White", true);
+            sLeaser.sprites[0].SetAnchor(Vector2.zero);
+            sLeaser.sprites[0].color = new Color(0.01f, 0.01f, 0.01f); ;
+            sLeaser.sprites[1] = new FSprite("FaceE0", true);
+            sLeaser.sprites[1].color = Color.red;
             AddToContainer(sLeaser, rCam, null);
         }
 
@@ -154,9 +158,12 @@ namespace Silkslug
 
             Vector2 vector = Vector2.Lerp(lastPos, pos, timeStacker);
             sLeaser.sprites[0].SetPosition(vector - camPos);
-            sLeaser.sprites[0].SetAnchor(Vector2.zero);
             sLeaser.sprites[0].scaleX = rect.x * 0.0625f;
             sLeaser.sprites[0].scaleY = rect.y * 0.0625f;
+
+            sLeaser.sprites[1].SetPosition((vector + rect / 2f) - camPos);
+            float scale = rect.x < rect.y ? rect.x : rect.y;
+            sLeaser.sprites[1].scale = scale * 0.0625f;
         }
 
         public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
