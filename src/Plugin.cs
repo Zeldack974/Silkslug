@@ -85,7 +85,16 @@ namespace Silkslug
             On.RainWorldGame.BeatGameMode += RainWorldGame_BeatGameMode;
             On.MultiplayerUnlocks.IsLevelUnlocked += MultiplayerUnlocks_IsLevelUnlocked;
             On.Room.Loaded += Room_Loaded;
+            On.Water.IsTileAccessible += Water_IsTileAccessible;
+        }
 
+        private bool Water_IsTileAccessible(On.Water.orig_IsTileAccessible orig, Water self, IntVector2 tile, CreatureTemplate crit)
+        {
+            if (self.room.world.name == "CR")
+            {
+                return true;
+            }
+            return orig(self, tile, crit);
         }
 
         private void Room_Loaded(On.Room.orig_Loaded orig, Room self)
