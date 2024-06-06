@@ -13,9 +13,9 @@ namespace Silkslug
     {
         private readonly PlacedObject _pObj;
         private DevtoolObjects.PlatformData data => (_pObj.data as DevtoolObjects.PlatformData);
-        public float t = 1f;
+        public float t = 0f;
         public bool backward;
-        public float continueTIme;
+        public float continueTime;
 
         public float speed => data.speed / (100f * 10f);
         public float waitingTime => data.wait;
@@ -26,6 +26,7 @@ namespace Silkslug
         {
             this.room = room;
             this._pObj = _pObj;
+            continueTime = Time.time + waitingTime;
         }
 
         public override void Update(bool eu)
@@ -34,7 +35,7 @@ namespace Silkslug
             //this.pos = new Vector2(Futile.mousePosition.x, Futile.mousePosition.y) + room.game.cameras[0].pos;
 
 
-            if (Time.time > continueTIme)
+            if (Time.time > continueTime)
             {
                 int sn = backward ? -1 : 1;
                 t += speed * sn;
@@ -43,7 +44,7 @@ namespace Silkslug
                 {
                     t = Mathf.Clamp01(t);
                     backward = !backward;
-                    continueTIme = Time.time + waitingTime;
+                    continueTime = Time.time + waitingTime;
                 }
             }
 
@@ -82,7 +83,7 @@ namespace Silkslug
                                     chuck.pos.x += result.correctionVec.x;
                                     chuck.vel.x += result.correctionVec.x;
 
-                                    if (chuck.owner is Creature && Math.Abs(result.correctionVec.x) > 0.01 && Time.time > continueTIme) // !(chuck.owner as Creature).dead
+                                    if (chuck.owner is Creature && Math.Abs(result.correctionVec.x) > 0.01 && Time.time > continueTime) // !(chuck.owner as Creature).dead
                                     {
                                         //Plugin.Log("crush vec check: " + Vector2.up * (result.correctionVec.x / Math.Abs(result.correctionVec.x) * (chuck.rad / 20)));
                                         IntVector2? intVector = SharedPhysics.RayTraceTilesForTerrainReturnFirstSolid(this.room, chuck.pos, chuck.pos + Vector2.up * (result.correctionVec.x / Math.Abs(result.correctionVec.x) * (chuck.rad / 20)));
@@ -106,7 +107,7 @@ namespace Silkslug
                                         (chuck.owner as Player).canJump = 2;
                                     }
 
-                                    if (chuck.owner is Creature && Math.Abs(result.correctionVec.y) > 0.01 && Time.time > continueTIme) // !(chuck.owner as Creature).dead
+                                    if (chuck.owner is Creature && Math.Abs(result.correctionVec.y) > 0.01 && Time.time > continueTime) // !(chuck.owner as Creature).dead
                                     {
                                         //Plugin.Log("crush vec check: " + Vector2.up * (result.correctionVec.y / Math.Abs(result.correctionVec.y) * (chuck.rad / 20)));
                                         IntVector2? intVector = SharedPhysics.RayTraceTilesForTerrainReturnFirstSolid(this.room, chuck.pos, chuck.pos + Vector2.up * (result.correctionVec.y / Math.Abs(result.correctionVec.y) * (chuck.rad / 20)));
@@ -127,7 +128,7 @@ namespace Silkslug
                                 result = Utils.PointInBox(chuck.pos, this.pos, this.pos + this.rect, chuck.rad);
                             }
 
-                            if ((r1.collide || r2.collide) && Time.time > continueTIme)
+                            if ((r1.collide || r2.collide) && Time.time > continueTime)
                             {
                                 chuck.pos += (this.pos - this.lastPos) * 1f;
                             }

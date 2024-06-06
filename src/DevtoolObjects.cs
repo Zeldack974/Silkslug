@@ -21,8 +21,35 @@ namespace Silkslug
             //RegisterEmptyObjectType<SawBladeData, ManagedRepresentation>("SawBlade", "Gameplay");
             RegisterManagedObject(new ManagedObjectType("SawBlade", "Gameplay", typeof(SawBlade), typeof(SawBladeData), typeof(ManagedRepresentation)));
             RegisterManagedObject(new ManagedObjectType("MovingPlatform", "Gameplay", typeof(MovingPlatform), typeof(PlatformData), typeof(ManagedRepresentation)));
+            RegisterManagedObject(new ManagedObjectType("FallingBlock", "Gameplay", typeof(FallingBlock), typeof(FallingBlockData), typeof(ManagedRepresentation)));
+
+            EffectDefinitionBuilder builder = new EffectDefinitionBuilder("FallingBlocksSettings");
+
+            builder
+                .AddFloatField("fallTime", 0.025f, 10f, 0.1f, 2f, "Falling time")
+                .AddFloatField("respawnTime", 0.025f, 40f, 0.1f, 6f, "Respawn time")
+                .SetEffectInitializer(FallingBlocksSettingsInitializer)
+                .SetCategory("Gameplay")
+                .Register();
 
         }
+
+        public static void FallingBlocksSettingsInitializer(Room room, EffectExtraData data, bool firstTimeRealized)
+        {
+            FallingBlock.fallTicks = (int)(40f * data.GetFloat("fallTime"));
+            FallingBlock.respawnTicks = (int)(40f * data.GetFloat("respawnTime"));
+        }
+
+
+        public class FallingBlockData : ManagedData
+        {
+            [IntVector2Field("scaleVec", 3, 1, IntVector2Field.IntVectorReprType.rect)]
+            public IntVector2 scaleVec;
+            public FallingBlockData(PlacedObject owner) : base(owner, null)
+            {
+            }
+        }
+
 
         public class PlatformData : ManagedData
         {

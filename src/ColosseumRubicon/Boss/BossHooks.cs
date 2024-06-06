@@ -85,7 +85,7 @@ namespace Silkslug.ColosseumRubicon.Boss
             BossManager bossManager = BossManager.Instance;
             //ConsoleWrite($"{!self.slatedForDeletetion}, {self.room.abstractRoom.name}, {bossManager}, {((bossManager != null) ? bossManager.initialize : false)}");
 
-            if (!self.slatedForDeletetion && self.room.abstractRoom.name == "CR_BOSS" && bossManager != null && bossManager.initialize)
+            if (!self.slatedForDeletetion && self.room?.abstractRoom?.name == "CR_BOSS" && bossManager != null && bossManager.initialize)
             {
                 if (self.Karma > 0 || self.KarmaIsReinforced)
                 {

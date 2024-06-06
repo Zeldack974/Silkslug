@@ -14,7 +14,7 @@ namespace Silkslug
         public PositionedSoundEmitter soundEmitter;
         private readonly PlacedObject _pObj;
         private DevtoolObjects.SawBladeData data => (_pObj.data as DevtoolObjects.SawBladeData);
-        public float t = 1f;
+        public float t = 0f;
         public bool backward;
         public float continueTIme;
 
@@ -27,6 +27,7 @@ namespace Silkslug
         {
             this.room = room;
             this._pObj = _pObj;
+            continueTIme = Time.time + waitingTime;
         }
 
         public override void Update(bool eu)

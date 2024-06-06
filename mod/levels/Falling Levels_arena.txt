@@ -1,0 +1,38 @@
+GoalAmount - 5
+
+Creature - Pink - dens:4,5,6,7,8,9 - chance:0.7
+Creature - Pink - dens:4,5,6,7,8,9 - chance:0.7
+
+CreatureGroup - SCAVS - invSymbol:A1
+Creature - ScavengerElite - dens:-1 - chance:0.6 - group:SCAVS
+Creature - ScavengerElite - dens:-1 - chance:0.6 - group:SCAVS
+Creature - ScavengerElite - dens:-1 - chance:0.6 - group:SCAVS
+Creature - ScavengerElite - dens:-1 - chance:0.5 - group:SCAVS
+
+CreatureGroup - EXTRAPINKS - invSymbol:A2
+Creature - Pink - dens:4,5,6,7,8,9 - chance:0.6 - group:EXTRAPINKS
+Creature - Pink - dens:4,5,6,7,8,9 - chance:0.6 - group:EXTRAPINKS
+
+CreatureGroup - BLUES - invSymbol:A3
+Creature - Blue - dens:4,5,6,7,8,9 - chance:0.6 - group:BLUES
+Creature - Blue - dens:4,5,6,7,8,9 - chance:0.6 - group:BLUES
+
+CreatureGroup - YELLOWS - invSymbol:A4 - chance:0.6
+Creature - Yellow - dens:4,5,6,7,8,9 - chance:100 - group:YELLOWS
+Creature - Yellow - dens:4,5,6,7,8,9 - chance:100 - group:YELLOWS
+Creature - Yellow - dens:4,5,6,7,8,9 - chance:0.5 - group:YELLOWS
+Creature - Yellow - dens:4,5,6,7,8,9 - chance:0.5 - group:YELLOWS
+
+CreatureGroup - GREENS - invSymbol:A5
+Creature - Red - dens:5,6,7,8,9 - chance:0.6 - group:GREENS
+Creature - Red - dens:5,6,7,8,9 - chance:0.6 - group:GREENS
+
+CreatureGroup - CYANS - chance:0.1
+Creature - Cyan - dens:4,5,6,7,8,9 - chance:0.5 - amount:2-3 - group:CYANS
+
+Creature - Bro - dens:4 - chance:0.1 - invSymbol:A6 - RARE
+
+Creature - DropBug - dens:4,5,6,7,8,9 - chance:0.11
+Creature - DropBug - dens:4,5,6,7,8,9 - chance:0.07
+
+Creature - Cicada - dens:4,5,6,7,8,9 - chance:0.01 - amount:3
