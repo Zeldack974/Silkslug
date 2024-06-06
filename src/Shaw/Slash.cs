@@ -152,7 +152,7 @@ namespace Silkslug
                                         }
                                         else
                                         {
-                                            (this.room.physicalObjects[j][k] as Creature).Violence(this.owner.mainBodyChunk, force, this.room.physicalObjects[j][k].firstChunk, null, Creature.DamageType.Blunt, this.damage, 10f);
+                                            (this.room.physicalObjects[j][k] as Creature).Violence(this.owner.mainBodyChunk, force, this.room.physicalObjects[j][k].firstChunk, null, Creature.DamageType.Blunt, this.damage, 10f * stunFactor);
                                         }
                                         if (!(this.room.physicalObjects[j][k] as Creature).dead)
                                         {
