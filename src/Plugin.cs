@@ -90,6 +90,7 @@ namespace Silkslug
 
         private bool Water_IsTileAccessible(On.Water.orig_IsTileAccessible orig, Water self, IntVector2 tile, CreatureTemplate crit)
         {
+            //ConsoleWrite("IsTileAccessible: " + (new System.Diagnostics.StackTrace()));
             if (self.room.world.name == "CR")
             {
                 return true;
@@ -517,7 +518,7 @@ namespace Silkslug
                             {
                                 self.room.PlaySound(Sounds.HORNET_GREAT_SLASH, self.firstChunk);
                             }
-                            self.room.AddObject(new Slash(self.room, self, spear, intVector.ToVector2(), 175f, 1f, 0.75f * damageFac));
+                            self.room.AddObject(new Slash(self.room, self, spear, intVector.ToVector2(), 175f, 1f, 0.75f * damageFac, 2f));
                             spear.SetInvisible(10);
                             shawData.chargeSlashCounter = 0;                        }
                         else

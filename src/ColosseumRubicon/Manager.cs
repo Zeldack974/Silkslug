@@ -67,7 +67,6 @@ namespace Silkslug.ColosseumRubicon
         ////////////////// HOOKS //////////////////
         public static void Hooks()
         {
-            On.Player.Die += Player_Die;
             On.Room.Loaded += Room_Loaded;
             On.AbstractCreature.CheckVoidseaArena += AbstractCreature_CheckVoidseaArena;
             On.AbstractCreature.setCustomFlags += AbstractCreature_setCustomFlags;
@@ -170,16 +169,16 @@ namespace Silkslug.ColosseumRubicon
             }
         }
 
-        private static void Player_Die(On.Player.orig_Die orig, Player self)
-        {
-            bool wasDead = self.dead;
-            orig(self);
-            if (!wasDead && self.dead)
-            { 
-                ResetValues();
-                DisablePauseMenu = false;
-            }
-        }
+        //private static void Player_Die(On.Player.orig_Die orig, Player self)
+        //{
+        //    bool wasDead = self.dead;
+        //    orig(self);
+        //    if (!wasDead && self.dead)
+        //    { 
+        //        ResetValues();
+        //        DisablePauseMenu = false;
+        //    }
+        //}
 
         public static bool playNewLocation = false;
 

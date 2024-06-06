@@ -10,7 +10,7 @@ using Mono.Cecil.Cil;
 
 namespace Silkslug
 {
-    public class FallingBlock : CosmeticSprite
+    public class FallingBlock : CosmeticSprite, IAccessibilityModifier
     {
         public static int fallTicks = 40 * 2;
         public static int respawnTicks = 40 * 6;
@@ -115,6 +115,7 @@ namespace Silkslug
 
             if (respawnTimer > 0)
             {
+                if (respawnTimer == respawnTicks) sLeaser.sprites[0].alpha = 1f;
                 sLeaser.sprites[0].color = Color.red;
                 sLeaser.sprites[0].alpha = Mathf.InverseLerp(Math.Max(0, respawnTicks - 40), respawnTicks, respawnTimer);
                 sLeaser.sprites[0].y = Math.Max(0, sLeaser.sprites[0].y - timeStacker * 2f);
@@ -150,6 +151,23 @@ namespace Silkslug
                     tile.Terrain = solid ? Room.Tile.TerrainType.Solid : Room.Tile.TerrainType.Air;
                 }
             }
+        }
+
+        public bool IsTileAccessible(IntVector2 tile, CreatureTemplate crit)
+        {
+            Vector2 rect = tileRect.ToVector2();
+            Vector2 p = tile.ToVector2();
+            Vector2 min = room.GetTilePosition(this.pos).ToVector2() + (rect * Vector2.up) + Vector2.up;
+            Vector2 max = min + (rect * Vector2.right) + Vector2.up;
+            //Plugin.Log("tile: " + p);
+            //Plugin.Log($"min: {min}, max: {max}");
+            //Plugin.Log($"in range: " + (p.y == min.y && p.x >= min.x && p.x <= max.x));
+            if (respawnTimer > 0 && p.y == min.y && p.x >= min.x && p.x <= max.x)
+            {
+                Plugin.Log("cant reach");
+                return false;
+            }
+            return true;
         }
     }
 }

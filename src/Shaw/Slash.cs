@@ -10,7 +10,7 @@ namespace Silkslug
 {
     public class Slash : CosmeticSprite
     {
-        public Slash(Room room, Player owner, Spear spear, Vector2 dir, float size, float force, float damage)
+        public Slash(Room room, Player owner, Spear spear, Vector2 dir, float size, float force, float damage, float stunFactor = 1f)
         {
             this.room = room;
             this.owner = owner;
@@ -19,6 +19,7 @@ namespace Silkslug
             this.size = size;
             this.force = force;
             this.damage = damage;
+            this.stunFactor = stunFactor;
             this.room.InGameNoise(new InGameNoise(this.owner.mainBodyChunk.pos, 8000f, this.owner, 1f));
         }
 
@@ -48,6 +49,8 @@ namespace Silkslug
         public float force;
 
         public float damage;
+
+        public float stunFactor;
 
         public int frame;
 
