@@ -12,7 +12,7 @@ namespace Silkslug
 
         public static void SetDefaults()
         {
-
+            Plugin.Log("DONT BE CALLED");
             for (int i = 0; i < 4; i++)
             {
                 SlugcatStats.Name name = SlugcatStats.Name.White;
@@ -67,7 +67,7 @@ namespace Silkslug
                             },
                             new CustomSprite()
                             {
-                                Sprite = "LEGS",
+                                Sprite = "TAIL",
                                 Color = Color.white,
                                 SpriteSheetID = "dressmyslugcat.empty"
                             },

@@ -128,6 +128,16 @@ namespace Silkslug
         private void MainMenu_ctor(On.Menu.MainMenu.orig_ctor orig, Menu.MainMenu self, ProcessManager manager, bool showRegionSpecificBkg)
         {
             orig(self, manager, showRegionSpecificBkg);
+
+            try
+            {
+                Initialize();
+            } catch { }
+
+        }
+        
+        public void Initialize()
+        {
             if (!Initialized && SkinApplyer.IsSlornetEnabled)
             {
                 SkinApplyer.SetDefaults();
