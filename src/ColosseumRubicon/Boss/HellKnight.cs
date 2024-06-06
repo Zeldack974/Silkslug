@@ -443,12 +443,12 @@ namespace Silkslug.ColosseumRubicon.Boss
                     {
 
                         Vector2 pos = new Vector2(180 + startAdd + (i * 20 * 3), owner.room.RoomRect.bottom + (owner.room.RoomRect.top - owner.room.RoomRect.bottom) / 2);
-                        owner.room.AddObject(new Laser(this.owner, pos, Custom.VecToDeg(new Vector2(0, -1)), 5f, 30, Laser.Type.LIGHTNING));
+                        owner.room.AddObject(new Laser(this.owner, pos, Custom.VecToDeg(new Vector2(0, -1)), 5f, 40, Laser.Type.LIGHTNING));
 
                     }
 
                     remainingBeams--;
-                    spawnCooldown = 45;
+                    spawnCooldown = 40 + 15;
 
 
                     return remainingBeams <= 0;
@@ -515,12 +515,12 @@ namespace Silkslug.ColosseumRubicon.Boss
 
                     for (int i = 0; i < 8; i++)
                     {
-                        owner.room.AddObject(new Laser(this.owner, this.owner.pos, (((i + num) /8f) * 360f), 20f, 30, Laser.Type.LIGHTNING));
+                        owner.room.AddObject(new Laser(this.owner, this.owner.pos, (((i + num) /8f) * 360f), 20f, 40, Laser.Type.LIGHTNING));
 
                     }
 
                     remainingBeams--;
-                    spawnCooldown = 35;
+                    spawnCooldown = 40 + 5;
 
 
                     return remainingBeams <= 0;
