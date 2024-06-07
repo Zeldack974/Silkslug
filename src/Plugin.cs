@@ -86,6 +86,17 @@ namespace Silkslug
             On.MultiplayerUnlocks.IsLevelUnlocked += MultiplayerUnlocks_IsLevelUnlocked;
             On.Room.Loaded += Room_Loaded;
             On.Water.IsTileAccessible += Water_IsTileAccessible;
+
+            On.ThreatDetermination.ThreatOfCreature += ThreatDetermination_ThreatOfCreature;
+        }
+
+        private float ThreatDetermination_ThreatOfCreature(On.ThreatDetermination.orig_ThreatOfCreature orig, ThreatDetermination self, Creature creature, Player player)
+        {
+            if (creature is EggBug && creature.room.world.name == "CR")
+            {
+                return 1f;
+            }
+            return orig(self, creature, player);
         }
 
         private bool Water_IsTileAccessible(On.Water.orig_IsTileAccessible orig, Water self, IntVector2 tile, CreatureTemplate crit)
@@ -131,12 +142,12 @@ namespace Silkslug
 
             try
             {
-                Initialize();
+                InitializeSkinApplyer();
             } catch { }
 
         }
         
-        public void Initialize()
+        public void InitializeSkinApplyer()
         {
             if (!Initialized && SkinApplyer.IsSlornetEnabled)
             {
