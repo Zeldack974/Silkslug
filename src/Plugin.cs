@@ -115,6 +115,7 @@ namespace Silkslug
             {
                 self.AddObject(new Warp.VS_E06Unstuck(self));
             }
+            
             orig(self);
         }
 
