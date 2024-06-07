@@ -1,4 +1,5 @@
 ﻿using DressMySlugcat;
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -12,7 +13,6 @@ namespace Silkslug
 
         public static void SetDefaults()
         {
-            Plugin.Log("DONT BE CALLED");
             for (int i = 0; i < 4; i++)
             {
                 SlugcatStats.Name name = SlugcatStats.Name.White;

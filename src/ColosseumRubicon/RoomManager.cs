@@ -180,7 +180,7 @@ namespace Silkslug.ColosseumRubicon
 
         public void ResetRoom()
         {
-            Plugin.Log($"reseting room {room.abstractRoom.name}");
+            Plugin.Log($"resetting room {room.abstractRoom.name}");
             AbstractRoom abstractRoom = room.abstractRoom;
 
             foreach (var obj in room.updateList)

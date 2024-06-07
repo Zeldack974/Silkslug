@@ -35,7 +35,6 @@ internal class Warp
             Manager.playNewLocation = true;
             try
             {
-
                 Plugin.Log("New World loaded");
                 World world = self.activeWorld;
                 World world2 = self.worldLoader.ReturnWorld();
