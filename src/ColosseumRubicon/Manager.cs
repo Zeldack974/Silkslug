@@ -14,7 +14,6 @@ namespace Silkslug.ColosseumRubicon
     {
         public static bool DisablePauseMenu;
 
-        public static bool playerSeeDevSorry;
         public static void OnEnable()
         {
             Warp.OnEnable();
@@ -75,7 +74,6 @@ namespace Silkslug.ColosseumRubicon
             On.AbstractCreature.OpportunityToEnterDen += AbstractCreature_OpportunityToEnterDen;
             On.RainWorldGame.Update += RainWorldGame_Update;
             On.RainWorldGame.ctor += RainWorldGame_ctor;
-            On.Player.Update += Player_Update;
             On.ProcessManager.PostSwitchMainProcess += ProcessManager_PostSwitchMainProcess;
             On.Player.CanBeSwallowed += Player_CanBeSwallowed;
             On.Player.SlugcatGrab += Player_SlugcatGrab;
@@ -133,17 +131,6 @@ namespace Silkslug.ColosseumRubicon
                 self.currentMainLoop = new HKMainMenu(self);
             }
             orig(self, ID);
-        }
-
-        private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
-        {
-            //UnityEngine.Debug.Log("pos: " + self.mainBodyChunk.pos);
-            if (self.room.abstractRoom.name == "SB_E05SAINT" && !playerSeeDevSorry)
-            {
-                playerSeeDevSorry = true;
-                self.room.game.cameras[0].hud.textPrompt.AddMessage(self.room.game.rainWorld.inGameTranslator.Translate("Uh... Yeah sorry... I will fix this out eventually."), 20, 500, true, true);
-            }
-            orig(self, eu);
         }
 
         private static void RainWorldGame_ctor(On.RainWorldGame.orig_ctor orig, RainWorldGame self, ProcessManager manager)
