@@ -4,6 +4,9 @@ using IL.Menu;
 using MoreSlugcats;
 using Silkslug.ColosseumRubicon.Boss;
 using static Silkslug.ColosseumRubicon.Warp;
+using MonoMod.RuntimeDetour;
+using System.Reflection;
+using System;
 
 namespace Silkslug.ColosseumRubicon
 {
@@ -61,7 +64,6 @@ namespace Silkslug.ColosseumRubicon
             ArenaChallenges.currentArena = int.Parse(args[0]) - 1;
         }
 
-
         ////////////////// HOOKS //////////////////
         public static void Hooks()
         {
@@ -71,12 +73,34 @@ namespace Silkslug.ColosseumRubicon
             On.AbstractCreature.OpportunityToEnterDen += AbstractCreature_OpportunityToEnterDen;
             On.RainWorldGame.Update += RainWorldGame_Update;
             On.RainWorldGame.ctor += RainWorldGame_ctor;
-            On.Player.Update += Player_Update;
             On.ProcessManager.PostSwitchMainProcess += ProcessManager_PostSwitchMainProcess;
             On.Player.CanBeSwallowed += Player_CanBeSwallowed;
             On.Player.SlugcatGrab += Player_SlugcatGrab;
             On.RainCycle.GetDesiredCycleLength += RainCycle_GetDesiredCycleLength;
-            
+            On.RoomSettings.Load += RoomSettings_Load;
+
+            new Hook(
+                typeof(SaveState).GetProperty("CanSeeVoidSpawn", BindingFlags.Static | BindingFlags.Public | BindingFlags.Instance).GetGetMethod(true),
+                new Func<Func<SaveState, bool>, SaveState, bool>((orig, self) => (ModManager.MSC && self.saveStateNumber == ShawName) || orig(self))
+            );
+        }
+
+        private static bool RoomSettings_Load(On.RoomSettings.orig_Load orig, RoomSettings self, SlugcatStats.Name playerChar)
+        {
+            if (self.filePath != null)
+            {
+                string fileName = Path.GetFileName(self.filePath);
+                if (playerChar == ShawName && self.filePath != null && fileName.StartsWith("sb"))
+                {
+                    string filePath = WorldLoader.FindRoomFile(self.name, false, $"_settings-saint.txt");
+                    if (filePath != null)
+                    {
+                        self.filePath = filePath;
+                    }
+                }
+            }
+
+            return orig(self, playerChar);
         }
 
         private static int RainCycle_GetDesiredCycleLength(On.RainCycle.orig_GetDesiredCycleLength orig, RainCycle self)
@@ -106,12 +130,6 @@ namespace Silkslug.ColosseumRubicon
                 self.currentMainLoop = new HKMainMenu(self);
             }
             orig(self, ID);
-        }
-
-        private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
-        {
-            //UnityEngine.Debug.Log("pos: " + self.mainBodyChunk.pos);
-            orig(self, eu);
         }
 
         private static void RainWorldGame_ctor(On.RainWorldGame.orig_ctor orig, RainWorldGame self, ProcessManager manager)

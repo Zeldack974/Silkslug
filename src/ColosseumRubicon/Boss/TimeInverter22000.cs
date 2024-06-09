@@ -102,7 +102,6 @@ namespace Silkslug.ColosseumRubicon.Boss
 
                     string nb = ((int)Math.Min(Mathf.Lerp(1, 52, num * num), 51)).ToString();
                     if (nb.Length < 2) nb = "0" + nb;
-                    Plugin.Log("image name: " + "silksong_memory" + nb);
                     sLeaser.sprites[0].SetElementByName("silksong_memory" + nb);
 
                     sLeaser.sprites[0].SetPosition(center.x, center.y);
