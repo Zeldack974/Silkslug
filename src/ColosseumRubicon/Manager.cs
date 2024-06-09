@@ -10,8 +10,6 @@ namespace Silkslug.ColosseumRubicon
     public static class Manager
     {
         public static bool DisablePauseMenu;
-
-        public static bool playerSeeDevSorry;
         public static void OnEnable()
         {
             Warp.OnEnable();
@@ -113,11 +111,6 @@ namespace Silkslug.ColosseumRubicon
         private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
             //UnityEngine.Debug.Log("pos: " + self.mainBodyChunk.pos);
-            if (self.room.abstractRoom.name == "SB_E05SAINT" && !playerSeeDevSorry)
-            {
-                playerSeeDevSorry = true;
-                self.room.game.cameras[0].hud.textPrompt.AddMessage(self.room.game.rainWorld.inGameTranslator.Translate("Uh... Yeah sorry... I will fix this out eventually."), 20, 500, true, true);
-            }
             orig(self, eu);
         }
 
