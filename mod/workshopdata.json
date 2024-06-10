@@ -4,8 +4,8 @@
   "ID": "zeldak974.silkslug",
   "Version": "1.1.0",
   "TargetGameVersion": "v1.9.15",
-  "Requirements": "slime-cubed.slugbase, moreslugcats, regionkit, crs",
-  "RequirementNames": "SlugBase, More Slugcats Expansion, RegionKit, Custom Regions Support",
+  "Requirements": "slime-cubed.slugbase, moreslugcats, regionkit, crs, pom",
+  "RequirementNames": "SlugBase, More Slugcats Expansion, RegionKit, Custom Regions Support, POM",
   "Authors": "Z\u039ELD\u039BK",
   "Visibility": "Unlisted",
   "Tags": [
