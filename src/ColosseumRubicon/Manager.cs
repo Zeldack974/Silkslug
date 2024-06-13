@@ -7,6 +7,7 @@ using static Silkslug.ColosseumRubicon.Warp;
 using MonoMod.RuntimeDetour;
 using System.Reflection;
 using System;
+using System.Collections.Generic;
 
 namespace Silkslug.ColosseumRubicon
 {
@@ -78,6 +79,7 @@ namespace Silkslug.ColosseumRubicon
             On.Player.SlugcatGrab += Player_SlugcatGrab;
             On.RainCycle.GetDesiredCycleLength += RainCycle_GetDesiredCycleLength;
             On.RoomSettings.Load += RoomSettings_Load;
+            On.RoomSettings.ctor += RoomSettings_ctor;
 
             new Hook(
                 typeof(SaveState).GetProperty("CanSeeVoidSpawn", BindingFlags.Static | BindingFlags.Public | BindingFlags.Instance).GetGetMethod(true),
@@ -85,18 +87,27 @@ namespace Silkslug.ColosseumRubicon
             );
         }
 
+        private static void RoomSettings_ctor(On.RoomSettings.orig_ctor orig, RoomSettings self, string name, Region region, bool template, bool firstTemplate, SlugcatStats.Name playerChar)
+        {
+            orig(self, name, region, template, firstTemplate, playerChar);
+        }
+
         private static bool RoomSettings_Load(On.RoomSettings.orig_Load orig, RoomSettings self, SlugcatStats.Name playerChar)
         {
-            if (self.filePath != null)
+            List<string> names = [
+                "sb_e05saint",
+                "sb_d06",
+                "sb_i01",
+                "sb_f02",
+                "sb_e07"
+            ];
+
+            if (playerChar == ShawName && names.Contains(self.name.ToLowerInvariant()))
             {
-                string fileName = Path.GetFileName(self.filePath);
-                if (playerChar == ShawName && self.filePath != null && fileName.StartsWith("sb"))
+                string filePath = WorldLoader.FindRoomFile(self.name, false, $"_settings-saint.txt");
+                if (filePath != null)
                 {
-                    string filePath = WorldLoader.FindRoomFile(self.name, false, $"_settings-saint.txt");
-                    if (filePath != null)
-                    {
-                        self.filePath = filePath;
-                    }
+                    self.filePath = filePath;
                 }
             }
 
