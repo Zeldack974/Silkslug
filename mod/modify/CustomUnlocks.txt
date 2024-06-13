@@ -1,2 +1,2 @@
 [ADD]CRHell : Hell Arena, Shattered Passage, Warehouse From Hell
-[ADD]CRPain : Ancient Pain, Falling Levels
+[ADD]CRPain : Ancient Pain
