@@ -49,10 +49,10 @@ namespace Silkslug.ColosseumRubicon
                     new CreaturePlacment("MirosVulture", 12, 1),
                 }, "hell", 2));
 
-                challenges.Add(new ArenaChallenge("cr_warehouse", new CreaturePlacment[]
-                {
-                    new CreaturePlacment("FireBug", -1, 4),
-                }, "hell"));
+                //challenges.Add(new ArenaChallenge("cr_warehouse", new CreaturePlacment[]
+                //{
+                //    new CreaturePlacment("FireBug", -1, 4),
+                //}, "hell"));
 
                 challenges.Add(new ArenaChallenge("cr_warehouse", new CreaturePlacment[]
                 {

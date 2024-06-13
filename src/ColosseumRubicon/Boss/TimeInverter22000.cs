@@ -47,7 +47,7 @@ namespace Silkslug.ColosseumRubicon.Boss
                 //UnityEngine.Debug.Log("gowTicks: " + growTicks);
                 foreach (var abstractPlayer in room.game.Players)
                 {
-                    (abstractPlayer.realizedCreature as Player).SuperHardSetPosition(new Vector2(700, 1200));
+                    (abstractPlayer.realizedCreature as Player).SuperHardSetPosition(new Vector2(700, 1250));
                 }
 
                 if (growTicks == totalTicks - 60)
