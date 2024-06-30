@@ -195,7 +195,7 @@ namespace Silkslug.ColosseumRubicon.Boss
             //damage = health;
             Plugin.Log($"HellKnight took {damage} damage {health}/{maxHealth}");
 
-            //health = Math.Max(health - damage, 0);
+            health = Math.Max(health - damage, 0);
             if (health == 0 && !dead)
             {
                 Plugin.Log("Die! PURGATORY GUARDIAN HELL KNIGHT");
