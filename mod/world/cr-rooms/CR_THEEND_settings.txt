@@ -2,7 +2,7 @@ Template: NONE
 DangerType: Flood
 Clouds: 0.1195652
 Grime: 0
-Palette: 301
+Palette: 302
 EffectColorA: 4
 EffectColorB: 2
 PlacedObjects: InsectGroup><607.5936><287.6254><-1~237~-174~-186~Beetle~0.5108696, LightBeam><996.5027><55.30002><-161~656~-605~657~-877~-17~-435~445~0.1521739~1~0~1~None~0~0, PlayerPushback><1318.943><60.80215><-203~-10, 
