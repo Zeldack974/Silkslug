@@ -80,11 +80,21 @@ namespace Silkslug.ColosseumRubicon
             On.RainCycle.GetDesiredCycleLength += RainCycle_GetDesiredCycleLength;
             On.RoomSettings.Load += RoomSettings_Load;
             On.RoomSettings.ctor += RoomSettings_ctor;
+            On.Creature.Update += Creature_Update;
 
             new Hook(
                 typeof(SaveState).GetProperty("CanSeeVoidSpawn", BindingFlags.Static | BindingFlags.Public | BindingFlags.Instance).GetGetMethod(true),
                 new Func<Func<SaveState, bool>, SaveState, bool>((orig, self) => (ModManager.MSC && self.saveStateNumber == ShawName) || orig(self))
             );
+        }
+
+        private static void Creature_Update(On.Creature.orig_Update orig, Creature self, bool eu)
+        {
+            orig(self, eu);
+            if (self.room != null && self.room.world.name == "CR" && self.Submersion > 0.2 && self.room.waterObject != null && self.room.waterObject.WaterIsLethal && self.abstractCreature.lavaImmune)
+            {
+                self.Violence(null, null, self.firstChunk, null, Creature.DamageType.Explosion, 0.025f / 10f, 0.0f);
+            }
         }
 
         private static void RoomSettings_ctor(On.RoomSettings.orig_ctor orig, RoomSettings self, string name, Region region, bool template, bool firstTemplate, SlugcatStats.Name playerChar)
