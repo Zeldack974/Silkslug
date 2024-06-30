@@ -108,7 +108,7 @@ namespace Silkslug.ColosseumRubicon.Boss
             {
                 self.stun = 0;
 
-                if (bossManager.playerSpear != null && self.spearOnBack.spear == null)
+                if ( bossManager.playerSpear != null && self.spearOnBack != null && self.spearOnBack.spear == null)
                 {
                     self.SlugcatGrab(bossManager.playerSpear, 0);
                 }
