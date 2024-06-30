@@ -1,4 +1,6 @@
 ﻿global using static Silkslug.MyDevConsole;
+global using static Silkslug.Plugin;
+//global using Debug = UnityEngine.Debug;
 using BepInEx;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -8,24 +10,49 @@ using RWCustom;
 using static SlugBase.Features.FeatureTypes;
 using static Silkslug.Shaw;
 using System.Collections.Generic;
+using Silkslug.ColosseumRubicon;
+using BepInEx.Logging;
+using Silkslug.ColosseumRubicon.Boss;
+using Fisobs.Core;
+using System.Xml.Schema;
+using DressMySlugcat;
+using System;
+using System.IO;
 
 namespace Silkslug
 {
-    [BepInPlugin(MOD_ID, "Silkslug", "1.0.5")]
+    [BepInPlugin(MOD_ID, "Silkslug", "1.1.0")]
     class Plugin : BaseUnityPlugin
     {
         private const string MOD_ID = "zeldak974.silkslug";
+        public static ManualLogSource log = BepInEx.Logging.Logger.CreateLogSource("SilkSlug");
 
         public static readonly PlayerFeature<float> SuperJump = PlayerFloat("silkslug/super_jump");
         public static readonly PlayerFeature<bool> SpearAbilites = PlayerBool("silkslug/spear_abilities");
 
-        public static readonly SlugcatStats.Name ShawName = new SlugcatStats.Name("Shaw", false);
+        public static readonly SlugcatStats.Name ShawName = new SlugcatStats.Name("Shaw");
+
+        public static bool Initialized = false;
+
+        public static void Log(object msg)
+        {
+            log.LogInfo(msg);
+        }
+
+        public static void LogError(object msg)
+        {
+            log.LogError(msg);
+        }
+
 
         // Add hooks
         public void OnEnable()
         {
             On.RainWorld.OnModsInit += Extras.WrapInit(LoadResources);
             try { RegisterCommands(); } catch { }
+            ColosseumRubicon.Manager.OnEnable();
+            BossHooks.Register();
+            DevtoolObjects.Register();
 
             // Put your custom hooks here!
             On.Player.Jump += Player_Jump;
@@ -38,10 +65,266 @@ namespace Silkslug
             On.Player.Die += Player_Die;
             On.Player.SlugcatGrab += Player_SlugcatGrab;
             On.Player.SpearOnBack.Update += SpearOnBack_Update;
+            On.Player.Stun += Player_Stun;
 
             On.Spear.DrawSprites += Spear_DrawSprites;
             On.Spear.Update += Spear_Update;
 
+            On.RoomSpecificScript.AddRoomSpecificScript += RoomSpecificScript_AddRoomSpecificScript;
+            On.SSOracleBehavior.PebblesConversation.AddEvents += PebblesConversation_AddEvents;
+            On.ProjectionScreen.AddImage_string += ProjectionScreen_AddImage_string;
+            On.ProjectionScreen.AddImage_List1_int += ProjectionScreen_AddImage_List1_int;
+
+            On.Menu.SlugcatSelectMenu.UpdateStartButtonText += SlugcatSelectMenu_UpdateStartButtonText;
+            On.Menu.SlugcatSelectMenu.ContinueStartedGame += SlugcatSelectMenu_ContinueStartedGame;
+
+            On.SlugcatStats.IsSlugcatFromMSC += SlugcatStats_IsSlugcatFromMSC;
+            On.Music.MusicPlayer.GameRequestsSong += MusicPlayer_GameRequestsSong;
+
+            On.Menu.MainMenu.ctor += MainMenu_ctor;
+            On.RainWorldGame.BeatGameMode += RainWorldGame_BeatGameMode;
+            On.MultiplayerUnlocks.IsLevelUnlocked += MultiplayerUnlocks_IsLevelUnlocked;
+            On.Room.Loaded += Room_Loaded;
+            On.Water.IsTileAccessible += Water_IsTileAccessible;
+
+            On.ThreatDetermination.ThreatOfCreature += ThreatDetermination_ThreatOfCreature;
+        }
+
+        private float ThreatDetermination_ThreatOfCreature(On.ThreatDetermination.orig_ThreatOfCreature orig, ThreatDetermination self, Creature creature, Player player)
+        {
+            if (creature is EggBug && creature.room.world.name == "CR")
+            {
+                return 1f;
+            }
+            return orig(self, creature, player);
+        }
+
+        private bool Water_IsTileAccessible(On.Water.orig_IsTileAccessible orig, Water self, IntVector2 tile, CreatureTemplate crit)
+        {
+            //ConsoleWrite("IsTileAccessible: " + (new System.Diagnostics.StackTrace()));
+            if (self.room.world.name == "CR")
+            {
+                return true;
+            }
+            return orig(self, tile, crit);
+        }
+
+        private void Room_Loaded(On.Room.orig_Loaded orig, Room self)
+        {
+            if (self.abstractRoom.firstTimeRealized && self.abstractRoom.name == "VS_E06")
+            {
+                self.AddObject(new Warp.VS_E06Unstuck(self));
+            }
+            
+            orig(self);
+        }
+
+        private bool MultiplayerUnlocks_IsLevelUnlocked(On.MultiplayerUnlocks.orig_IsLevelUnlocked orig, MultiplayerUnlocks self, string levelName)
+        {
+            return orig(self, levelName.ToLower());
+        }
+
+
+        private void RainWorldGame_BeatGameMode(On.RainWorldGame.orig_BeatGameMode orig, RainWorldGame game, bool standardVoidSea)
+        {
+            if (game.GetStorySession.saveState.saveStateNumber == ShawName)
+            {
+                if (game.rainWorld.progression.miscProgressionData.SetTokenCollected(new MultiplayerUnlocks.LevelUnlockID("CRHell")))
+                {
+                    game.manager.specialUnlockText = game.rainWorld.inGameTranslator.Translate("Colosseum Rubicon content is now available in Arena Mode.");
+                }
+            }
+            orig(game, standardVoidSea);
+        }
+
+        private void MainMenu_ctor(On.Menu.MainMenu.orig_ctor orig, Menu.MainMenu self, ProcessManager manager, bool showRegionSpecificBkg)
+        {
+            orig(self, manager, showRegionSpecificBkg);
+
+            try
+            {
+                InitializeSkinApplyer();
+            } catch { }
+
+        }
+        
+        public void InitializeSkinApplyer()
+        {
+            if (!Initialized && SkinApplyer.IsSlornetEnabled)
+            {
+                SkinApplyer.SetDefaults();
+            }
+
+            Initialized = true;
+        }
+
+        private void SlugcatSelectMenu_ContinueStartedGame(On.Menu.SlugcatSelectMenu.orig_ContinueStartedGame orig, Menu.SlugcatSelectMenu self, SlugcatStats.Name storyGameCharacter)
+        {
+            if (self.slugcatPages[self.slugcatPageIndex].slugcatNumber == ShawName && (bool)self.saveGameData[ShawName]?.ascended)
+            {
+                self.redSaveState = self.manager.rainWorld.progression.GetOrInitiateSaveState(ShawName, null, self.manager.menuSetup, false);
+                self.manager.RequestMainProcessSwitch(ProcessManager.ProcessID.Statistics);
+                self.PlaySound(SoundID.MENU_Switch_Page_Out);
+                return;
+            }
+            orig(self, storyGameCharacter);
+        }
+
+        private void SlugcatSelectMenu_UpdateStartButtonText(On.Menu.SlugcatSelectMenu.orig_UpdateStartButtonText orig, Menu.SlugcatSelectMenu self)
+        {
+            orig(self);
+            if (self.startButton.menuLabel.text == self.Translate("CONTINUE") && self.slugcatPages[self.slugcatPageIndex].slugcatNumber == ShawName && (bool)self.saveGameData[ShawName]?.ascended)
+            {
+                self.startButton.menuLabel.text = self.Translate("STATISTICS");
+                return;
+            }
+        }
+
+        private void MusicPlayer_GameRequestsSong(On.Music.MusicPlayer.orig_GameRequestsSong orig, Music.MusicPlayer self, MusicEvent musicEvent)
+        {
+            Plugin.Log("MusicPlayer_GameRequestsSong");
+            if (self.song != null)
+                Plugin.Log("already playing " + self.song.name);
+            if (!self.manager.rainWorld.setup.playMusic)
+                Plugin.Log("playMusic is false");
+            if (self.song != null && (self.song.priority >= musicEvent.prio))
+                Plugin.Log($"song priority to low: {musicEvent.prio} < {self.song.priority}");
+
+            if (self.manager.currentMainLoop.ID == ProcessManager.ProcessID.Game && (self.manager.currentMainLoop as RainWorldGame).session is StoryGameSession)
+            {
+                SaveState saveState2 = ((self.manager.currentMainLoop as RainWorldGame).session as StoryGameSession).saveState;
+                for (int j = 0; j < saveState2.deathPersistentSaveData.songsPlayRecords.Count; j++)
+                {
+                    if (saveState2.deathPersistentSaveData.songsPlayRecords[j].songName == musicEvent.songName)
+                        Plugin.Log($"no playing saved {saveState2.deathPersistentSaveData.songsPlayRecords[j].songName} == {musicEvent.songName}");
+                }
+            }
+
+            orig(self, musicEvent);
+            Plugin.Log("Playing song " + (self.song != null));
+        }
+
+        private bool SlugcatStats_IsSlugcatFromMSC(On.SlugcatStats.orig_IsSlugcatFromMSC orig, SlugcatStats.Name i)
+        {
+            return i.value == "Shaw" || orig(i);
+        }
+
+        private ProjectedImage ProjectionScreen_AddImage_List1_int(On.ProjectionScreen.orig_AddImage_List1_int orig, ProjectionScreen self, List<string> names, int cycleTime)
+        {
+            List<string> transformedNames = names.ConvertAll(name =>
+            {
+                if (self.room.game.GetStorySession.saveState.saveStateNumber == ShawName && name.ToLower().StartsWith("aiimg3")) return $"Shaw-{name}";
+
+                return name;
+            });
+
+            return orig(self, transformedNames, cycleTime);
+        }
+
+        private ProjectedImage ProjectionScreen_AddImage_string(On.ProjectionScreen.orig_AddImage_string orig, ProjectionScreen self, string name)
+        {
+            if (self.room.game.GetStorySession.saveState.saveStateNumber == ShawName && name.ToLower().StartsWith("aiimg2"))
+            {
+                return orig(self, "Shaw-" + name);
+            }
+            return orig(self, name);
+        }
+
+        private void PebblesConversation_AddEvents(On.SSOracleBehavior.PebblesConversation.orig_AddEvents orig, SSOracleBehavior.PebblesConversation self)
+        {
+            if (self.id == Conversation.ID.Pebbles_White && self.owner.oracle.room.game.GetStorySession.saveState.saveStateNumber == ShawName)
+            {
+                if (!self.owner.playerEnteredWithMark)
+                {
+                    self.events.Add(new Conversation.TextEvent(self, 0, ".  .  .", 0));
+                    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("...is this reaching you?"), 0));
+                    self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 4));
+                    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("No?"), 0));
+                    self.events.Add(new SSOracleBehavior.PebblesConversation.SpecialEvent(self, 0, "karma"));
+                    //self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("It should work now."), 0));
+                    self.owner.playerEnteredWithMark = true;
+                    return;
+                }
+                else
+                {
+                    self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 70));
+                    self.events.Add(new Conversation.TextEvent(self, 0, ". . .", 0));
+                    self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 70));
+                    self.events.Add(new Conversation.TextEvent(self, 0, ".  .  .", 0));
+                    self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 70));
+
+                }
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("A little insect, on the floor of my chamber. I think I know what you are looking for.\r\n"), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("You're stuck in a cycle, a repeating pattern. You want a way out."), 0));
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 20));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("No?"), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("It speak now?"), 0));
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 20));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("What?<LINE>You seek to defeat the most powerful beings of this world?"), 0));
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 60));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("How boring."), 0));
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 10));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("I don't need a killer right now, and I don't want a \"bug\" to cause more trouble in my systems."), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate(".  .  ."), 0));
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 210));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("I found the perfect place for you!<LINE>A place for all bloodthirsty murderers of yours."), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Our creators called it by several names, but I personally prefer HELL."), 0));
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 10));
+                if (self.owner.playerEnteredWithMark)
+                {
+                    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Go to the west past the Farm Arrays, and then down into the earth<LINE>where the land fissures, as deep as you can reach, where the ancients built their temples and danced their silly rituals."), 0));
+                }
+                else
+                {
+                    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Go to the west past the Farm Arrays, and then down into the earth<LINE>where the land fissures, as deep as you can reach, where the ancients built their temples and danced their silly rituals.<LINE>The mark I gave you will let you through."), 0));
+                }
+                //self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Go to the west past the Farm Arrays."), 0));
+                //self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 20));
+                //self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("What?<LINE>You came from there?"), 0));
+                //self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 10));
+                //self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Too bad to be you."), 0));
+                //self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Anyway."), 0));
+                //if (self.owner.playerEnteredWithMark)
+                //{
+                //    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Then down into the earth<LINE>where the land fissures, as deep as you can reach, where the ancients built their temples and danced their silly rituals."), 0));
+                //}
+                //else
+                //{
+                //    self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Then down into the earth<LINE>where the land fissures, as deep as you can reach, where the ancients built their temples and danced their silly rituals.<LINE>The mark I gave you will let you through."), 0));
+                //}
+                self.events.Add(new SSOracleBehavior.PebblesConversation.PauseAndWaitForStillEvent(self, self.convBehav, 20));
+                //self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("If you can't find it, don't come back.<LINE>Next time I see you here, I'll turn you into a body."), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("I must resume my work."), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("If you can't find it, don't come back."), 0));
+                self.events.Add(new Conversation.TextEvent(self, 0, self.Translate("Now go."), 0));
+                return;
+            }
+            else
+            {
+                orig(self);
+            }
+        }
+
+
+        private void Player_Stun(On.Player.orig_Stun orig, Player self, int st)
+        {
+            orig(self, st);
+            if (SpearAbilites.TryGet(self, out bool customAbilities) && customAbilities)
+            {
+                if (!self.CanPutSpearToBack && self.Stunned)
+                {
+                    self.spearOnBack.DropSpear();
+                }
+
+            }
+        }
+
+        private void RoomSpecificScript_AddRoomSpecificScript(On.RoomSpecificScript.orig_AddRoomSpecificScript orig, Room room)
+        {
+            //ConsoleWrite("RoomSpecificScript_AddRoomSpecificScript");
+            //ConsoleWrite("Add scripts for: " + room.abstractRoom.name);
+            //ColosseumRubiconManager.addScript(room);
+            orig(room);
         }
 
         private void SpearOnBack_Update(On.Player.SpearOnBack.orig_Update orig, Player.SpearOnBack self, bool eu)
@@ -127,6 +410,7 @@ namespace Silkslug
         private void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
             orig(self, eu);
+            //UnityEngine.Debug.Log($"pos: {self.mainBodyChunk.pos}");
             //if (self.slugcatStats.name.ToString() == "White" && Random.value >= 0.75)
             //{
             //    self.room.AddObject(new Slash(self.room, self, null, new Vector2(1, 0), 100f, 1f, 0f));
@@ -256,7 +540,7 @@ namespace Silkslug
                             {
                                 self.room.PlaySound(Sounds.HORNET_GREAT_SLASH, self.firstChunk);
                             }
-                            self.room.AddObject(new Slash(self.room, self, spear, intVector.ToVector2(), 175f, 1f, 0.75f * damageFac));
+                            self.room.AddObject(new Slash(self.room, self, spear, intVector.ToVector2(), 175f, 1f, 0.75f * damageFac, 2f));
                             spear.SetInvisible(10);
                             shawData.chargeSlashCounter = 0;                        }
                         else
@@ -414,11 +698,42 @@ namespace Silkslug
         // Load any resources, such as sprites or sounds
         private void LoadResources(RainWorld rainWorld)
         {
-            Futile.atlasManager.LoadImage("atlas/slash");
-            Futile.atlasManager.LoadImage("atlas/longslash");
+
+            Plugin.Log("load assets !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+            Futile.atlasManager.LoadImage("assets/slash1");
+            Futile.atlasManager.LoadImage("assets/slash2");
+            Futile.atlasManager.LoadImage("assets/longslash");
+
+            Futile.atlasManager.LoadImage("illustrations/rubiconintrotext");
+            Futile.atlasManager.LoadImage("illustrations/hkfront");
+            Futile.atlasManager.LoadImage("illustrations/hkback");
+
+            Futile.atlasManager.LoadImage("assets/eye0");
+            Futile.atlasManager.LoadImage("assets/eye1");
+            Futile.atlasManager.LoadImage("assets/eye2");
+
+            Futile.atlasManager.LoadImage("illustrations/bossintro");
+            Futile.atlasManager.LoadImage("assets/hellknightbody");
+            Futile.atlasManager.LoadImage("illustrations/bluedream");
+
+            Futile.atlasManager.LoadImage("assets/sawblade");
+
+            Futile.atlasManager.LoadImage("illustrations/hornethead");
+
+            Futile.atlasManager.LoadAtlas("atlases/memoriesaltas");
+
+            Futile.atlasManager.LoadImage("illustrations/shaw-aiimg2");
+            Futile.atlasManager.LoadImage("illustrations/shaw-aiimg3");
+            Futile.atlasManager.LoadImage("illustrations/shaw-aiimg3a");
+            Futile.atlasManager.LoadImage("illustrations/shaw-aiimg3b");
+
             Sounds.Initialize();
             MachineConnector.SetRegisteredOI(MOD_ID, ShawOptions.instance);
-        }
 
+            //// Achievement manager
+            //Futile.atlasManager.LoadImage("illustrations/achievement_background");
+            //Futile.atlasManager.LoadImage("illustrations/achievement_image");
+        }
     }
 }

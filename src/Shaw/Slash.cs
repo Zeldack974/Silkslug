@@ -4,12 +4,13 @@ using Random = UnityEngine.Random;
 using static Silkslug.Shaw;
 using System.Collections.Generic;
 using Noise;
+using Silkslug.ColosseumRubicon.Boss;
 
 namespace Silkslug
 {
     public class Slash : CosmeticSprite
     {
-        public Slash(Room room, Player owner, Spear spear, Vector2 dir, float size, float force, float damage)
+        public Slash(Room room, Player owner, Spear spear, Vector2 dir, float size, float force, float damage, float stunFactor = 1f)
         {
             this.room = room;
             this.owner = owner;
@@ -18,6 +19,8 @@ namespace Silkslug
             this.size = size;
             this.force = force;
             this.damage = damage;
+            this.stunFactor = stunFactor;
+            this.room.InGameNoise(new InGameNoise(this.owner.mainBodyChunk.pos, 8000f, this.owner, 1f));
         }
 
         public Vector2 dir;
@@ -46,6 +49,8 @@ namespace Silkslug
         public float force;
 
         public float damage;
+
+        public float stunFactor;
 
         public int frame;
 
@@ -91,6 +96,27 @@ namespace Silkslug
                             this.room.PlaySound(Sounds.HERRO_PARRY, this.owner.firstChunk.pos);
                         }
                     }
+
+                    if (drawable != null && drawable is HellKnight)
+                    {
+                        HellKnight boss = (HellKnight)drawable;
+                        if (this.IsHit(boss.pos, boss.rad))
+                        {
+                            boss.TakeDamage(damage * 4f);
+                            this.hitSomething = true;
+                            this.room.PlaySound(SoundID.Spear_Stick_In_Creature, this.owner.firstChunk.pos);
+                        }
+                    }
+
+                    if (drawable != null && drawable is SawBlade)
+                    {
+                        SawBlade saw = (SawBlade)drawable;
+                        if (this.IsHit(saw.pos, saw.rad - 15))
+                        {
+                            this.hitSomething = true;
+                            this.room.PlaySound(Sounds.HERRO_PARRY, saw.pos, 1f, 1.5f);
+                        }
+                    }
                 }
             }
 
@@ -104,7 +130,7 @@ namespace Silkslug
                         {
                             for (int l = 0; l < this.room.physicalObjects[j][k].bodyChunks.Length; l++)
                             {
-                                if (this.IsHit(this.room.physicalObjects[j][k].bodyChunks[l].pos))
+                                if (this.IsHit(this.room.physicalObjects[j][k].bodyChunks[l].pos, this.room.physicalObjects[j][k].bodyChunks[l].rad))
                                 {
                                     if (this.room.physicalObjects[j][k] is Creature && !this.creaturesHit.Contains((this.room.physicalObjects[j][k] as Creature)) && (this.room.physicalObjects[j][k] is not Player || (ModManager.CoopAvailable && Custom.rainWorld.options.friendlyFire || this.room.game.IsArenaSession && this.room.game.GetArenaGameSession.arenaSitting.gameTypeSetup.spearsHitPlayers)))
                                     {
@@ -126,7 +152,7 @@ namespace Silkslug
                                         }
                                         else
                                         {
-                                            (this.room.physicalObjects[j][k] as Creature).Violence(this.owner.mainBodyChunk, force, this.room.physicalObjects[j][k].firstChunk, null, Creature.DamageType.Blunt, this.damage, 20f);
+                                            (this.room.physicalObjects[j][k] as Creature).Violence(this.owner.mainBodyChunk, force, this.room.physicalObjects[j][k].firstChunk, null, Creature.DamageType.Blunt, this.damage, 10f * stunFactor);
                                         }
                                         if (!(this.room.physicalObjects[j][k] as Creature).dead)
                                         {
@@ -199,12 +225,12 @@ namespace Silkslug
             {
                 if (this.dir.x != 0)
                 {
-                    this.owner.firstChunk.vel.x = this.dir.normalized.x * -25f * this.force;
+                    this.owner.firstChunk.vel.x = this.dir.normalized.x * -15f * this.force;
                 }
 
                 if (this.dir.y < 0)
                 {
-                    this.owner.firstChunk.vel.y = this.dir.normalized.y * -35f * this.force;
+                    this.owner.firstChunk.vel.y = this.dir.normalized.y * -30f * this.force;
                 }
             }
         }
@@ -213,7 +239,7 @@ namespace Silkslug
         {
             base.InitiateSprites(sLeaser, rCam);
             sLeaser.sprites = new FSprite[1];
-            sLeaser.sprites[0] = new FSprite("atlas/slash", true);
+            sLeaser.sprites[0] = new FSprite("assets/slash1", true);
             sLeaser.sprites[0].anchorY = 0;
             sLeaser.sprites[0].width = this.size * 0.5895f;
             sLeaser.sprites[0].height = this.size;;
@@ -233,6 +259,12 @@ namespace Silkslug
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
             base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
+
+            if (frame > lifeTime)
+            {
+                sLeaser.sprites[0].SetElementByName("assets/slash2");
+            }
+
             this.pos = (Vector2.Lerp(this.owner.firstChunk.pos, this.owner.firstChunk.lastPos, 0.35f) - (this.dir * (this.size / 3)));
             sLeaser.sprites[0].SetPosition(this.pos - camPos);
 
@@ -338,6 +370,7 @@ namespace Silkslug
             this.size = size;
             this.force = force;
             this.damage = damage;
+            this.room.InGameNoise(new InGameNoise(this.owner.mainBodyChunk.pos, 8000f, this.owner, 1f));
         }
 
         public Vector2 dir;
@@ -406,6 +439,27 @@ namespace Silkslug
                             hitSomething = true;
                         }
                     }
+
+                    if (drawable != null && drawable is HellKnight )
+                    {
+                        HellKnight boss = (HellKnight)drawable;
+                        if ((boss.pos - this.hitPos).magnitude < (boss.rad + this.hitRad))
+                        {
+                            boss.TakeDamage(damage * 4f);
+                            this.room.PlaySound(SoundID.Spear_Stick_In_Creature, boss.pos);
+                            hitSomething = true;
+                        }
+                    }
+
+                    if (drawable != null && drawable is SawBlade)
+                    {
+                        SawBlade saw = (SawBlade)drawable;
+                        if ((saw.pos - this.hitPos).magnitude < (saw.rad + this.hitRad))
+                        {
+                            this.room.PlaySound(Sounds.HERRO_PARRY, saw.pos, 1f, 2f);
+                            hitSomething = true;
+                        }
+                    }
                 }
             }
 
@@ -455,7 +509,7 @@ namespace Silkslug
                                             }
                                             else
                                             {
-                                                (this.room.physicalObjects[j][k] as Creature).Violence(this.owner.mainBodyChunk, force, this.room.physicalObjects[j][k].firstChunk, null, Creature.DamageType.Blunt, this.damage, 20f);
+                                                (this.room.physicalObjects[j][k] as Creature).Violence(this.owner.mainBodyChunk, force, this.room.physicalObjects[j][k].firstChunk, null, Creature.DamageType.Blunt, this.damage, 10f);
                                             }
                                             if (!(this.room.physicalObjects[j][k] as Creature).dead)
                                             {
@@ -515,9 +569,14 @@ namespace Silkslug
             {
                 if (this.hitSomething)
                 {
+                    //ConsoleWrite("hit something");
                     shawData.dashFrame = 0;
                     this.owner.animation = Player.AnimationIndex.Flip;
-                    this.owner.firstChunk.vel.y = 15f * this.force;
+                    foreach (var chuck in this.owner.bodyChunks)
+                    {
+                        chuck.vel.y = 0;
+                    }
+                    this.owner.firstChunk.vel.y = 15f * 2f; // * this.force;
                     this.Destroy();
                 }
                 else
@@ -551,7 +610,7 @@ namespace Silkslug
         {
             base.InitiateSprites(sLeaser, rCam);
             sLeaser.sprites = new FSprite[1];
-            sLeaser.sprites[0] = new FSprite("atlas/longslash", true);
+            sLeaser.sprites[0] = new FSprite("assets/longslash", true);
             sLeaser.sprites[0].anchorY = 0;
             sLeaser.sprites[0].width = this.size * 0.42f;
             sLeaser.sprites[0].height = this.size;

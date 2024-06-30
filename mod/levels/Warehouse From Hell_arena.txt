@@ -1,0 +1,43 @@
+GoalAmount - 7.5
+
+DenGroup - LOW - 6,7,8,9
+DenGroup - HIGH - 4,5
+DenGroup - ALL - 4,5,6,7,8,9
+
+Creature - Green - dens:LOW - chance:0.7
+Creature - Pink - dens:ALL - chance:0.7
+Creature - Blue - dens:ALL - chance:0.7
+Creature - White - dens:ALL - chance:0.7
+
+CreatureGroup - LIZ - chance:0.8 - invSymbol:A1
+Creature - Green - dens:LOW - chance:0.5 - group:LIZ
+Creature - Pink - dens:LOW - chance:0.4 - group:LIZ
+Creature - Blue - dens:HIGH - chance:0.4 - group:LIZ
+Creature - White - dens:HIGH - chance:0.4 - group:LIZ
+
+CreatureGroup - SCAVS - chance:0.8 - invSymbol:A2
+Creature - Scavenger - dens:-1 - chance:0.8 - amount:7 - group:SCAVS
+
+CreatureGroup - BUGS - chance:0.25 - invSymbol:A3
+Creature - Big Spider - dens:ALL - chance:0.8 - amount:4 - group:BUGS
+Creature - Spitter Spider - dens:ALL - chance:0.8 - amount:6 - group:BUGS
+Creature - Centipede - dens:ALL - chance:0.8 - amount:4 - group:BUGS
+
+Creature - Vulture - dens:-1 - chance:0.3 - symbol:B1 - RARE
+Creature - Vulture - dens:-1 - chance:0.3 - invSymbol:A4 - RARE
+Creature - KingVulture - dens:-1 - chance:0.1 - RARE
+
+Creature - Daddy - dens:6,7 - chance:0.05 - RARE
+Creature - Bro - dens:6,7 - chance:0.05 - RARE
+
+CreatureGroup - WORMS - chance:0.75
+Creature - Tube Worm - dens:HIGH - chance:0.8 - amount:players - group:WORMS
+
+CreatureGroup - DROPBUGS - chance:0.1
+Creature - DropBug - dens:ALL - chance:0.5 - group:DROPBUGS - amount:2-6
+
+CreatureGroup - CYANS - chance:0.06
+Creature - Cyan - dens:ALL - chance:0.5 - amount:2-3 - group:CYANS
+
+Creature - Needle Worm - dens:HIGH - chance:0.05 - amount:1-2
+Creature - Cicada - dens:HIGH - chance:0.01 - amount:2

@@ -2,7 +2,7 @@
     
     <PropertyGroup>
         <TargetFramework>net48</TargetFramework>
-        <LangVersion>11</LangVersion>
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
     
     <ItemGroup>
@@ -12,15 +12,19 @@
     </ItemGroup>
     
     <Target Name="GenerateMod" AfterTargets="PostBuildEvent">
-		<ItemGroup>
-			<RemovePlugins Include="../mod/plugins/*.dll" />
-		</ItemGroup>
-		<ItemGroup>
-			<CopyPlugins Include="$(TargetPath)" />
-		</ItemGroup>
-		
+        <ItemGroup>
+            <RemovePlugins Include="../mod/plugins/*.dll" />
+        </ItemGroup>
+        <ItemGroup>
+            <!-- Inclure les fichiers DLL -->
+            <CopyPlugins Include="$(TargetPath)" />
+            <!-- Inclure les fichiers PDB -->
+            <CopyPdbs Include="$(TargetDir)*.pdb" />
+        </ItemGroup>
+
         <Delete Files="@(RemovePlugins)" />
-        <Copy SourceFiles="@(CopyPlugins)" DestinationFolder="../mod/plugins/" />
+        <!-- Copier à la fois les DLL et les PDB -->
+        <Copy SourceFiles="@(CopyPlugins);@(CopyPDBs)" DestinationFolder="../mod/newest/plugins/" />
     </Target>
     
 </Project>

@@ -1,0 +1,6 @@
+DenGroup - DENS - 1, 2, 3, 4
+
+Creature - Scavenger - dens:DENS - chance:0.5 - amount:3-7
+
+Creature - Cyan - dens:DENS - chance:0.35 - amount:3-5
+Creature - Spitter Spider - dens:DENS - chance:0.5 - amount:4-5

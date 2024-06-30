@@ -1,0 +1,12 @@
+{
+	"id": "Sleep_Shaw",
+	"scene_folder": "scenes/sleep - shaw",
+	"images": [
+		{ "name": "Background", "pos": [675, -50], "depth": 3.0, "shader": "Basic" },
+		{ "name": "Grass 3",    "pos": [675, -50], "depth": 2.3, "shader": "Basic" },
+		{ "name": "Grass 2",    "pos": [675, -50], "depth": 2.2, "shader": "Basic" },
+		{ "name": "Slugcat",    "pos": [675, -50], "depth": 2.0, "shader": "Basic" },
+		{ "name": "Grass 1",    "pos": [675, -50], "depth": 1.8, "shader": "Basic" }
+	],
+	"idle_depths": [ 2.8 ]
+}

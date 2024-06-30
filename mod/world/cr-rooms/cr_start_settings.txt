@@ -1,0 +1,22 @@
+Template: NONE
+DangerType: None
+CeilingDrips: 0
+WaveSpeed: 0.4987068
+WaveLength: 0.9993534
+WaveAmplitude: 0.04844933
+SecondWaveLength: 1
+SecondWaveAmplitude: 0
+Clouds: 1
+Grime: 0
+RandomItemDensity: 0.2173913
+RandomItemSpearChance: 0.2217391
+WaterReflectionAlpha: 1
+Palette: 39
+EffectColorA: 15
+EffectColorB: 13
+Effects: LavaSurface-1-0-0, HeatWave-0.144656-1007.936-590.2444, VoidMelt-0.1170747-967-394, LethalWater-0-300-49, WaterDepth-0.07608695-257-149, Brightness-0-0-0, WaterViscosity-0.5-810-517, SilenceWater-0-612-417, SkyBloom-0-1081.417-506.3111, 
+PlacedObjects: LightFixture><187.1655><214.3623><HolyFire~-326.9316~-36.77777~49, LightFixture><997.1118><231.0842><HolyFire~91.3205~61~47, LanternOnStick><209.5068><105.0501><-22~108, LanternOnStick><989.3608><94.4165><7~138, LightFixture><-190.5862><232.6805><RedLight~22.32051~225~0, LightFixture><851.1024><1541.328><HolyFire~17.32051~-10~16, LightFixture><1667.283><1544.448><HolyFire~17.32051~-10~95, LanternOnStick><525.5409><1380.813><-46.6521~190.3111, LightFixture><478.9448><1569.459><HolyFire~17.32051~-10~71, LightSource><1455.305><946.9571><0.6304341~EffectColor1~255~82~50~86.60254~0~0~None~0~0, PlacedWaterfall><746.4246><2049.902><52~-158~0.08696183~1, LightSource><755.0701><2042.337><1~EffectColor1~0~100~-18~-184.3975~0~0~None~0~0, UpsideDownWaterFall><1441.866><944.8517><19.42288~129.9555~0.5359152~0.773322~1~151~-128~4.884~Foreground~False~1, LightSource><1995.29><499.7191><1~EffectColor1~-34.14996~759.9111~50~86.60254~0~0~None~0~0, LanternOnStick><1309.861><720.1381><-23.47812~195.2889, LightFixture><1286.24><916.1401><HolyFire~17.32051~-10~52, LightFixture><2141.881><1594.614><HolyFire~17.32051~-10~87, ClimbablePole><2162.442><1502.04><-19.92078~92.17776~17.32051~-10~Black, GoldToken><1453.686><983.8242><0~100~134~125~0~CRPain~White|Yellow|Red|Rivulet|Artificer|Saint|Spear|Gourmand|CowBoySLug|Parasite~0~0~0~0, 
+AmbientSounds: OMNI><AM_SUB-MysticCave1.ogg><408.2601><537.3002><0.3779442><0.9217392, SPOT><SO_NAT-Fire.ogg><833.587><165.6158><0.6630435><1><889.587><404.6158><-219.3553><9.644653><0><0.1, SPOT><SO_SFX-Corrosion.ogg><618.0622><129.4401><0.5><1><617.0622><68.44006><-253.3553><202.6447><0><0.1, OMNI><AM_IND-Midsex01.ogg><663.4136><158.3196><0.3840013><1, SPOT><SO_NAT-Fire.ogg><703.4395><264.314><0.5><1><388.4395><403.314><181.6447><16.64465><0><0.1, 
+Triggers: Spot<tA>event<tB>MusicEvent<eA>songName<eB>na_33 - else2<eA>vol<eB>0.3<eA>prio<eB>0.5<eA>mxThrt<eB>1<eA>loop<eB>0<eA>droneTol<eB>0<eA>rooms<eB>-1<eA>rest<eB>5<eA>fadeIn<eB>0<eA>oneSongPerCycle<eB>0<eA>stopAtDeath<eB>0<eA>stopAtGate<eB>0<tA>multiUse<tB>1<tA>toCycle<tB>-1<tA>fromCycle<tB>0<tA>delay<tB>0<tA>panPos<tB>748.561<tB>405.1905<tA>fireChance<tB>1<tA>entrance<tB>-1<tA>karma<tB>0<tA>slugcats<tB><tA>pos<tB>635.561<tB>389.1905<tA>handlePos<tB>-35.35534<tB>-35.35534, 
+FadePalette: 55, 0.8586956, 0.8509634, 0.8586956
+WetTerrain: OFF

@@ -1,0 +1,21 @@
+Template: NONE
+DangerType: None
+CeilingDrips: 0
+WaveSpeed: 0.4987068
+WaveLength: 0.9993534
+WaveAmplitude: 0.04844933
+SecondWaveLength: 1
+SecondWaveAmplitude: 0
+Clouds: 1
+Grime: 0
+RandomItemDensity: 0.2173913
+RandomItemSpearChance: 0.2217391
+WaterReflectionAlpha: 1
+Palette: 39
+EffectColorA: 13
+EffectColorB: 13
+Effects: LavaSurface-1-0-0, HeatWave-0.2065217-273-197, VoidMelt-0.1195652-967-394, LethalWater-1-300-49, WaterDepth-0.0326087-257-149, Brightness-0-0-0, WaterViscosity-0.5-810-517, SilenceWater-1-612-417, SkyBloom-0.3913043-0-0, 
+PlacedObjects: LightSource><668.6209><734.4093><1~EffectColor1~-649~-775~50~86.60254~1~0~None~0~0, LightFixture><412.8672><327.662><HolyFire~-1.679504~61~10, LightFixture><1215.678><222.9368><HolyFire~17.32051~-10~44, LightFixture><837.8795><322.9024><HolyFire~17.32051~-10~15, LightFixture><893.5768><323.8499><HolyFire~17.32051~-10~52, LightFixture><696.9459><326.7903><HolyFire~17.32051~-10~38, LightFixture><751.9427><322.8036><HolyFire~17.3205~-9~97, LightFixture><469.8063><325.558><HolyFire~17.32051~-10~3, LightFixture><212.3978><204.3847><HolyFire~17.32051~-10~7, LightFixture><268.228><203.0512><HolyFire~17.32051~-10~24, LightFixture><1159.095><223.3765><HolyFire~17.32051~-10~75, 
+AmbientSounds: SPOT><SO_NAT-Fire.ogg><813.587><404.6158><0.6630435><1><890.587><408.6158><-219.3553><9.644653><0><0.1, SPOT><SO_NAT-Fire.ogg><262.4395><387.314><0.5><1><389.4395><402.314><181.6447><16.64465><0><0.1, SPOT><SO_NAT-Burning.ogg><715.3749><279.4062><0.5><1><608.3749><59.40627><-223.3553><146.6447><0><0.2630436, SPOT><MSC-RitualMetal.ogg><732.8345><157.3877><0.2282609><0.9021739><646.8345><97.38777><-208.3553><94.64465><0><0.4260871, OMNI><AM_ENV-CityTone.ogg><390.9191><547.8171><0.3804348><0.8434783, OMNI><AM_WIN-SubWnd.ogg><563.3047><586.7069><0.2065217><0.8826087, OMNI><AM_WIN-StrongWnd2.ogg><737.5146><542.9495><0.3043478><0.9021739, 
+FadePalette: 55, 0.8586956
+WetTerrain: OFF

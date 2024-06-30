@@ -3,20 +3,26 @@
 	"name": "The Shaw",
 	"description": "A dream remains a dream if it never comes true.\nUnfortunately, your dream will never come true.\nSorry from Team Cherrybomb.",
 	"features": {
-		"color": "0E0202",
+		"color": "A93F3F",
 		"silkslug/super_jump": 0.2,
 		"silkslug/spear_abilities": true,
 		"throw_skill": 2,
 		"walk_speed": 1.3,
 		"back_spear": true,
+		"food_min": 6,
+		"food_max": 8,
 		"diet": {
-			"base": "Red"
+			"base": "Red",
+			"corpses": 0.5
 		},
 
-		"world_state": [ "Red" ],
-		"start_room": "LF_H01",
+		"world_state": [ "Shaw", "Red" ],
+		"start_room": "VS_E06",
 
-		"select_menu_scene": "Slugcat_Shaw",
-		"select_menu_scene_ascended": "Ghost_Shaw"
+		"select_menu_scene": "Menu_Shaw",
+		"select_menu_scene_ascended": "Ghost_Shaw",
+		"sleep_scene": "Sleep_Shaw",
+		"death_scene": "Death_Shaw",
+		"starve_scene": "Death_Shaw"
 	}
 }

@@ -1,0 +1,21 @@
+Template: NONE
+DangerType: None
+CeilingDrips: 0
+WaveSpeed: 0.4987068
+WaveLength: 0.9993534
+WaveAmplitude: 0.04844933
+SecondWaveLength: 1
+SecondWaveAmplitude: 0
+Clouds: 0
+Grime: 0
+RandomItemDensity: 0.2173913
+RandomItemSpearChance: 0.2217391
+WaterReflectionAlpha: 1
+Palette: 39
+EffectColorA: 14
+EffectColorB: 14
+Effects: LavaSurface-1-0-0, HeatWave-0-337-213, VoidMelt-0.1086956-967-394, LethalWater-0-300-49, WaterDepth-0-257-149, Brightness-0-0-0, WaterViscosity-0.5-810-517, SilenceWater-0.180276-0-0, SkyBloom-0.08695652-606-624, 
+PlacedObjects: LightFixture><236.1655><189.3623><HolyFire~-326.9316~-36.77777~49, LightFixture><951.1118><154.0842><HolyFire~91.3205~61~47, LightFixture><792.692><608.8048><HolyFire~-257.6794~45~55, LightFixture><-190.5862><232.6805><RedLight~22.32051~225~0, ClimbablePole><250.8577><79.89053><-13~109~17.32051~-10~Black, ClimbablePole><784.3735><538.8427><8~71~17.32051~-10~Black, ClimbablePole><944.2218><77.302><7~78~17.32051~-10~Black, 
+AmbientSounds: OMNI><AM_SUB-MysticCave1.ogg><408.2601><537.3002><0.5326087><0.9217392, SPOT><SO_NAT-Fire.ogg><833.587><165.6158><0.6630435><1><889.587><404.6158><-219.3553><9.644653><0><0.1, SPOT><SO_SFX-Corrosion.ogg><618.0622><129.4401><0.5><1><617.0622><68.44006><-253.3553><202.6447><0><0.1, OMNI><AM_IND-Midsex01.ogg><663.4136><158.3196><0.5><1, SPOT><SO_NAT-Fire.ogg><703.4395><264.314><0.5><1><388.4395><403.314><181.6447><16.64465><0><0.1, 
+FadePalette: 55, 0.8586956
+WetTerrain: OFF

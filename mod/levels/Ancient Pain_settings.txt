@@ -1,0 +1,19 @@
+Template: NONE
+DangerType: None
+RainIntensity: 1
+RumbleIntensity: 1
+WaveSpeed: 0.5
+WaveLength: 0.75
+WaveAmplitude: 0.04999425
+SecondWaveLength: 0.4927537
+SecondWaveAmplitude: 0
+Clouds: 1
+Grime: 0.1630435
+RandomItemDensity: 0.4891304
+WaterReflectionAlpha: 1
+Palette: 12
+Effects: Coldness-0.1086956-20-20, AboveCloudsView-1-11-82, Advertisements-1-2-133, SunBlock-1-330-85, SkyBloom-0.2717391-249-34, Fog-1-248-139, 
+PlacedObjects: SnowSource><109.7717><105.8001><Radial~239.4166~431.3777~50~86.60254~1~0, LocalBlizzard><532.4023><484.9611><623.3334~-547.1111~192~77.60254~0.2762683~0.5620469~1, SnowSource><1126.377><2.306206><Radial~-604.2083~520.9778~50~86.60254~1~0, SawBlade><194.4254><152.3462><100~50~52.5^0~2.608722~713^0~0, SawBlade><558.4163><267.5684><100~50~30.5^5~10.21742~3^365~0.5000007, SawBlade><559.4288><636.4369><136~-73~32.5^1~10.21742~-1^-369~0.5, SawBlade><79.62677><285.4047><100~50~24.5^0~2.608689~897^1~0, SawBlade><990><416><100~50~24.5^0~2.608689~-903^0~0, SawBlade><347.9022><269.6744><100~50~30.5^2~20~1^240~0.9891311, SawBlade><765><270><100~50~30.5^2~20~1^240~0.9891311, MultiplayerItem><185.3078><522.4446><Spear~17.32051~-10~0.7391304, MultiplayerItem><941><520><Spear~17.32051~-10~0.7391304, MultiplayerItem><350.3814><483.4008><Spear~17.32051~-10~0.4021737, MultiplayerItem><552><641><Spear~17.32051~-10~0.7608696, MultiplayerItem><763><481><Spear~17.32051~-10~0.4021737, MultiplayerItem><748><341><Spear~17.32051~-10~0.4021737, MultiplayerItem><353><338><Spear~17.32051~-10~0.4021737, MultiplayerItem><784><70><Spear~17.32051~-10~0.4021737, MultiplayerItem><318><78><Spear~17.32051~-10~0.4021737, 
+FadePalette: 27, 0
+BackgroundOffset: 0,978.2606
+BackgroundType: AtC_Default_MSC

@@ -23,7 +23,7 @@ namespace Silkslug
             base.Initialize();
 
 
-            ConsoleWrite("ShawOptions_Initialize");
+            Plugin.Log("ShawOptions_Initialize");
             InGameTranslator inGameTranslator = Custom.rainWorld.inGameTranslator;
 
             Tabs = new OpTab[1];
@@ -63,7 +63,6 @@ namespace Silkslug
                 width = width2;
             }
 
-            ConsoleWrite("button size: " + width + ", " + width2);
             disableShawVoice.size = new Vector2(width, 35f);
 
         }

@@ -1,0 +1,21 @@
+Template: NONE
+DangerType: Flood
+CeilingDrips: 0
+WaveSpeed: 0.4676086
+WaveLength: 0.9337209
+WaveAmplitude: 0.00043367
+SecondWaveLength: 1
+SecondWaveAmplitude: 0
+Clouds: 0
+Grime: 0.3586957
+RandomItemDensity: 0.2173913
+RandomItemSpearChance: 0.2217391
+WaterReflectionAlpha: 1
+Palette: 39
+EffectColorA: 14
+EffectColorB: 13
+Effects: LavaSurface-1-0-0, HeatWave-0.3043478-273-197, VoidMelt-0.1195652-967-394, LethalWater-1-300-49, WaterDepth-0.0326087-262-138, Brightness-1-297-0, WaterViscosity-0.5-810-517, SilenceWater-1-612-417, SkyBloom-1-0-76, 
+PlacedObjects: LightFixture><389.1655><401.3623><HolyFire~-174.6795~109~49, LightFixture><971.4082><442.3223><HolyFire~40.3205~101~52, KarmaShrine><631.9199><590.4332><-26~22, LightSource><633.4305><75.08615><0.6521739~EffectColor2~-404~11~216~234.6025~0~0~None~0~0, MultiplayerItem><208.4521><574.1942><Rock~17.32051~-10~0.3043478, MultiplayerItem><95.44556><362.7919><Spear~17.32051~-10~0.2065217, MultiplayerItem><1247.856><456.1387><Spear~-263.6794~23~0.3043478, MultiplayerItem><149.5509><507.2686><Spear~17.32051~-10~0.3478261, MultiplayerItem><904.0626><514.4399><SporePlant~17.32051~-10~0.3152174, MultiplayerItem><869.8017><217.7759><Rock~17.32051~-10~0.3369565, MultiplayerItem><114.1996><163.2373><Rock~17.32051~-10~0.2717391, MultiplayerItem><672.312><208.6818><Spear~239.3205~167~0.1086956, MultiplayerItem><408.4447><348.9542><Spear~17.32051~-10~0.1086956, MultiplayerItem><1216.871><202.5973><Spear~-254.6794~10~0.1086956, MultiplayerItem><1161.155><369.1259><ExplosiveSpear~17.32051~-10~0.07608634, MultiplayerItem><725.6994><384.4845><ExplosiveSpear~17.32051~-10~0.07608695, MultiplayerItem><412.9151><507.1129><Bomb~17.32051~-10~0.07608695, MultiplayerItem><503.606><313.1697><Bomb~17.32051~-10~0.07608695, DeathFallFocus><502.5801><356.1444><, DeathFallFocus><513.3366><357.9303><, ClimbableRope><651.7><775.4999><-4^-403, 
+AmbientSounds: OMNI><AM_SUB-MysticCave1.ogg><408.2601><537.3002><0.5326087><0.9217392, SPOT><SO_NAT-Fire.ogg><833.587><165.6158><0.6630435><1><889.587><404.6158><-219.3553><9.644653><0><0.1, SPOT><SO_SFX-Corrosion.ogg><618.0622><129.4401><0.5><1><617.0622><68.44006><-253.3553><202.6447><0><0.1, OMNI><AM_IND-Midsex01.ogg><663.4136><158.3196><0.5><1, SPOT><SO_NAT-Fire.ogg><703.4395><264.314><0.5><1><388.4395><403.314><181.6447><16.64465><0><0.1, 
+FadePalette: 55, 0.8586956
+WetTerrain: OFF

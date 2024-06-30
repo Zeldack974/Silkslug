@@ -1,0 +1,22 @@
+Template: NONE
+DangerType: None
+CeilingDrips: 0
+WaveSpeed: 0.4987068
+WaveLength: 0.9993534
+WaveAmplitude: 0.04844933
+SecondWaveLength: 1
+SecondWaveAmplitude: 0
+Clouds: 0
+Grime: 0
+RandomItemDensity: 0.2173913
+RandomItemSpearChance: 0.2217391
+WaterReflectionAlpha: 1
+Palette: 39
+EffectColorA: 14
+EffectColorB: 14
+Effects: LavaSurface-1-0-0, HeatWave-0-337-213, VoidMelt-0.1086956-967-394, LethalWater-0-300-49, WaterDepth-0-257-149, Brightness-0-0-0, WaterViscosity-0.5-810-517, SilenceWater-0.180276-0-0, SkyBloom-0.08695652-606-624, 
+PlacedObjects: LightFixture><457.1655><427.3623><HolyFire~-326.9316~-36.77777~49, LightFixture><1229.112><301.0842><HolyFire~-196.6794~79~47, LightFixture><947.692><617.8048><HolyFire~-257.6794~45~55, LightFixture><-190.5862><232.6805><RedLight~43.32051~353~0, ClimbablePole><460.8577><388.8905><-4~39~17.32051~-10~Black, ClimbablePole><945.3735><587.8427><-1~35~17.32051~-10~Black, ClimbablePole><1221.222><223.302><7~78~17.32051~-10~Black, LightSource><734.3112><109.184><1~EffectColor1~588~666~50~86.60254~0~0~None~0~0, LightSource><758.7733><464.7113><0.7061369~EffectColor1~-32.72705~254.3111~95.53333~-309.4863~0~0~None~0~0, LightSource><838.9191><691.2977><0.659737~EffectColor1~-289.5635~-35.8222~-65.25629~-200.6864~0~0~None~0~0, 
+AmbientSounds: OMNI><AM_SUB-MysticCave1.ogg><408.2601><537.3002><0.5326087><0.9217392, SPOT><SO_NAT-Fire.ogg><833.587><165.6158><0.6630435><1><889.587><404.6158><-219.3553><9.644653><0><0.1, SPOT><SO_SFX-Corrosion.ogg><618.0622><129.4401><0.5><1><617.0622><68.44006><-253.3553><202.6447><0><0.1, OMNI><AM_IND-Midsex01.ogg><663.4136><158.3196><0.5><1, SPOT><SO_NAT-Fire.ogg><703.4395><264.314><0.5><1><388.4395><403.314><181.6447><16.64465><0><0.1, 
+Triggers: Spot<tA>event<tB>MusicEvent<eA>songName<eB>na_33 - else2<eA>vol<eB>0.3<eA>prio<eB>0.5<eA>mxThrt<eB>1<eA>loop<eB>0<eA>droneTol<eB>0<eA>rooms<eB>-1<eA>rest<eB>5<eA>fadeIn<eB>0<eA>oneSongPerCycle<eB>0<eA>stopAtDeath<eB>0<eA>stopAtGate<eB>0<tA>multiUse<tB>1<tA>toCycle<tB>-1<tA>fromCycle<tB>0<tA>delay<tB>0<tA>panPos<tB>748.561<tB>405.1905<tA>fireChance<tB>1<tA>entrance<tB>-1<tA>karma<tB>0<tA>slugcats<tB><tA>pos<tB>635.561<tB>389.1905<tA>handlePos<tB>-35.35534<tB>-35.35534, 
+FadePalette: 55, 0.8586956
+WetTerrain: OFF
