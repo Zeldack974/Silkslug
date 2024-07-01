@@ -136,10 +136,13 @@ namespace Silkslug
                                     {
                                         this.room.PlaySound(SoundID.Spear_Stick_In_Creature, this.room.physicalObjects[j][k].firstChunk);
 
+
+
                                         Vector2 force = this.dir * this.room.physicalObjects[j][k].TotalMass * 9f;
                                         if (ModManager.MSC && this.room.physicalObjects[j][k] is Player)
                                         {
                                             Player player = (this.room.physicalObjects[j][k] as Player);
+                                            player.Violence(this.owner.mainBodyChunk, null, this.room.physicalObjects[j][k].firstChunk, null, Creature.DamageType.Stab, this.damage, 0f);
                                             player.stunDamageType = Creature.DamageType.Blunt;
                                             player.Stun(20);
                                             (player as Creature).SetKillTag(this.owner.abstractCreature);

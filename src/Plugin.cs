@@ -454,7 +454,7 @@ namespace Silkslug
                 bool haveItem = false;
                 foreach (Creature.Grasp grasp in self.grasps)
                 {
-                    if (grasp != null)
+                    if (grasp != null && self.IsObjectThrowable(grasp.grabbed))
                     {
                         haveItem = true;
                     }
